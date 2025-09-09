@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Left – Widgets for Time Left</title>
+    <meta name="description" content="Left transforms how you see time with elegant, customizable countdown and life widgets. Track birthdays, vacations, milestones, and more on your Home Screen, Lock Screen, and StandBy." />
+
+    <!-- Smart App Banner (iOS Safari) -->
+    <meta name="apple-itunes-app" content="app-id=6740155884, app-argument=https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884" />
+
+    <!-- Theme color for mobile UI -->
+    <meta name="theme-color" content="#FF4019" />
+
+    <!-- Open Graph / Twitter (basic) -->
+    <meta property="og:title" content="Left – Widgets for Time Left" />
+    <meta property="og:description" content="Elegant countdown and life widgets – birthdays, vacations, milestones, and more. Track your time left and make every moment count." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="images/left-hero.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Fonts: Roboto and Ubuntu -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="container">
+        <img src="images/left-hero.webp" alt="Left app hero showing elegant time widgets" class="hero-image" />
+
+        <h1 class="app-title">Left</h1>
+        <p class="app-subtitle">Widgets for Time Left</p>
+
+        <div class="cta">
+          <!-- App Store badge (provided) -->
+          <a href="https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884?itscg=30200&itsct=apps_box_badge&mttnsubad=6740155884" style="display: inline-block;">
+            <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1736726400" alt="Download on the App Store" style="width: 245px; height: 82px; vertical-align: middle; object-fit: contain;" />
+          </a>
+        </div>
+
+        <p class="hero-blurb">
+          Left transforms how you see time. Whether it’s the days left in the year, a birthday countdown, or your entire life in weeks, Left makes every moment visible with elegant, customizable widgets.
+        </p>
+      </div>
+    </header>
+
+    <main>
+      <section class="features container" aria-label="App features">
+        <div class="features-grid">
+          <!-- Feature 1 -->
+          <article class="feature-card">
+            <img src="images/left-features-1.webp" alt="Countdown widgets example" />
+            <h3>Visualize Your Time</h3>
+            <p>Widgets for countdowns, life progress, days, weeks, months, and years with beautiful layouts.</p>
+          </article>
+
+          <!-- Feature 2 -->
+          <article class="feature-card">
+            <img src="images/left-features-2.webp" alt="Widget styles: dots, stars, hearts, hexagons" />
+            <h3>Unique Styles</h3>
+            <p>Choose from dots, stars, hearts, hexagons and more to match your vibe.</p>
+          </article>
+
+          <!-- Feature 3 -->
+          <article class="feature-card">
+            <img src="images/left-features-3.webp" alt="Track birthdays, vacations, weddings" />
+            <h3>Track What Matters</h3>
+            <p>Birthdays, holidays, vacations, weddings, and custom dates — all at a glance.</p>
+          </article>
+
+          <!-- Feature 4 -->
+          <article class="feature-card">
+            <img src="images/left-features-4.webp" alt="Interactive widgets on Home Screen, Lock Screen, and StandBy" />
+            <h3>Interactive Widgets</h3>
+            <p>Home Screen, Lock Screen, and StandBy widgets designed to be clear and useful.</p>
+          </article>
+
+          <!-- Feature 5 -->
+          <article class="feature-card">
+            <img src="images/left-features-5.webp" alt="Minimal design focusing on time" />
+            <h3>Minimal & Beautiful</h3>
+            <p>A calm, focused design that keeps your attention on what matters most.</p>
+          </article>
+
+          <!-- Feature 6 -->
+          <article class="feature-card">
+            <img src="images/left-features-6.webp" alt="Memento mori and productivity timers" />
+            <h3>Countdowns & Life</h3>
+            <p>Memento mori and stoic-inspired time-left widgets, plus intervals and Pomodoro timers.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="why container">
+        <h2>Why Left?</h2>
+        <p>
+          Unlike generic countdown apps, Left is widget-first. With over 15 unique styles and full customization, it’s the most elegant way to keep track of your time, your goals, and your life. Download Left today and see your time in a whole new way.
+        </p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p>© <span id="year"></span> Left. All rights reserved.</p>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884" target="_blank" rel="noopener">App Store</a>
+          <!-- Add privacy or support links here if desired -->
+        </nav>
+      </div>
+    </footer>
+
+    <script>
+      // Update year in footer automatically
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </body>
+  </html>
+
