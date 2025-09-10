@@ -418,7 +418,7 @@ body.scrolled .top-nav {
   margin: 0 10px;
 }
 .sitemap a:first-of-type { margin-left: 0; }
-.sitemap a:hover { opacity: 1; text-decoration: underline; }
+.sitemap a:hover { opacity: 1; text-decoration: none; font-weight: 700; }
 
 /* Floating App Store badge that hides once user scrolls */
 .appstore-floater { display: none; position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom) + 12px); transform: translateX(-50%); z-index: 1001; opacity: 1; transition: opacity 220ms ease, transform 220ms ease; }
@@ -433,10 +433,10 @@ body.scrolled .appstore-floater { opacity: 0; transform: translate(-50%, 16px); 
   margin-left: 14px;
 }
 
-.footer-links a:hover {
-  opacity: 1;
-  text-decoration: underline;
-}
+.footer-links a:hover { opacity: 1; text-decoration: none; font-weight: 700; }
+
+/* Global link hover: bold instead of underline */
+a:hover { text-decoration: none; font-weight: 700; }
 
 /* Prefer reduced motion */
 @media (prefers-reduced-motion: no-preference) {
