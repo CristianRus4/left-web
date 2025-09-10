@@ -10,8 +10,10 @@
     <meta name="apple-itunes-app" content="app-id=6740155884, app-argument=https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884" />
 
     <!-- Theme/UI colors for iOS Safari and Android Chrome -->
+    <meta name="theme-color" content="#FF4019" />
     <meta name="theme-color" content="#FF4019" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#FF4019" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
@@ -31,12 +33,16 @@
     <link rel="canonical" href="" id="canonical-link" />
     <link rel="icon" href="images/favicon.png" sizes="32x32" />
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+    <link rel="preload" as="image" href="images/left-hero.webp" />
     <meta name="robots" content="index,follow" />
 
     <!-- Fonts: Roboto and Ubuntu -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
+    <!-- Speed up App Store badge load -->
+    <link rel="preconnect" href="https://toolbox.marketingtools.apple.com" crossorigin />
 
     <link rel="stylesheet" href="style.css" />
 
@@ -157,7 +163,7 @@
           </div>
         </div>
 
-        <img src="images/left-hero.webp" alt="Left app hero showing elegant time widgets" class="hero-image" />
+        <img src="images/left-hero.webp" alt="Left app hero showing elegant time widgets" class="hero-image" fetchpriority="high" decoding="async" />
 
         <div class="cta cta-mobile">
           <!-- App Store badge (provided) -->
@@ -193,7 +199,7 @@
       
 
       
-      <section class="features container" aria-label="App features">
+      <section id="features" class="features container" aria-label="App features">
         <div class="features-grid">
           <!-- Feature 1 -->
           <article class="feature-card">
@@ -241,7 +247,7 @@
 
       
 
-      <section class="why container">
+      <section id="why" class="why container">
         <h2>Why Left?</h2>
         <p>
           Unlike generic countdown apps, Left is widget-first. With over 15 unique styles and full customization, it’s the most elegant way to keep track of your time, your goals, and your life. Download Left today and see your time in a whole new way.
@@ -324,7 +330,7 @@
       </section>
 
       <section id="reviews" class="reviews container" aria-label="User reviews">
-        <h2>Our users love us!</h2>
+        <h2>What People Say About Left</h2>
         <p class="reviews-sub">Testimonials from our awesome users.</p>
 
         <div class="reviews-grid">
@@ -394,7 +400,7 @@
       </section>
 
       <section id="faq" class="faq container" aria-label="Frequently asked questions">
-        <h2>How Left works?</h2>
+        <h2>How Left Works</h2>
         <div class="faq-list">
           <details class="faq-item">
             <summary>Are widgets free, or do I need to upgrade?</summary>
@@ -522,7 +528,13 @@
         </div>
       </section>
     </main>
-
+    <nav class="sitemap container" aria-label="Sitemap">
+      
+      <a href="#features">Features</a>
+      <a href="#why">Why Left?</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#faq">FAQ</a>
+    </nav>
     <footer class="site-footer">
       <div class="container footer-inner">
         <p>cntxt · Coded in NZ · © 2025</p>

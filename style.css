@@ -29,10 +29,17 @@ body {
   margin: 0;
   color: var(--text);
   background: linear-gradient(to bottom left, var(--bg-start), var(--bg-end));
+  background-color: var(--bg-start); /* solid fallback matches gradient start */
   font-family: 'Roboto', 'Ubuntu', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-width: 300px; /* allow horizontal scroll below 300px */
+}
+
+/* Improve keyboard focus visibility */
+a:focus-visible, .btn:focus-visible, button:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.9);
+  outline-offset: 2px;
 }
 
 /* Global image behavior */
@@ -98,7 +105,7 @@ img {
 /* Hero */
 .hero {
   text-align: center;
-  padding: 80px 0 28px; /* more top space for title */
+  padding: calc(80px + env(safe-area-inset-top)) 0 28px; /* account for iOS notch area */
   position: relative;
   overflow: visible;
 }
@@ -392,6 +399,19 @@ body.scrolled .top-nav {
   padding-block: 14px 20px; /* keep container's horizontal padding */
   font-size: 14px;
 }
+
+.sitemap {
+  border-top: 1px solid var(--hairline);
+  padding-block: 10px 6px;
+  font-size: 14px;
+}
+.sitemap a {
+  color: var(--text);
+  text-decoration: none;
+  opacity: 0.9;
+  margin: 0 10px;
+}
+.sitemap a:hover { opacity: 1; text-decoration: underline; }
 
 .footer-links a {
   color: var(--text);
