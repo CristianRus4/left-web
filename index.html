@@ -209,18 +209,19 @@
         const t = clamp01((y - titleStart) / titleRange);
         const blurMax = 8; // px
         // Fade + blur titles
+        const parallaxFactor = 0.45; // same slower speed for title & subtitle
         if (titleEl) {
           titleEl.style.opacity = (1 - t).toFixed(3);
           titleEl.style.filter = `blur(${(t * blurMax).toFixed(2)}px)`;
-          // Parallax: make title scroll much slower
-          const slow = y * 0.40; // stronger counter-scroll
+          // Parallax: same factor as subtitle
+          const slow = y * parallaxFactor;
           titleEl.style.transform = `translateY(${slow.toFixed(1)}px)`;
         }
         if (subtitleEl) {
           const ts = clamp01((y - subStart) / subRange);
           subtitleEl.style.opacity = (1 - ts).toFixed(3);
           subtitleEl.style.filter = `blur(${(ts * blurMax).toFixed(2)}px)`;
-          const slowS = y * 0.55; // subtitle even slower and stronger parallax
+          const slowS = y * parallaxFactor;
           subtitleEl.style.transform = `translateY(${slowS.toFixed(1)}px)`;
         }
         // Disable image parallax: keep natural scroll
