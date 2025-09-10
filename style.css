@@ -208,6 +208,12 @@ h1 { font-weight: 900; }
 .cta-desktop { display: none !important; }
 .cta-mobile { display: block; }
 
+/* Mobile: hide static badge until the floater disappears on scroll */
+@media (max-width: 1023px) {
+  .cta-mobile { display: none; }
+  body.scrolled .cta-mobile { display: block; }
+}
+
 .hero-blurb {
   max-width: 820px;
   margin: 12px auto 0;
