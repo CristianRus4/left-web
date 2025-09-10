@@ -183,7 +183,7 @@
       <div class="container">
         <div class="hero-head">
           <div class="hero-titles">
-            <p class="ios-badge" aria-label="Ready for iOS 26">Ready for iOS 26</p>
+            <p class="ios-badge" aria-label="Ready for iOS 26"><span class="ios-badge-text">Ready for iOS 26</span></p>
             <h1 class="app-title">Left</h1>
             <p class="app-subtitle">Countdowns &amp; Life Widgets for Your Time</p>
           </div>
@@ -594,6 +594,7 @@
       const titleEl = document.querySelector('.app-title');
       const subtitleEl = document.querySelector('.app-subtitle');
       const iosBadgeEl = document.querySelector('.ios-badge');
+      const iosBadgeText = document.querySelector('.ios-badge-text');
       const heroImg = document.querySelector('.hero-image');
       const ctaDesktop = document.querySelector('.cta-desktop');
       const mqDesktop = window.matchMedia('(min-width: 1024px)');
@@ -620,12 +621,15 @@
           const slow = y * parallaxFactor;
           titleEl.style.transform = `translateY(${slow.toFixed(1)}px)`;
         }
-        // Apply same fade/blur/parallax to the iOS badge
+        // Apply same fade/parallax to the iOS badge container,
+        // but blur only the inner text to keep Safari backdrop-filter working
         if (iosBadgeEl) {
           iosBadgeEl.style.opacity = (1 - t).toFixed(3);
-          iosBadgeEl.style.filter = `blur(${(t * blurMax).toFixed(2)}px)`;
           const slowB = y * parallaxFactor;
           iosBadgeEl.style.transform = `translateY(${slowB.toFixed(1)}px)`;
+        }
+        if (iosBadgeText) {
+          iosBadgeText.style.filter = `blur(${(t * blurMax).toFixed(2)}px)`;
         }
         if (subtitleEl) {
           const ts = clamp01((y - subStart) / subRange);

@@ -137,8 +137,15 @@ img {
   margin: 0 0 8px;
   position: relative;
   z-index: 1;
-  will-change: opacity, filter, transform;
-  transition: opacity 180ms linear, filter 180ms linear;
+  will-change: opacity, transform;
+  transition: opacity 180ms linear;
+}
+
+/* Blur only the text inside the badge to avoid Safari's backdrop-filter + filter conflict */
+.ios-badge-text {
+  display: inline-block;
+  will-change: filter;
+  transition: filter 180ms linear;
 }
 
 .hero-image {
