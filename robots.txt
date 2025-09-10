@@ -1,0 +1,13 @@
+# robots.txt for Left — Widgets for Time Left
+
+# Allow all crawlers to index the site
+User-agent: *
+Allow: /
+
+# Helpful explicit allowances for static assets
+Allow: /images/
+Allow: /style.css
+Allow: /index.html
+
+# Sitemap (absolute URL)
+Sitemap: https://left-time.app/sitemap.xml
