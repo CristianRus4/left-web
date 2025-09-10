@@ -139,7 +139,8 @@ img {
 
 .app-title {
   margin: 24px 0 10px; /* more top margin */
-  font-size: clamp(48px, 7vw, 88px); /* larger title */
+  font-size: clamp(56px, 8vw, 100px); /* larger title */
+  font-weight: 900; /* bolder title */
   line-height: 1.05;
   letter-spacing: -0.02em;
   position: relative;
@@ -147,6 +148,9 @@ img {
   will-change: opacity, filter, transform;
   transition: opacity 180ms linear, filter 180ms linear;
 }
+
+/* Ensure any h1 renders heavy */
+h1 { font-weight: 900; }
 
 .app-subtitle {
   margin: 0 0 16px;
