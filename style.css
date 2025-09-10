@@ -6,7 +6,7 @@
 */
 
 :root {
-  --bg-start: #FF4019;
+  --bg-start: #FF6B24;
   --bg-end: #E69525;
   --text: #ffffff;
   --text-dim: rgba(255, 255, 255, 0.85);
@@ -28,8 +28,7 @@ html, body { min-height: 100%; }
 body {
   margin: 0;
   color: var(--text);
-  background: linear-gradient(to bottom left, var(--bg-start), var(--bg-end));
-  background-color: var(--bg-start); /* solid fallback matches gradient start */
+  background: var(--bg-start);
   font-family: 'Roboto', 'Ubuntu', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
