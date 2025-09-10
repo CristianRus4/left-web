@@ -13,15 +13,17 @@
   --card-bg: rgba(255, 255, 255, 0.10);
   --card-border: rgba(255, 255, 255, 0.18);
   --max-w: 1100px;
+  --hairline: rgba(255, 255, 255, 0.22);
+  --glass-bg: rgba(0, 0, 0, 0.14);
+  --img-shadow: 10px 10px 30px rgba(0,0,0,0.5), 40px 40px 60px rgba(0,0,0,0.3);
+  --btn-hover-bg: rgba(255, 255, 255, 0.18);
 }
 
 * {
   box-sizing: border-box;
 }
 
-html, body {
-  height: 100%;
-}
+html, body { min-height: 100%; }
 
 body {
   margin: 0;
@@ -30,19 +32,75 @@ body {
   font-family: 'Roboto', 'Ubuntu', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-width: 300px; /* allow horizontal scroll below 300px */
+}
+
+/* Global image behavior */
+img {
+  max-width: 100%;
+  height: auto;
+  box-shadow: none;
 }
 
 .container {
   width: 100%;
   max-width: var(--max-w);
   margin: 0 auto;
-  padding: 0 20px;
+  padding-inline: clamp(24px, 6.5vw, 96px);
 }
+
+/* Top navigation */
+.top-nav {
+  position: fixed; /* do not reserve space; appears over content */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: transparent; /* single page bg */
+  border-bottom: none; /* show only when scrolled */
+  opacity: 0; /* hidden until scroll */
+  transform: translateY(-100%);
+  pointer-events: none;
+  transition: opacity 200ms ease, transform 200ms ease, background-color 180ms ease;
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+
+.brand {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-size: 24px; /* slightly bigger title */
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 9999px;
+  color: #fff;
+  text-decoration: none;
+  background: transparent; /* outline by default */
+  border: 1px solid var(--hairline);
+  transition: background-color 180ms ease, border-color 180ms ease, filter 180ms ease, transform 60ms ease;
+}
+
+.btn:hover { background: var(--btn-hover-bg); filter: brightness(1.05); }
+.btn:active { transform: translateY(1px); }
 
 /* Hero */
 .hero {
   text-align: center;
-  padding: 56px 0 24px;
+  padding: 80px 0 28px; /* more top space for title */
+  position: relative;
+  overflow: visible;
 }
 
 .hero-image {
@@ -50,22 +108,33 @@ body {
   max-width: 980px;
   height: auto;
   display: block;
-  margin: 0 auto 24px;
+  margin: 18px auto 24px; /* space between subtitle and image */
   border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+  will-change: transform;
 }
 
 .app-title {
-  margin: 8px 0 8px;
-  font-size: clamp(40px, 6vw, 72px);
+  margin: 24px 0 10px; /* more top margin */
+  font-size: clamp(48px, 7vw, 88px); /* larger title */
   line-height: 1.05;
   letter-spacing: -0.02em;
+  position: relative;
+  z-index: 1;
+  will-change: opacity, filter, transform;
+  transition: opacity 180ms linear, filter 180ms linear;
 }
 
 .app-subtitle {
   margin: 0 0 16px;
-  font-size: clamp(18px, 2.3vw, 24px);
+  font-size: clamp(22px, 3vw, 30px); /* larger subtitle */
   color: var(--text-dim);
+  position: relative;
+  z-index: 1;
+  will-change: opacity, filter, transform;
+  transition: opacity 180ms linear, filter 180ms linear;
 }
 
 .cta {
@@ -81,12 +150,12 @@ body {
 
 /* Features */
 .features {
-  padding: 32px 0 12px;
+  padding-block: 32px 12px; /* keep container's horizontal padding */
 }
 
 .features-grid {
   display: grid;
-  gap: 20px;
+  gap: 28px; /* slightly larger gutters */
   grid-template-columns: 1fr;
 }
 
@@ -103,13 +172,12 @@ body {
 }
 
 .feature-card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 18px;
-  overflow: hidden;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+  box-shadow: none;
+  padding: 12px 14px; /* more breathing room so images aren't flush */
 }
 
 .feature-card img {
@@ -117,7 +185,8 @@ body {
   width: 100%;
   height: auto;
   object-fit: cover;
-  background: rgba(0,0,0,0.08);
+  background: transparent;
+  border-radius: 14px; /* soften image edges without a card */
 }
 
 .feature-card h3 {
@@ -133,7 +202,67 @@ body {
 
 /* Why section */
 .why {
-  padding: 28px 0 44px;
+  padding-block: 28px 44px; /* keep container's horizontal padding */
+  background: transparent; /* ensure single background */
+}
+
+/* Reviews */
+.reviews {
+  padding-block: 10px 56px;
+}
+
+.reviews h2 {
+  margin: 0 0 6px;
+  font-size: clamp(26px, 3.5vw, 34px);
+}
+
+.reviews-sub {
+  margin: 0 0 18px;
+  color: var(--text-dim);
+  font-size: 16px;
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 720px) {
+  .reviews-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .reviews-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.review-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 14px 16px 16px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.stars {
+  letter-spacing: 1px;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.review-title {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.reviewer {
+  margin: 10px 0 0;
+  color: var(--text-dim);
 }
 
 .why h2 {
@@ -149,9 +278,20 @@ body {
 }
 
 /* Footer */
-.site-footer {
-  border-top: 1px solid var(--card-border);
-  background: rgba(0,0,0,0.12);
+.site-footer { /* keep gradient continuous; single background */
+  border-top: 1px solid var(--hairline); /* thin divider */
+  background: transparent;
+}
+
+/* On scroll, strengthen nav readability with blur + subtle tint */
+body.scrolled .top-nav {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: saturate(160%) blur(12px);
+  backdrop-filter: saturate(160%) blur(12px);
+  border-bottom: 1px solid var(--hairline); /* show divider only on scroll */
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .footer-inner {
@@ -159,7 +299,7 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 14px 0 20px;
+  padding-block: 14px 20px; /* keep container's horizontal padding */
   font-size: 14px;
 }
 
@@ -184,4 +324,3 @@ body {
     transform: translateY(-2px);
   }
 }
-

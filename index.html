@@ -27,12 +27,18 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <nav class="top-nav" aria-label="Primary">
+      <div class="container nav-inner">
+        <a href="#" class="brand" aria-label="Left home">Left</a>
+        <a class="btn download-btn" href="https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884?itscg=30200&itsct=apps_box_badge&mttnsubad=6740155884" target="_blank" rel="noopener">Download</a>
+      </div>
+    </nav>
     <header class="hero">
       <div class="container">
-        <img src="images/left-hero.webp" alt="Left app hero showing elegant time widgets" class="hero-image" />
-
         <h1 class="app-title">Left</h1>
         <p class="app-subtitle">Widgets for Time Left</p>
+
+        <img src="images/left-hero.webp" alt="Left app hero showing elegant time widgets" class="hero-image" />
 
         <div class="cta">
           <!-- App Store badge (provided) -->
@@ -100,22 +106,145 @@
           Unlike generic countdown apps, Left is widget-first. With over 15 unique styles and full customization, it’s the most elegant way to keep track of your time, your goals, and your life. Download Left today and see your time in a whole new way.
         </p>
       </section>
+
+      <section id="reviews" class="reviews container" aria-label="User reviews">
+        <h2>Our users love us!</h2>
+        <p class="reviews-sub">Testimonials from our awesome users.</p>
+
+        <div class="reviews-grid">
+          <article class="review-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <h3 class="review-title">Beautifully simple and customizable</h3>
+            <p>I use Left to see the days left in the year and for a few event countdowns. The widgets are clean, flexible, and look great on my Home Screen.</p>
+            <p class="reviewer"><em>– Asrtuang</em></p>
+          </article>
+
+          <article class="review-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <h3 class="review-title">The widget I check every day</h3>
+            <p>The life-in-weeks view is brilliant. It’s motivating without being noisy, and the styles are tasteful. Exactly what I wanted.</p>
+            <p class="reviewer"><em>– Ollie B.</em></p>
+          </article>
+
+          <article class="review-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <h3 class="review-title">Makes deadlines less stressful</h3>
+            <p>I track project milestones and personal goals with Left. Seeing time at a glance helps me plan better and stay calm.</p>
+            <p class="reviewer"><em>– Edgar K.</em></p>
+          </article>
+
+          <article class="review-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <h3 class="review-title">Simply the one countdown I need</h3>
+            <p>After trying a few apps, I kept this one. Widget-first, no clutter, and updates keep making it better.</p>
+            <p class="reviewer"><em>– Swadea</em></p>
+          </article>
+
+          <article class="review-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <h3 class="review-title">Perfect for birthdays and trips</h3>
+            <p>I track family birthdays and vacation countdowns. The different styles let me match each widget to the event.</p>
+            <p class="reviewer"><em>– Native</em></p>
+          </article>
+
+          <article class="review-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <h3 class="review-title">Elegant design, zero fuss</h3>
+            <p>Minimal, fast, and thoughtfully designed. I love that I can keep it simple but still customize when I want.</p>
+            <p class="reviewer"><em>– Aeon.x</em></p>
+          </article>
+
+          <article class="review-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <h3 class="review-title">Great for focus and habits</h3>
+            <p>The interval and Pomodoro widgets are handy. They fit right in with my other widgets and keep me on task.</p>
+            <p class="reviewer"><em>– Isa C.</em></p>
+          </article>
+
+          <article class="review-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <h3 class="review-title">Thoughtful, polished, reliable</h3>
+            <p>Everything feels considered—from the typography to the animations. It’s rare to find a small app this well made.</p>
+            <p class="reviewer"><em>– Darren J.</em></p>
+          </article>
+
+          <article class="review-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <h3 class="review-title">Exactly what I hoped for</h3>
+            <p>Left makes time visible in a way that finally clicks for me. It’s become part of how I plan my week.</p>
+            <p class="reviewer"><em>– Lisa C.</em></p>
+          </article>
+        </div>
+      </section>
     </main>
 
     <footer class="site-footer">
       <div class="container footer-inner">
-        <p>© <span id="year"></span> Left. All rights reserved.</p>
+        <p>cntxt · Coded in NZ · © 2025</p>
         <nav class="footer-links" aria-label="Footer">
           <a href="https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884" target="_blank" rel="noopener">App Store</a>
-          <!-- Add privacy or support links here if desired -->
+          <a href="http://cristianrus.me/apps/left" target="_blank" rel="noopener">Privacy</a>
         </nav>
       </div>
     </footer>
 
     <script>
-      // Update year in footer automatically
-      document.getElementById('year').textContent = new Date().getFullYear();
+      // Toggle 'scrolled' class and drive hero effects (fade/blur + parallax)
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const titleEl = document.querySelector('.app-title');
+      const subtitleEl = document.querySelector('.app-subtitle');
+      const heroImg = document.querySelector('.hero-image');
+
+      const setScrolled = () => {
+        document.body.classList.toggle('scrolled', window.scrollY > 4);
+      };
+
+      const clamp01 = (n) => Math.max(0, Math.min(1, n));
+      const updateHeroEffects = () => {
+        if (prefersReduced) return; // respect reduced motion
+        const y = window.scrollY || 0;
+        // Earlier threshold so fade starts sooner
+        const titleStart = 20,  titleRange = 180; // px – starts sooner
+        const subStart = 10,   subRange = 160; // px – starts even sooner
+        const t = clamp01((y - titleStart) / titleRange);
+        const blurMax = 8; // px
+        // Fade + blur titles
+        if (titleEl) {
+          titleEl.style.opacity = (1 - t).toFixed(3);
+          titleEl.style.filter = `blur(${(t * blurMax).toFixed(2)}px)`;
+          // Parallax: make title scroll much slower
+          const slow = y * 0.40; // stronger counter-scroll
+          titleEl.style.transform = `translateY(${slow.toFixed(1)}px)`;
+        }
+        if (subtitleEl) {
+          const ts = clamp01((y - subStart) / subRange);
+          subtitleEl.style.opacity = (1 - ts).toFixed(3);
+          subtitleEl.style.filter = `blur(${(ts * blurMax).toFixed(2)}px)`;
+          const slowS = y * 0.55; // subtitle even slower and stronger parallax
+          subtitleEl.style.transform = `translateY(${slowS.toFixed(1)}px)`;
+        }
+        // Disable image parallax: keep natural scroll
+        if (heroImg) {
+          heroImg.style.transform = 'none';
+        }
+      };
+
+      let ticking = false;
+      const onScroll = () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            setScrolled();
+            updateHeroEffects();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      };
+
+      // Initial paint
+      setScrolled();
+      updateHeroEffects();
+      window.addEventListener('scroll', onScroll, { passive: true });
     </script>
   </body>
   </html>
-
