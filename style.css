@@ -154,7 +154,7 @@ img {
   margin: 8px 0 18px;
 }
 
-.cta-desktop { display: none; }
+.cta-desktop { display: none !important; }
 .cta-mobile { display: block; }
 
 .hero-blurb {
@@ -165,6 +165,31 @@ img {
 }
 
 /* Features */
+.stats { padding-block: 18px 8px; }
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  text-align: center;
+  justify-items: center; /* center columns */
+}
+
+.stat-value {
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  font-size: clamp(36px, 6vw, 64px);
+}
+
+.stat-label {
+  margin-top: 6px;
+  color: var(--text-dim);
+  font-size: clamp(14px, 2.2vw, 18px);
+}
+
+@media (min-width: 1024px) {
+  .stats-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
 .features {
   padding-block: 32px 12px; /* keep container's horizontal padding */
 }
@@ -189,8 +214,8 @@ img {
     gap: 16px;
   }
   .hero-titles { text-align: left; }
-  .cta-desktop { display: inline-block; }
-  .cta-mobile { display: none; }
+  .cta-desktop { display: inline-block !important; }
+  .cta-mobile { display: none !important; }
   .features-grid {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -302,28 +327,16 @@ img {
 
 .faq-list {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr; /* always single column */
   gap: 12px;
 }
 
-@media (min-width: 1024px) {
-  .faq-list {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
+.faq-item { background: transparent; border: 0; border-radius: 0; padding: 0; }
+.faq-item + .faq-item { border-top: 1px solid var(--card-border); padding-top: 12px; }
 
-.faq-item {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 12px;
-  padding: 10px 12px;
-}
-
-.faq-item summary {
-  cursor: pointer;
-  font-weight: 600;
-  list-style: none;
-}
+.faq-item summary { cursor: pointer; font-weight: 600; list-style: none; display: flex; align-items: center; justify-content: space-between; padding: 8px 0; }
+.faq-item summary::after { content: "+"; color: var(--text); margin-left: 12px; font-weight: 700; }
+.faq-item[open] summary::after { content: "×"; }
 
 .faq-item summary::-webkit-details-marker { display: none; }
 
