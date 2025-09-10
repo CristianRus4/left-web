@@ -32,7 +32,7 @@ body {
   font-family: 'Roboto', 'Ubuntu', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  min-width: 300px; /* allow horizontal scroll below 300px */
+  min-width: 370px; /* allow horizontal scroll below 370px */
 }
 
 /* Improve keyboard focus visibility */
@@ -149,12 +149,11 @@ img {
 }
 
 .hero-image {
+  /* Keep full image visible without side cropping */
   width: 100%;
-  max-width: 980px;
-  height: 80vh; /* fill and crop instead of squeeze */
-  max-height: 80vh; /* cap at 80% viewport height */
-  object-fit: cover; /* crop instead of distort */
-  object-position: top center; /* crop from bottom */
+  max-width: clamp(300px, 92vw, 980px);
+  height: auto; /* preserve aspect ratio */
+  max-height: 80vh; /* avoid exceeding viewport height */
   display: block;
   margin: 18px auto 24px; /* space between subtitle and image */
   border-radius: 20px;
@@ -162,6 +161,18 @@ img {
   z-index: 2;
   pointer-events: none;
   will-change: transform;
+}
+
+/* From ~470px and up, crop nicely */
+@media (min-width: 470px) {
+  .hero-image {
+    width: 100%;
+    max-width: 980px;
+    height: 80vh;
+    max-height: 80vh;
+    object-fit: cover;
+    object-position: top center;
+  }
 }
 
 .app-title {
