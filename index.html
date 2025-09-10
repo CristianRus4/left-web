@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Left – Widgets for Time Left</title>
-    <meta name="description" content="Left transforms how you see time with elegant, customizable countdown and life widgets. Track birthdays, vacations, milestones, and more on your Home Screen, Lock Screen, and StandBy." />
+    <meta name="description" content="Left transforms how you see time with elegant, customizable countdown, time left, year progress, and life widgets. Track birthdays, vacations, milestones, and more on your iPhone’s Home Screen, Lock Screen, and StandBy." />
 
     <!-- Smart App Banner (iOS Safari) -->
     <meta name="apple-itunes-app" content="app-id=6740155884, app-argument=https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884" />
@@ -14,10 +14,21 @@
 
     <!-- Open Graph / Twitter (basic) -->
     <meta property="og:title" content="Left – Widgets for Time Left" />
-    <meta property="og:description" content="Elegant countdown and life widgets – birthdays, vacations, milestones, and more. Track your time left and make every moment count." />
+    <meta property="og:description" content="Elegant countdown, time left, and year progress widgets – birthdays, vacations, milestones, and more. Track your time left and make every moment count." />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="images/left-hero.webp" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:site_name" content="Left" />
+    <meta name="twitter:title" content="Left – Widgets for Time Left" />
+    <meta name="twitter:description" content="Elegant countdown and life widgets – birthdays, vacations, milestones, and more. Track your time left and make every moment count." />
+    <meta name="twitter:image" content="images/left-hero.webp" />
+    <meta name="keywords" content="time left, timeleft, left widgets, left time, time remaining, time lost, time save, time saved, time viewer, time teller, stopwatch, hours tracker, hour tracker, interval timer, timer, pomodoro timer, study timer, countdown, countdown timer, day countdown, days countdown, countdown app, countdown widget, countdown widget free, free countdown widgets, countdown app free, birthday countdown, wedding countdown, vacation countdown, retirement countdown, christmas countdown, halloween countdown, event countdown, life countdown, memento mori, stoic, stoicism, year progress, life in weeks, pretty progress alternative, countdown widget iPhone" />
+
+    <!-- Canonical + icons -->
+    <link rel="canonical" href="" id="canonical-link" />
+    <link rel="icon" href="images/favicon.png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+    <meta name="robots" content="index,follow" />
 
     <!-- Fonts: Roboto and Ubuntu -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -25,12 +36,107 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet" />
 
     <link rel="stylesheet" href="style.css" />
+
+    <!-- Ensure og:url and canonical reflect the deployed URL -->
+    <script>
+      (function () {
+        var url = window.location.href.split('#')[0];
+        var canonical = document.getElementById('canonical-link');
+        if (canonical) canonical.setAttribute('href', url);
+        var og = document.querySelector('meta[property="og:url"]');
+        if (!og) {
+          og = document.createElement('meta');
+          og.setAttribute('property', 'og:url');
+          document.head.appendChild(og);
+        }
+        og.setAttribute('content', url);
+      })();
+    </script>
+
+    <!-- FAQPage structured data for richer snippets -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Are widgets free, or do I need to upgrade?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Left is free to try with essentials. Unlock everything with a one‑time, pay‑what‑you‑want purchase — choose from three prices and get the full app regardless of what you pay."}
+        },
+        {
+          "@type": "Question",
+          "name": "How do I add a widget to my iPhone’s Home Screen?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Touch and hold the Home Screen, tap +, search for Left, pick a style and size, tap Add Widget, then long‑press to Edit Widget and configure it."}
+        },
+        {
+          "@type": "Question",
+          "name": "How do I add a widget to the Lock Screen?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Touch and hold the Lock Screen, tap Customize, tap the widget area, choose Left, and select a widget type. StandBy widgets are added from the same flow."}
+        },
+        {
+          "@type": "Question",
+          "name": "What is a Year Progress widget?",
+          "acceptedAnswer": {"@type": "Answer", "text": "A Year Progress widget shows how much of the current year has passed or is left. It’s ideal for planning and reviews."}
+        },
+        {
+          "@type": "Question",
+          "name": "Is Left a time left app?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Yes. Left visualizes time left for days, weeks, months, years, and your lifetime, plus event countdowns."}
+        },
+        {
+          "@type": "Question",
+          "name": "How do I add a countdown widget on iPhone?",
+          "acceptedAnswer": {"@type": "Answer", "text": "On the Home Screen, touch and hold to jiggle, tap +, search for Left, choose Countdown, tap Add Widget, then long‑press the widget to Edit Widget and set your event."}
+        },
+        {
+          "@type": "Question",
+          "name": "Is Left a Pretty Progress alternative?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Left offers elegant countdown, time left, and year progress widgets with a one‑time pay‑what‑you‑want unlock — no subscriptions."}
+        },
+        {
+          "@type": "Question",
+          "name": "How many widget types are available?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Over 15 styles across multiple sizes, with six color themes and a range of symbols. Every widget is fully customizable."}
+        },
+        {
+          "@type": "Question",
+          "name": "What devices are compatible?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Left works on iPhones running iOS 18 and iOS 26. Widgets are also available on iPad and Mac."}
+        },
+        {
+          "@type": "Question",
+          "name": "How is life expectancy calculated?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Estimated using Apple Intelligence and multiple factors including age, gender, activity, sleep, country of birth, and more."}
+        }
+      ]
+    }
+    </script>
+
+    <!-- Schema.org: App + FAQ structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Left",
+      "url": "",
+      "about": {
+        "@type": "MobileApplication",
+        "name": "Left – Widgets for Time Left",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "iOS",
+        "downloadUrl": "https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        "description": "Left transforms how you see time with elegant, customizable countdown and life widgets."
+      }
+    }
+    </script>
   </head>
   <body>
     <nav class="top-nav" aria-label="Primary">
       <div class="container nav-inner">
         <a href="#" class="brand" aria-label="Left home">Left</a>
-        <a class="btn download-btn" href="https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884?itscg=30200&itsct=apps_box_badge&mttnsubad=6740155884" target="_blank" rel="noopener">Get for free</a>
+        <a class="btn download-btn" href="https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884?itscg=30200&itsct=apps_box_badge&mttnsubad=6740155884" target="_blank" rel="noopener">Get Left free</a>
       </div>
     </nav>
     <header class="hero">
@@ -38,7 +144,7 @@
         <div class="hero-head">
           <div class="hero-titles">
             <h1 class="app-title">Left</h1>
-            <p class="app-subtitle">Widgets for Time Left</p>
+            <p class="app-subtitle">Countdowns &amp; Life Widgets for Your Time</p>
           </div>
           <div class="cta cta-desktop">
             <!-- App Store badge (provided) -->
@@ -58,7 +164,7 @@
         </div>
 
         <p class="hero-blurb">
-          Left transforms how you see time. Whether it’s the days left in the year, a birthday countdown, or your entire life in weeks, Left makes every moment visible with elegant, customizable widgets.
+          Elegant countdown and life widgets — birthdays, vacations, milestones, and more. Track your time left and make every moment count.
         </p>
       </div>
     </header>
@@ -80,49 +186,78 @@
           </div>
         </div>
       </section>
+      
+      
+
+      
       <section class="features container" aria-label="App features">
         <div class="features-grid">
           <!-- Feature 1 -->
           <article class="feature-card">
-            <img src="images/left-features-1.webp" alt="Countdown widgets example" />
+            <img src="images/left-features-1.webp" alt="Countdown widgets example" loading="lazy" />
             <h3>Visualize Your Time</h3>
             <p>Widgets for countdowns, life progress, days, weeks, months, and years with beautiful layouts.</p>
           </article>
 
           <!-- Feature 2 -->
           <article class="feature-card">
-            <img src="images/left-features-2.webp" alt="Widget styles: dots, stars, hearts, hexagons" />
+            <img src="images/left-features-2.webp" alt="Widget styles: dots, stars, hearts, hexagons" loading="lazy" />
             <h3>Unique Styles</h3>
             <p>Choose from dots, stars, hearts, hexagons and more to match your vibe.</p>
           </article>
 
           <!-- Feature 3 -->
           <article class="feature-card">
-            <img src="images/left-features-3.webp" alt="Track birthdays, vacations, weddings" />
+            <img src="images/left-features-3.webp" alt="Track birthdays, vacations, weddings" loading="lazy" />
             <h3>Track What Matters</h3>
             <p>Birthdays, holidays, vacations, weddings, and custom dates — all at a glance.</p>
           </article>
 
           <!-- Feature 4 -->
           <article class="feature-card">
-            <img src="images/left-features-4.webp" alt="Interactive widgets on Home Screen, Lock Screen, and StandBy" />
+            <img src="images/left-features-4.webp" alt="Interactive widgets on Home Screen, Lock Screen, and StandBy" loading="lazy" />
             <h3>Interactive Widgets</h3>
             <p>Home Screen, Lock Screen, and StandBy widgets designed to be clear and useful.</p>
           </article>
 
           <!-- Feature 5 -->
           <article class="feature-card">
-            <img src="images/left-features-5.webp" alt="Minimal design focusing on time" />
+            <img src="images/left-features-5.webp" alt="Minimal design focusing on time" loading="lazy" />
             <h3>Minimal & Beautiful</h3>
             <p>A calm, focused design that keeps your attention on what matters most.</p>
           </article>
 
           <!-- Feature 6 -->
           <article class="feature-card">
-            <img src="images/left-features-6.webp" alt="Memento mori and productivity timers" />
+            <img src="images/left-features-6.webp" alt="Memento mori and productivity timers" loading="lazy" />
             <h3>Countdowns & Life</h3>
             <p>Memento mori and stoic-inspired time-left widgets, plus intervals and Pomodoro timers.</p>
           </article>
+        </div>
+      </section>
+
+      <section class="aso-highlights container" aria-label="Widgets and timers overview">
+        <div class="aso-grid">
+          <div class="aso-col">
+            <h2>Visualize Your Time</h2>
+            <ul class="checklist">
+              <li>Widgets for <strong>countdowns</strong>, <strong>life progress</strong>, days, weeks, months, years</li>
+              <li>Choose from dots, stars, hearts, hexagons and more</li>
+              <li>Track birthdays, holidays, vacations, weddings, and custom dates</li>
+              <li>Interactive Home Screen, Lock Screen, and StandBy widgets</li>
+              <li>Minimal, beautiful design that focuses on what matters</li>
+            </ul>
+          </div>
+          <div class="aso-col">
+            <h2>Countdown &amp; Life Widgets</h2>
+            <ul class="checklist">
+              <li><strong>Countdown timers</strong> for events, birthdays, vacations, retirement, Christmas</li>
+              <li>Memento mori and stoic‑inspired <strong>time left</strong> widgets</li>
+              <li><strong>Interval</strong> and <strong>Pomodoro</strong> timer widgets for focus</li>
+              <li>Track progress of habits, milestones, or your lifetime</li>
+              <li>Notifications for important moments and deadlines</li>
+            </ul>
+          </div>
         </div>
       </section>
 
@@ -130,6 +265,56 @@
         <h2>Why Left?</h2>
         <p>
           Unlike generic countdown apps, Left is widget-first. With over 15 unique styles and full customization, it’s the most elegant way to keep track of your time, your goals, and your life. Download Left today and see your time in a whole new way.
+        </p>
+      </section>
+
+      <section class="use-cases container" aria-label="Use cases for countdown and time left widgets">
+        <h2>Popular ways people use Left</h2>
+        <div class="use-cases-grid">
+          <article>
+            <h3>Year progress</h3>
+            <p>See how far through the year you are with a clean <strong>year progress widget</strong>—great for planning, reporting, or simply staying mindful.</p>
+          </article>
+          <article>
+            <h3>Time left this week or month</h3>
+            <p>Glanceable <strong>time‑left widgets</strong> for the current week or month help you pace work and avoid last‑minute rushes.</p>
+          </article>
+          <article>
+            <h3>Countdowns for goals and events</h3>
+            <p>Trips, weddings, product launches, exams, or personal goals — <strong>countdown widgets</strong> keep motivation high.</p>
+          </article>
+          <article>
+            <h3>Life in weeks</h3>
+            <p>Visualize your lifetime in weeks to focus on what matters. A calm, stoic view that many users check daily.</p>
+          </article>
+          <article>
+            <h3>Habits and milestones</h3>
+            <p>Track <em>days since</em> or <em>days left</em> for habits and streaks. Simple, flexible, and motivational.</p>
+          </article>
+          <article>
+            <h3>Focus timers</h3>
+            <p>Interval and Pomodoro timers that look right at home on your iPhone’s Home Screen.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="seo-intro container" aria-label="Countdown and year progress widgets">
+        <h2>Countdown, Time Left, and Year Progress widgets</h2>
+        <p>
+          Left is a widget‑first alternative for people who love seeing their <strong>time left</strong>, <strong>year progress</strong>, and <strong>countdowns</strong> at a glance. Create elegant widgets for birthdays, trips, habits, and your entire life in weeks — fully customizable and built for the Home Screen, Lock Screen, and StandBy.
+        </p>
+        <p>
+          If you’ve looked at apps like Pretty Progress, Left gives you the same clarity with a minimal design and powerful customization. Choose symbols, colors, and layouts to match your style and keep your goals front and center.
+        </p>
+      </section>
+
+      <section id="alternatives" class="alternatives container" aria-label="Alternatives to countdown apps">
+        <h2>Left as a Pretty Progress alternative</h2>
+        <p>
+          Looking for a <strong>Pretty Progress alternative</strong> or a <strong>countdown widget for iPhone</strong>? Left focuses on elegant <strong>time left</strong> and <strong>year progress</strong> widgets with full customization and a simple, one‑time pay‑what‑you‑want unlock. No subscriptions.
+        </p>
+        <p>
+          If you want minimal design, fast widgets, and complete control over styles, symbols, and colors, Left is a great choice for Home Screen, Lock Screen, and StandBy setups.
         </p>
       </section>
 
@@ -295,6 +480,38 @@
             <summary>Does it work offline and is my data private?</summary>
             <div class="faq-body">
               <p>Yes. Widgets work offline and data stays on your device. See our <a href="http://cristianrus.me/apps/left" target="_blank" rel="noopener">Privacy</a> page for details.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>What is a Year Progress widget?</summary>
+            <div class="faq-body">
+              <p>A <strong>Year Progress</strong> widget shows how much of the current year has passed (or is left). It’s perfect for planning, reviews, and staying motivated across long‑term goals.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>Is Left a time left app?</summary>
+            <div class="faq-body">
+              <p>Yes. Left is a <strong>time left app</strong> that visualizes the remaining time for days, weeks, months, years, and your lifetime — plus countdowns for events and habits.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>How do I add a countdown widget on iPhone?</summary>
+            <div class="faq-body">
+              <ol>
+                <li>Touch and hold the Home Screen → tap <strong>+</strong>.</li>
+                <li>Search for <strong>Left</strong> → choose the <strong>Countdown</strong> style and size.</li>
+                <li>Tap <strong>Add Widget</strong> → long‑press the widget → <strong>Edit Widget</strong> to set your event and options.</li>
+              </ol>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>Is Left a Pretty Progress alternative?</summary>
+            <div class="faq-body">
+              <p>Left offers similar functionality with a widget‑first approach, minimal design, and a one‑time pay‑what‑you‑want unlock. If you want <strong>countdown</strong>, <strong>time left</strong>, and <strong>year progress</strong> widgets with full customization, Left is a great alternative.</p>
             </div>
           </details>
         </div>

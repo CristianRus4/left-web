@@ -345,6 +345,12 @@ img {
   color: var(--text-dim);
 }
 
+/* Make FAQ links white (not default blue) */
+.faq-body a,
+.faq-body a:visited {
+  color: var(--text);
+}
+
 .faq-body ol {
   margin: 0 0 8px 18px;
 }
@@ -408,3 +414,25 @@ body.scrolled .top-nav {
     transform: translateY(-2px);
   }
 }
+.seo-intro { padding-block: 12px 8px; }
+.seo-intro h2 { margin: 0 0 8px; font-size: clamp(24px, 3.5vw, 32px); }
+.seo-intro p { color: var(--text-dim); margin: 8px 0; }
+
+.use-cases { padding-block: 18px 10px; }
+.use-cases h2 { margin: 0 0 10px; font-size: clamp(24px, 3.5vw, 32px); }
+.use-cases-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+@media (min-width: 720px) { .use-cases-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .use-cases-grid { grid-template-columns: repeat(3, 1fr); } }
+.use-cases article { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px 16px 16px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.use-cases article h3 { margin: 0 0 8px; font-size: 18px; }
+.use-cases article p { margin: 0; color: var(--text-dim); }
+.alternatives { padding-block: 14px 8px; }
+.alternatives h2 { margin: 0 0 8px; font-size: clamp(24px, 3.5vw, 32px); }
+.alternatives p { margin: 8px 0; color: var(--text-dim); }
+.aso-highlights { padding-block: 18px 8px; }
+.aso-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+@media (min-width: 1024px) { .aso-grid { grid-template-columns: repeat(2, 1fr); } }
+.aso-col h2 { margin: 0 0 10px; font-size: clamp(22px, 3.2vw, 28px); }
+.checklist { margin: 0; padding-left: 0; color: var(--text-dim); list-style: none; }
+.checklist li { margin: 6px 0; position: relative; padding-left: 16px; }
+.checklist li::before { content: "-"; position: absolute; left: 0; color: var(--text); opacity: 0.95; }
