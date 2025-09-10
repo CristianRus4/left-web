@@ -93,12 +93,13 @@ img {
   border-radius: 9999px;
   color: #fff;
   text-decoration: none;
-  background: transparent; /* outline by default */
+  background: var(--btn-hover-bg);
+  font-weight: 400; /* regular by default */
   border: 1px solid var(--hairline);
   transition: background-color 180ms ease, border-color 180ms ease, filter 180ms ease, transform 60ms ease;
 }
 
-.btn:hover { background: var(--btn-hover-bg); filter: brightness(1.05); }
+.btn:hover { background: var(--btn-hover-bg); filter: brightness(1.05); font-weight: 700; }
 .btn:active { transform: translateY(1px); }
 
 /* Hero */
@@ -381,10 +382,10 @@ img {
 
 /* On scroll, strengthen nav readability with blur + subtle tint */
 body.scrolled .top-nav {
-  background: var(--glass-bg);
-  -webkit-backdrop-filter: saturate(160%) blur(12px);
-  backdrop-filter: saturate(160%) blur(12px);
-  border-bottom: 1px solid var(--hairline); /* show divider only on scroll */
+  /* background: var(--glass-bg); */
+  /* -webkit-backdrop-filter: saturate(160%) blur(12px); */
+  /* backdrop-filter: saturate(160%) blur(12px); */
+  /* border-bottom: 1px solid var(--hairline); */
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
