@@ -2,7 +2,7 @@
   Left – Landing Page Styles
   - Gradient background: top-right (#FF4019) to bottom-left (#E69525)
   - Responsive grid: 1 col (mobile) → 3 cols (desktop)
-  - Fonts: Roboto / Ubuntu → system sans fallback
+  - Fonts: system UI stack only (no external fonts)
 */
 
 :root {
@@ -37,7 +37,7 @@ body {
   margin: 0;
   color: var(--text);
   background: var(--bg-start);
-  font-family: 'Roboto', 'Ubuntu', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-family: system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-width: 370px; /* allow horizontal scroll below 370px */
@@ -161,6 +161,7 @@ img {
   width: 100%;
   max-width: clamp(300px, 92vw, 980px);
   height: auto; /* preserve aspect ratio */
+  aspect-ratio: 2 / 3; /* reserve space to prevent CLS */
   max-height: 80vh; /* avoid exceeding viewport height */
   display: block;
   margin: 18px auto 24px; /* space between subtitle and image */
@@ -299,6 +300,7 @@ h1 { font-weight: 900; }
   display: block;
   width: 100%;
   height: auto;
+  aspect-ratio: 1 / 1; /* reserve space to prevent CLS */
   object-fit: cover;
   background: transparent;
   border-radius: 14px; /* soften image edges without a card */
@@ -521,3 +523,16 @@ a:hover { text-decoration: none; font-weight: 700; }
 .checklist { margin: 0; padding-left: 0; color: var(--text-dim); list-style: none; }
 .checklist li { margin: 6px 0; position: relative; padding-left: 16px; }
 .checklist li::before { content: "-"; position: absolute; left: 0; color: var(--text); opacity: 0.95; }
+
+/* Defer rendering of below-the-fold sections to reduce initial work */
+.features,
+.why,
+.reviews,
+.faq,
+.seo-intro,
+.alternatives,
+.use-cases,
+.aso-highlights {
+  content-visibility: auto;
+  contain-intrinsic-size: 1000px;
+}
