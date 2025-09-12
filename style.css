@@ -510,6 +510,8 @@ a:hover { text-decoration: none; font-weight: 700; }
 .use-cases-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
 @media (min-width: 720px) { .use-cases-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .use-cases-grid { grid-template-columns: repeat(3, 1fr); } }
+/* Limit specific grids to max 2 columns on desktop */
+@media (min-width: 1024px) { .use-cases-grid.two-col-grid { grid-template-columns: repeat(2, 1fr); } }
 .use-cases article { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px 16px 16px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
 .use-cases article h3 { margin: 0 0 8px; font-size: 18px; }
 .use-cases article p { margin: 0; color: var(--text-dim); }
