@@ -504,6 +504,12 @@
         const bdayPanel = document.getElementById('bdayPanel');
         const actionsCard = document.querySelector('.actions-card');
         const appBtn = document.getElementById('appBtn');
+        let deferredInstallPrompt = null;
+        // Capture install prompt so we can trigger it from our button
+        window.addEventListener('beforeinstallprompt', (e) => {
+          try { e.preventDefault(); } catch(_) {}
+          deferredInstallPrompt = e;
+        });
         // Keep bday panel gap accurate by syncing actions card height to a CSS var
         function syncActionsHeight() {
           try {
@@ -971,6 +977,27 @@
           const isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || (window.navigator && window.navigator.standalone === true);
           if (isStandalone && appBtn) appBtn.style.display = 'none';
           window.addEventListener('appinstalled', () => { try { if (appBtn) appBtn.style.display = 'none'; } catch(_){} });
+        } catch(_) {}
+
+        // On Android, intercept the Get app link and guide install
+        try {
+          const isAndroid = /Android/i.test(navigator.userAgent || '');
+          if (isAndroid && appBtn) {
+            appBtn.addEventListener('click', async (e) => {
+              try {
+                const isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || (window.navigator && window.navigator.standalone === true);
+                if (isStandalone) return;
+                e.preventDefault();
+                if (deferredInstallPrompt && typeof deferredInstallPrompt.prompt === 'function') {
+                  deferredInstallPrompt.prompt();
+                  const choice = await deferredInstallPrompt.userChoice;
+                  deferredInstallPrompt = null; // can only use once
+                  if (choice && choice.outcome === 'accepted') return;
+                }
+                alert('To install Left:\n\n1) Open the browser menu (⋮).\n2) Tap "Install app" or "Add to Home screen".\n3) Follow the prompts to add it to your home screen.\n\nTip: In Samsung Internet, open the ≡ menu and choose "Add page to" → "Home screen".');
+              } catch(_) {}
+            });
+          }
         } catch(_) {}
 
         // Load persisted theme/symbol
