@@ -816,10 +816,14 @@
           exportCard.style.boxSizing = 'border-box';
 
           const exportGrid = document.createElement('div');
-          exportGrid.style.display = 'grid';
           if (state.kind === 'week') {
-            exportGrid.style.gridTemplateColumns = '1fr';
+            // Use flex column so words space evenly and avoid footer overlap
+            exportGrid.style.display = 'flex';
+            exportGrid.style.flexDirection = 'column';
+            exportGrid.style.alignItems = 'center';
+            exportGrid.style.justifyContent = 'space-between';
           } else {
+            exportGrid.style.display = 'grid';
             exportGrid.style.gridTemplateColumns = `repeat(${state.cols}, ${EXPORT_DOT}px)`;
           }
           exportGrid.style.margin = '0 auto';
@@ -854,9 +858,10 @@
               row.style.display = 'flex';
               row.style.alignItems = 'center';
               row.style.justifyContent = 'center';
-              row.style.padding = '12px 0';
               row.style.fontWeight = '800';
               row.style.letterSpacing = '0.02em';
+              row.style.fontSize = '72px';
+              row.style.lineHeight = '1';
               row.style.color = isDark ? accent : '#111110';
               row.style.opacity = (i < state.todayIndex) ? '0.5' : '1';
               row.textContent = days[i];
@@ -962,12 +967,20 @@
             const rows = state.kind === 'week' ? 7 : state.rows;
             const capped = compute(cols, rows, Math.min(innerW, yearBase.gridW));
 
-            exportGrid.style.gap = capped.gap + 'px';
-            exportGrid.style.width = capped.gridW + 'px';
+            if (state.kind === 'week') {
+              // Give the week list a fixed vertical space to avoid footer overlap
+              const gridW = Math.min(innerW, yearBase.gridW);
+              exportGrid.style.width = gridW + 'px';
+              exportGrid.style.height = Math.max(0, innerH - 240) + 'px';
+            } else {
+              exportGrid.style.gap = capped.gap + 'px';
+              exportGrid.style.width = capped.gridW + 'px';
+            }
 
             // Footer matches grid width and is centered horizontally
-            exportFooter.style.width = capped.gridW + 'px';
-            const left = Math.round((CARD - capped.gridW) / 2);
+            const widthForFooter = state.kind === 'week' ? Math.min(innerW, yearBase.gridW) : capped.gridW;
+            exportFooter.style.width = widthForFooter + 'px';
+            const left = Math.round((CARD - widthForFooter) / 2);
             exportFooter.style.left = left + 'px';
           })();
 
@@ -986,14 +999,19 @@
             const modeLabel = yearEl.textContent.trim();
             const filename = `left-${modeLabel.replace(/\s+/g,'-').toLowerCase()}.png`;
 
+            // Attempt native share with files; avoid downloading if user cancels
+            let shared = false;
             try {
               const file = new File([blob], filename, { type: 'image/png' });
               const shareData = { files: [file], title: 'Left', text: 'My snapshot from Left' };
-              if (navigator.canShare && navigator.canShare(shareData)) {
+              if ((navigator.canShare && navigator.canShare(shareData)) || (navigator.share && !('canShare' in navigator))) {
                 await navigator.share(shareData);
-                return; // shared successfully
+                shared = true;
               }
-            } catch (_) { /* ignore and fall back */ }
+            } catch (err) {
+              if (err && (err.name === 'AbortError' || err.name === 'NotAllowedError')) return; // user dismissed
+            }
+            if (shared) return;
 
             // Fallback: download the image
             const a = document.createElement('a');
