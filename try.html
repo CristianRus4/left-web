@@ -1003,7 +1003,7 @@
             let shared = false;
             try {
               const file = new File([blob], filename, { type: 'image/png' });
-              const shareData = { files: [file], title: 'Left', text: 'My snapshot from Left' };
+              const shareData = { files: [file], title: 'Left', text: 'My time left! Check yours on left-time.app' };
               if ((navigator.canShare && navigator.canShare(shareData)) || (navigator.share && !('canShare' in navigator))) {
                 await navigator.share(shareData);
                 shared = true;
