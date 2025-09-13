@@ -340,11 +340,23 @@
           return { labelLeft: monthsFull[m], startUTC, totalDays, todayIndex, cols, rows, daysLeft };
         }
 
+        function dayState() {
+          const nowLocal = new Date();
+          const startUTC = Date.UTC(nowLocal.getFullYear(), nowLocal.getMonth(), nowLocal.getDate());
+          const totalDays = 24; // 24 hours
+          const todayIndex = nowLocal.getHours(); // 0..23, current hour block considered past
+          const cols = 6; // 6 x 4 grid
+          const rows = 4;
+          const daysLeft = Math.max(0, totalDays - (todayIndex + 1));
+          const dow = nowLocal.toLocaleDateString(undefined, { weekday: 'long' });
+          return { kind: 'day', labelLeft: dow, startUTC, totalDays, todayIndex, cols, rows, daysLeft };
+        }
+
         // Determine initial mode/state using stored preference
         let mode = 'year';
         try {
           const savedMode = localStorage.getItem('left_mode');
-          if (savedMode === 'month' || savedMode === 'life' || savedMode === 'year') {
+          if (savedMode === 'month' || savedMode === 'life' || savedMode === 'year' || savedMode === 'day') {
             mode = savedMode;
           }
         } catch(_) {}
@@ -360,8 +372,9 @@
           } catch(_) {}
         }
         if (!state) {
-          state = (mode === 'month') ? monthState() : yearState();
-          mode = (mode === 'month') ? 'month' : 'year';
+          if (mode === 'month') { state = monthState(); }
+          else if (mode === 'day') { state = dayState(); }
+          else { state = yearState(); mode = 'year'; }
         }
 
         let showPercent = false; // right label mode
@@ -479,7 +492,7 @@
             const pct = state.totalDays ? Math.max(0, Math.min(100, Math.round((state.daysLeft / state.totalDays) * 100))) : 0;
             return pct + '% left';
           }
-          const unit = state.kind === 'life' ? 'years' : 'days';
+          const unit = state.kind === 'life' ? 'years' : (state.kind === 'day' ? 'hours' : 'days');
           return state.daysLeft + ' ' + unit + ' left';
         }
 
@@ -504,6 +517,11 @@
             }
             if (state.kind === 'life') {
               dot.title = String(state.birthYear + i);
+            } else if (state.kind === 'day') {
+              const hour = i;
+              const h12 = ((hour + 11) % 12) + 1; // 1..12
+              const ampm = hour < 12 ? 'AM' : 'PM';
+              dot.title = `${h12}:00 ${ampm}`;
             } else {
               const d = new Date(state.startUTC + i * DAY_MS);
               dot.title = formatDate(d);
@@ -543,24 +561,19 @@
         }
 
         // Tap/click on the left label to toggle views.
-        // If a saved birthday exists: Year → Month → Life → Year ...
-        // Otherwise: Year ↔ Month
+        // If a saved birthday exists: Year → Month → Day → Life → Year ...
+        // Otherwise: Year → Month → Day → Year ...
         yearEl.addEventListener('click', () => {
           const savedBirth = getSavedBirthDate();
           if (savedBirth) {
-            if (mode === 'year') {
-              mode = 'month';
-              state = monthState();
-            } else if (mode === 'month') {
-              mode = 'life';
-              state = lifeState(savedBirth);
-            } else {
-              mode = 'year';
-              state = yearState();
-            }
+            if (mode === 'year') { mode = 'month'; state = monthState(); }
+            else if (mode === 'month') { mode = 'day'; state = dayState(); }
+            else if (mode === 'day') { mode = 'life'; state = lifeState(savedBirth); }
+            else { mode = 'year'; state = yearState(); }
           } else {
-            mode = mode === 'year' ? 'month' : 'year';
-            state = mode === 'year' ? yearState() : monthState();
+            if (mode === 'year') { mode = 'month'; state = monthState(); }
+            else if (mode === 'month') { mode = 'day'; state = dayState(); }
+            else { mode = 'year'; state = yearState(); }
           }
           try { localStorage.setItem('left_mode', mode); } catch(_) {}
           renderGrid();
@@ -683,8 +696,8 @@
           // Compute how wide the YEAR grid would be in this viewport
           const yearMetrics = compute(15, 25, cardInnerW);
 
-          // For month view, do not exceed the year width
-          const allowedW = mode === 'month' ? Math.min(cardInnerW, yearMetrics.width) : cardInnerW;
+          // Cap grid width to the YEAR grid width for all views
+          const allowedW = Math.min(cardInnerW, yearMetrics.width);
 
           const current = compute(cols, rows, allowedW);
           grid.style.gap = current.gap + 'px';
