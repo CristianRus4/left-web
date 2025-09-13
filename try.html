@@ -3,7 +3,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f7f7f4" />
+    <!-- Match browser/UI tint to page theme in light/dark -->
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FDFDFC" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#131415" />
     <title>Left</title>
     <meta name="description" content="Visualize your time left — year, month, week, day, and life views you can share as images.">
     <meta property="og:title" content="Left — Visualize Your Time Left">
@@ -17,7 +19,9 @@
     <meta name="twitter:image" content="https://left-time.app/left-icon/android-chrome-512x512.png">
     <link rel="canonical" href="https://left-time.app/try.html">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <!-- In standalone mode, blend status bar with app background -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="color-scheme" content="light dark">
     <link rel="manifest" href="left.webmanifest">
     <link rel="apple-touch-icon" href="/left-icon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/left-icon/favicon-32x32.png">
