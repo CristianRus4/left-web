@@ -61,7 +61,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: flex-start; /* grid top aligned */
+        justify-content: center; /* grid vertically centered */
         padding: 2rem;
         box-sizing: border-box;
         overflow: hidden; /* keep content inside */
@@ -163,6 +163,16 @@
         letter-spacing: 0.02em;
       }
       .week-row.past { opacity: 0.5; }
+      /* Months view grid cells */
+      .month-cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
+      .month-cell.past { opacity: 0.5; }
       .actions-right {
         display: flex;
         align-items: center;
@@ -593,6 +603,17 @@
           return { kind: 'day', labelLeft: dow, startUTC, totalDays, todayIndex, cols, rows, daysLeft };
         }
 
+        function monthsState() {
+          const nowLocal = new Date();
+          const startUTC = Date.UTC(nowLocal.getFullYear(), 0, 1);
+          const totalDays = 12; // months in a year
+          const todayIndex = nowLocal.getMonth(); // 0..11, current month not past
+          const cols = 3;
+          const rows = 4;
+          const daysLeft = Math.max(0, 11 - todayIndex); // months remaining after current
+          return { kind: 'months', labelLeft: 'Months', startUTC, totalDays, todayIndex, cols, rows, daysLeft };
+        }
+
         function weekState() {
           const nowLocal = new Date();
           const dowSun0 = nowLocal.getDay(); // 0=Sun..6=Sat
@@ -610,14 +631,14 @@
         let mode = 'year';
         try {
           const savedMode = localStorage.getItem('left_mode');
-          if (savedMode === 'month' || savedMode === 'life' || savedMode === 'year' || savedMode === 'day' || savedMode === 'week') {
+          if (savedMode === 'month' || savedMode === 'months' || savedMode === 'life' || savedMode === 'year' || savedMode === 'day' || savedMode === 'week') {
             mode = savedMode;
           }
         } catch(_) {}
         // URL param wins
         try {
           const urlMode = new URLSearchParams(location.search).get('mode');
-          if (urlMode && ['year','month','week','day','life'].includes(urlMode)) mode = urlMode;
+          if (urlMode && ['year','months','month','week','day','life'].includes(urlMode)) mode = urlMode;
         } catch(_) {}
 
         let state;
@@ -631,9 +652,10 @@
           } catch(_) {}
         }
         if (!state) {
-          if (mode === 'month') { state = monthState(); }
-          else if (mode === 'day') { state = dayState(); }
+          if (mode === 'months') { state = monthsState(); }
+          else if (mode === 'month') { state = monthState(); }
           else if (mode === 'week') { state = weekState(); }
+          else if (mode === 'day') { state = dayState(); }
           else { state = yearState(); mode = 'year'; }
         }
 
@@ -757,15 +779,29 @@
             const pct = state.totalDays ? Math.max(0, Math.min(100, Math.round((state.daysLeft / state.totalDays) * 100))) : 0;
             return pct + '% left';
           }
-          const unit = state.kind === 'life' ? 'years' : (state.kind === 'day' ? 'hours' : 'days');
+          const unit = state.kind === 'life' ? 'years' : (state.kind === 'day' ? 'hours' : (state.kind === 'months' ? 'months' : 'days'));
           return state.daysLeft + ' ' + unit + ' left';
         }
 
         function renderGrid() {
           grid.innerHTML = '';
+          // Reset any custom spacing from other views
+          grid.style.rowGap = '';
+          grid.style.columnGap = '';
+          grid.style.gap = '';
           if (state.kind === 'week') {
             // Words instead of symbols; one row per day
             grid.style.gridTemplateColumns = '1fr';
+            // Add vertical spacing between rows (website only)
+            try {
+              const card = document.querySelector('.card');
+              const cs = getComputedStyle(card);
+              const paddingY = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+              const innerH = Math.max(0, card.clientHeight - paddingY);
+              // Week needs good separation: ~6% of inner height, clamped
+              const rowGap = Math.max(18, Math.min(64, Math.round(innerH * 0.06)));
+              grid.style.rowGap = rowGap + 'px';
+            } catch(_) {}
             const days = ['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY'];
             for (let i = 0; i < 7; i++) {
               const row = document.createElement('div');
@@ -773,6 +809,27 @@
               row.className = 'week-row' + (past ? ' past' : '');
               row.textContent = days[i];
               grid.appendChild(row);
+            }
+          } else if (state.kind === 'months') {
+            // 3 columns x 4 rows grid with month names
+            grid.style.gridTemplateColumns = 'repeat(3, 1fr)';
+            // Add generous vertical spacing between rows (website only)
+            try {
+              const card = document.querySelector('.card');
+              const cs = getComputedStyle(card);
+              const paddingY = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+              const innerH = Math.max(0, card.clientHeight - paddingY);
+              // Target a large, responsive row gap (about 8% of inner height), within sane bounds
+              const rowGap = Math.max(28, Math.min(80, Math.round(innerH * 0.08)));
+              grid.style.rowGap = rowGap + 'px';
+            } catch(_) {}
+            for (let i = 0; i < 12; i++) {
+              const cell = document.createElement('div');
+              const past = i < state.todayIndex; // current month not past
+              cell.className = 'month-cell' + (past ? ' past' : '');
+              cell.textContent = monthsShort[i].toUpperCase();
+              cell.title = monthsFull[i];
+              grid.appendChild(cell);
             }
           } else {
             grid.style.gridTemplateColumns = `repeat(${state.cols}, var(--dot-size))`;
@@ -816,13 +873,13 @@
         // Hover handlers: show date of hovered dot; revert on leave
         grid.addEventListener('mouseover', (e) => {
           const t = e.target;
-          if (t && t.classList && (t.classList.contains('dot') || t.classList.contains('week-row'))) {
+          if (t && t.classList && (t.classList.contains('dot') || t.classList.contains('week-row') || t.classList.contains('month-cell'))) {
             infoEl.textContent = t.title;
           }
         });
         grid.addEventListener('mouseout', (e) => {
           const t = e.target;
-          if (t && t.classList && (t.classList.contains('dot') || t.classList.contains('week-row'))) {
+          if (t && t.classList && (t.classList.contains('dot') || t.classList.contains('week-row') || t.classList.contains('month-cell'))) {
             infoEl.textContent = rightText();
           }
         });
@@ -838,23 +895,24 @@
           } catch(_) { return null; }
         }
 
-        // Tap/click on the left label to toggle views.
-        // If a saved birthday exists: Year → Month → Day → Week → Life → Year ...
-        // Otherwise: Year → Month → Day → Week → Year ...
+        // Tap/click on the left label to toggle views in order:
+        // With birthday: Life → Year → Months → Month → Week → Day → (wrap)
+        // Without birthday: Year → Months → Month → Week → Day → (wrap)
         yearEl.addEventListener('click', () => {
           const savedBirth = getSavedBirthDate();
-          if (savedBirth) {
-            if (mode === 'year') { mode = 'month'; state = monthState(); }
-            else if (mode === 'month') { mode = 'day'; state = dayState(); }
-            else if (mode === 'day') { mode = 'week'; state = weekState(); }
-            else if (mode === 'week') { mode = 'life'; state = lifeState(savedBirth); }
-            else { mode = 'year'; state = yearState(); }
-          } else {
-            if (mode === 'year') { mode = 'month'; state = monthState(); }
-            else if (mode === 'month') { mode = 'day'; state = dayState(); }
-            else if (mode === 'day') { mode = 'week'; state = weekState(); }
-            else { mode = 'year'; state = yearState(); }
-          }
+          const cycle = savedBirth
+            ? ['life','year','months','month','week','day']
+            : ['year','months','month','week','day'];
+          const curIndex = Math.max(0, cycle.indexOf(mode));
+          const nextIndex = (curIndex + 1) % cycle.length;
+          const nextMode = cycle[nextIndex];
+          mode = nextMode;
+          if (mode === 'life') { state = lifeState(savedBirth); }
+          else if (mode === 'year') { state = yearState(); }
+          else if (mode === 'months') { state = monthsState(); }
+          else if (mode === 'month') { state = monthState(); }
+          else if (mode === 'week') { state = weekState(); }
+          else { state = dayState(); }
           try { localStorage.setItem('left_mode', mode); } catch(_) {}
           renderGrid();
         });
@@ -1086,6 +1144,12 @@
             exportGrid.style.flexDirection = 'column';
             exportGrid.style.alignItems = 'center';
             exportGrid.style.justifyContent = 'space-between';
+          } else if (state.kind === 'months') {
+            // Use grid 3x4 for months; widths handled later similar to week
+            exportGrid.style.display = 'grid';
+            exportGrid.style.gridTemplateColumns = 'repeat(3, 1fr)';
+            exportGrid.style.alignItems = 'center';
+            exportGrid.style.justifyItems = 'center';
           } else {
             exportGrid.style.display = 'grid';
             exportGrid.style.gridTemplateColumns = `repeat(${state.cols}, ${EXPORT_DOT}px)`;
@@ -1130,6 +1194,21 @@
               row.style.opacity = (i < state.todayIndex) ? '0.5' : '1';
               row.textContent = days[i];
               exportGrid.appendChild(row);
+            }
+          } else if (state.kind === 'months') {
+            for (let i = 0; i < 12; i++) {
+              const cell = document.createElement('div');
+              cell.style.display = 'flex';
+              cell.style.alignItems = 'center';
+              cell.style.justifyContent = 'center';
+              cell.style.fontWeight = '800';
+              cell.style.letterSpacing = '0.02em';
+              cell.style.fontSize = '72px';
+              cell.style.lineHeight = '1';
+              cell.style.color = isDark ? accent : '#111110';
+              cell.style.opacity = (i < state.todayIndex) ? '0.5' : '1';
+              cell.textContent = monthsShort[i].toUpperCase();
+              exportGrid.appendChild(cell);
             }
           } else {
             for (let i = 0; i < state.totalDays; i++) {
@@ -1227,11 +1306,11 @@
             const yearBase = compute(15, 25, innerW);
 
             // Current grid (month or year) is capped to the year width
-            const cols = state.kind === 'week' ? 1 : state.cols;
-            const rows = state.kind === 'week' ? 7 : state.rows;
+            const cols = (state.kind === 'week') ? 1 : (state.kind === 'months' ? 3 : state.cols);
+            const rows = (state.kind === 'week') ? 7 : (state.kind === 'months' ? 4 : state.rows);
             const capped = compute(cols, rows, Math.min(innerW, yearBase.gridW));
 
-            if (state.kind === 'week') {
+            if (state.kind === 'week' || state.kind === 'months') {
               // Give the week list a fixed vertical space to avoid footer overlap
               const gridW = Math.min(innerW, yearBase.gridW);
               exportGrid.style.width = gridW + 'px';
@@ -1242,7 +1321,7 @@
             }
 
             // Footer matches grid width and is centered horizontally
-            const widthForFooter = state.kind === 'week' ? Math.min(innerW, yearBase.gridW) : capped.gridW;
+            const widthForFooter = (state.kind === 'week' || state.kind === 'months') ? Math.min(innerW, yearBase.gridW) : capped.gridW;
             exportFooter.style.width = widthForFooter + 'px';
             const left = Math.round((CARD - widthForFooter) / 2);
             exportFooter.style.left = left + 'px';
