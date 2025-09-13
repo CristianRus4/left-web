@@ -136,6 +136,16 @@
         justify-content: space-between;
         width: 100%;
       }
+      /* Week view rows */
+      .week-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 0;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+      }
+      .week-row.past { opacity: 0.5; }
       .actions-right {
         display: flex;
         align-items: center;
@@ -352,11 +362,24 @@
           return { kind: 'day', labelLeft: dow, startUTC, totalDays, todayIndex, cols, rows, daysLeft };
         }
 
+        function weekState() {
+          const nowLocal = new Date();
+          const dowSun0 = nowLocal.getDay(); // 0=Sun..6=Sat
+          const dowMon0 = (dowSun0 + 6) % 7; // 0=Mon..6=Sun
+          const startUTC = Date.UTC(nowLocal.getFullYear(), nowLocal.getMonth(), nowLocal.getDate());
+          const totalDays = 7;
+          const todayIndex = dowMon0; // current day is not past
+          const cols = 1;
+          const rows = 7;
+          const daysLeft = Math.max(0, 6 - dowMon0); // days remaining after today
+          return { kind: 'week', labelLeft: 'This week', startUTC, totalDays, todayIndex, cols, rows, daysLeft };
+        }
+
         // Determine initial mode/state using stored preference
         let mode = 'year';
         try {
           const savedMode = localStorage.getItem('left_mode');
-          if (savedMode === 'month' || savedMode === 'life' || savedMode === 'year' || savedMode === 'day') {
+          if (savedMode === 'month' || savedMode === 'life' || savedMode === 'year' || savedMode === 'day' || savedMode === 'week') {
             mode = savedMode;
           }
         } catch(_) {}
@@ -374,6 +397,7 @@
         if (!state) {
           if (mode === 'month') { state = monthState(); }
           else if (mode === 'day') { state = dayState(); }
+          else if (mode === 'week') { state = weekState(); }
           else { state = yearState(); mode = 'year'; }
         }
 
@@ -498,35 +522,48 @@
 
         function renderGrid() {
           grid.innerHTML = '';
-          grid.style.gridTemplateColumns = `repeat(${state.cols}, var(--dot-size))`;
-          for (let i = 0; i < state.totalDays; i++) {
-            const dot = document.createElement('div');
-            const past = (i <= state.todayIndex);
-            if (isGlyphSymbol()) {
-              dot.className = 'dot glyph' + (past ? ' past' : '');
-              const sym = currentSymbol();
-              dot.textContent = sym.char || '•';
-              // Make shapes visually larger; triangles/stars slightly bigger than default
-              if (sym.key === 'square' || sym.key === 'hexagon') {
-                dot.style.fontSize = `calc(${getComputedStyle(document.documentElement).getPropertyValue('--dot-size').trim()} * 2)`;
-              } else if (sym.key === 'triangle' || sym.key === 'star') {
-                dot.style.fontSize = `calc(${getComputedStyle(document.documentElement).getPropertyValue('--dot-size').trim()} * 1.6)`;
+          if (state.kind === 'week') {
+            // Words instead of symbols; one row per day
+            grid.style.gridTemplateColumns = '1fr';
+            const days = ['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY'];
+            for (let i = 0; i < 7; i++) {
+              const row = document.createElement('div');
+              const past = i < state.todayIndex; // current day not past
+              row.className = 'week-row' + (past ? ' past' : '');
+              row.textContent = days[i];
+              grid.appendChild(row);
+            }
+          } else {
+            grid.style.gridTemplateColumns = `repeat(${state.cols}, var(--dot-size))`;
+            for (let i = 0; i < state.totalDays; i++) {
+              const dot = document.createElement('div');
+              const past = (i <= state.todayIndex);
+              if (isGlyphSymbol()) {
+                dot.className = 'dot glyph' + (past ? ' past' : '');
+                const sym = currentSymbol();
+                dot.textContent = sym.char || '•';
+                // Make shapes visually larger; triangles/stars slightly bigger than default
+                if (sym.key === 'square' || sym.key === 'hexagon') {
+                  dot.style.fontSize = `calc(${getComputedStyle(document.documentElement).getPropertyValue('--dot-size').trim()} * 2)`;
+                } else if (sym.key === 'triangle' || sym.key === 'star') {
+                  dot.style.fontSize = `calc(${getComputedStyle(document.documentElement).getPropertyValue('--dot-size').trim()} * 1.6)`;
+                }
+              } else {
+                dot.className = 'dot' + (past ? ' past' : '');
               }
-            } else {
-              dot.className = 'dot' + (past ? ' past' : '');
+              if (state.kind === 'life') {
+                dot.title = String(state.birthYear + i);
+              } else if (state.kind === 'day') {
+                const hour = i;
+                const h12 = ((hour + 11) % 12) + 1; // 1..12
+                const ampm = hour < 12 ? 'AM' : 'PM';
+                dot.title = `${h12}:00 ${ampm}`;
+              } else {
+                const d = new Date(state.startUTC + i * DAY_MS);
+                dot.title = formatDate(d);
+              }
+              grid.appendChild(dot);
             }
-            if (state.kind === 'life') {
-              dot.title = String(state.birthYear + i);
-            } else if (state.kind === 'day') {
-              const hour = i;
-              const h12 = ((hour + 11) % 12) + 1; // 1..12
-              const ampm = hour < 12 ? 'AM' : 'PM';
-              dot.title = `${h12}:00 ${ampm}`;
-            } else {
-              const d = new Date(state.startUTC + i * DAY_MS);
-              dot.title = formatDate(d);
-            }
-            grid.appendChild(dot);
           }
 
           yearEl.textContent = state.labelLeft;
@@ -538,13 +575,13 @@
         // Hover handlers: show date of hovered dot; revert on leave
         grid.addEventListener('mouseover', (e) => {
           const t = e.target;
-          if (t && t.classList && t.classList.contains('dot')) {
+          if (t && t.classList && (t.classList.contains('dot') || t.classList.contains('week-row'))) {
             infoEl.textContent = t.title;
           }
         });
         grid.addEventListener('mouseout', (e) => {
           const t = e.target;
-          if (t && t.classList && t.classList.contains('dot')) {
+          if (t && t.classList && (t.classList.contains('dot') || t.classList.contains('week-row'))) {
             infoEl.textContent = rightText();
           }
         });
@@ -561,18 +598,20 @@
         }
 
         // Tap/click on the left label to toggle views.
-        // If a saved birthday exists: Year → Month → Day → Life → Year ...
-        // Otherwise: Year → Month → Day → Year ...
+        // If a saved birthday exists: Year → Month → Day → Week → Life → Year ...
+        // Otherwise: Year → Month → Day → Week → Year ...
         yearEl.addEventListener('click', () => {
           const savedBirth = getSavedBirthDate();
           if (savedBirth) {
             if (mode === 'year') { mode = 'month'; state = monthState(); }
             else if (mode === 'month') { mode = 'day'; state = dayState(); }
-            else if (mode === 'day') { mode = 'life'; state = lifeState(savedBirth); }
+            else if (mode === 'day') { mode = 'week'; state = weekState(); }
+            else if (mode === 'week') { mode = 'life'; state = lifeState(savedBirth); }
             else { mode = 'year'; state = yearState(); }
           } else {
             if (mode === 'year') { mode = 'month'; state = monthState(); }
             else if (mode === 'month') { mode = 'day'; state = dayState(); }
+            else if (mode === 'day') { mode = 'week'; state = weekState(); }
             else { mode = 'year'; state = yearState(); }
           }
           try { localStorage.setItem('left_mode', mode); } catch(_) {}
@@ -778,7 +817,11 @@
 
           const exportGrid = document.createElement('div');
           exportGrid.style.display = 'grid';
-          exportGrid.style.gridTemplateColumns = `repeat(${state.cols}, ${EXPORT_DOT}px)`;
+          if (state.kind === 'week') {
+            exportGrid.style.gridTemplateColumns = '1fr';
+          } else {
+            exportGrid.style.gridTemplateColumns = `repeat(${state.cols}, ${EXPORT_DOT}px)`;
+          }
           exportGrid.style.margin = '0 auto';
 
           const exportFooter = document.createElement('div');
@@ -804,37 +847,54 @@
           })();
           const symMap = ['•','■','▲','★','⬢'];
           const symChar = symMap[(function(){ try { return (localStorage.getItem('left_symbol_index')|0); } catch(_) { return 0; }})()];
-          for (let i = 0; i < state.totalDays; i++) {
-            const isPast = i <= state.todayIndex;
-            if (useGlyph) {
-              const cell = document.createElement('div');
-              cell.style.width = EXPORT_DOT + 'px';
-              cell.style.height = EXPORT_DOT + 'px';
-              cell.style.display = 'flex';
-              cell.style.alignItems = 'center';
-              cell.style.justifyContent = 'center';
-              // Make shapes larger in export; triangle/star slightly bigger than default
-              const exportedSymbolIndex = (function(){ try { return (localStorage.getItem('left_symbol_index')|0); } catch(_) { return 0; }})();
-              const baseSize = EXPORT_DOT + 2;
-              const fontSize = (exportedSymbolIndex === 1 || exportedSymbolIndex === 4)
-                ? baseSize * 2                        // 1=square, 4=hexagon
-                : (exportedSymbolIndex === 2 || exportedSymbolIndex === 3)
-                  ? Math.round(baseSize * 1.6)       // 2=triangle, 3=star
-                  : baseSize;                         // dot
-              cell.style.fontSize = fontSize + 'px';
-              cell.style.lineHeight = '1';
-              cell.style.color = isDark ? accent : '#111110';
-              cell.style.opacity = isPast ? '0.5' : '1';
-              cell.textContent = symChar || '•';
-              exportGrid.appendChild(cell);
-            } else {
-              const dot = document.createElement('div');
-              dot.style.width = EXPORT_DOT + 'px';
-              dot.style.height = EXPORT_DOT + 'px';
-              dot.style.borderRadius = '50%';
-              dot.style.background = isDark ? accent : '#111110';
-              dot.style.opacity = isPast ? '0.5' : '1';
-              exportGrid.appendChild(dot);
+          if (state.kind === 'week') {
+            const days = ['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY'];
+            for (let i = 0; i < 7; i++) {
+              const row = document.createElement('div');
+              row.style.display = 'flex';
+              row.style.alignItems = 'center';
+              row.style.justifyContent = 'center';
+              row.style.padding = '12px 0';
+              row.style.fontWeight = '800';
+              row.style.letterSpacing = '0.02em';
+              row.style.color = isDark ? accent : '#111110';
+              row.style.opacity = (i < state.todayIndex) ? '0.5' : '1';
+              row.textContent = days[i];
+              exportGrid.appendChild(row);
+            }
+          } else {
+            for (let i = 0; i < state.totalDays; i++) {
+              const isPast = i <= state.todayIndex;
+              if (useGlyph) {
+                const cell = document.createElement('div');
+                cell.style.width = EXPORT_DOT + 'px';
+                cell.style.height = EXPORT_DOT + 'px';
+                cell.style.display = 'flex';
+                cell.style.alignItems = 'center';
+                cell.style.justifyContent = 'center';
+                // Make shapes larger in export; triangle/star slightly bigger than default
+                const exportedSymbolIndex = (function(){ try { return (localStorage.getItem('left_symbol_index')|0); } catch(_) { return 0; }})();
+                const baseSize = EXPORT_DOT + 2;
+                const fontSize = (exportedSymbolIndex === 1 || exportedSymbolIndex === 4)
+                  ? baseSize * 2                        // 1=square, 4=hexagon
+                  : (exportedSymbolIndex === 2 || exportedSymbolIndex === 3)
+                    ? Math.round(baseSize * 1.6)       // 2=triangle, 3=star
+                    : baseSize;                         // dot
+                cell.style.fontSize = fontSize + 'px';
+                cell.style.lineHeight = '1';
+                cell.style.color = isDark ? accent : '#111110';
+                cell.style.opacity = isPast ? '0.5' : '1';
+                cell.textContent = symChar || '•';
+                exportGrid.appendChild(cell);
+              } else {
+                const dot = document.createElement('div');
+                dot.style.width = EXPORT_DOT + 'px';
+                dot.style.height = EXPORT_DOT + 'px';
+                dot.style.borderRadius = '50%';
+                dot.style.background = isDark ? accent : '#111110';
+                dot.style.opacity = isPast ? '0.5' : '1';
+                exportGrid.appendChild(dot);
+              }
             }
           }
 
@@ -898,7 +958,8 @@
             const yearBase = compute(15, 25, innerW);
 
             // Current grid (month or year) is capped to the year width
-            const cols = state.cols, rows = state.rows;
+            const cols = state.kind === 'week' ? 1 : state.cols;
+            const rows = state.kind === 'week' ? 7 : state.rows;
             const capped = compute(cols, rows, Math.min(innerW, yearBase.gridW));
 
             exportGrid.style.gap = capped.gap + 'px';
