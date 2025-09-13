@@ -6,6 +6,13 @@
   "background_color": "#FDFDFC",
   "theme_color": "#f7f7f4",
   "scope": "/",
+  "shortcuts": [
+    { "name": "Year", "short_name": "Year", "url": "/try.html?mode=year" },
+    { "name": "Month", "short_name": "Month", "url": "/try.html?mode=month" },
+    { "name": "Week", "short_name": "Week", "url": "/try.html?mode=week" },
+    { "name": "Day", "short_name": "Day", "url": "/try.html?mode=day" },
+    { "name": "Life", "short_name": "Life", "url": "/try.html?mode=life" }
+  ],
   "icons": [
     {
       "src": "/left-icon/android-chrome-192x192.png",

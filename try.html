@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#f7f7f4" />
     <title>Left</title>
+    <meta name="description" content="Visualize your time left — year, month, week, day, and life views you can share as images.">
+    <meta property="og:title" content="Left — Visualize Your Time Left">
+    <meta property="og:description" content="Year, month, week, day, and life views you can share as images.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://left-time.app/try.html">
+    <meta property="og:image" content="https://left-time.app/left-icon/android-chrome-512x512.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Left — Visualize Your Time Left">
+    <meta name="twitter:description" content="Year, month, week, day, and life views you can share as images.">
+    <meta name="twitter:image" content="https://left-time.app/left-icon/android-chrome-512x512.png">
+    <link rel="canonical" href="https://left-time.app/try.html">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="manifest" href="left.webmanifest">
     <link rel="apple-touch-icon" href="/left-icon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/left-icon/favicon-32x32.png">
@@ -256,7 +269,7 @@
       <div id="grid" class="grid" aria-label="Days of the year"></div>
       <div class="bottom">
         <span id="year"></span>
-        <span id="right-info"></span>
+        <span id="right-info" aria-live="polite"></span>
       </div>
     </div>
     <div class="actions-card">
@@ -382,6 +395,11 @@
           if (savedMode === 'month' || savedMode === 'life' || savedMode === 'year' || savedMode === 'day' || savedMode === 'week') {
             mode = savedMode;
           }
+        } catch(_) {}
+        // URL param wins
+        try {
+          const urlMode = new URLSearchParams(location.search).get('mode');
+          if (urlMode && ['year','month','week','day','life'].includes(urlMode)) mode = urlMode;
         } catch(_) {}
 
         let state;
@@ -754,6 +772,8 @@
         // Color and Symbol controls
         colorBtn.addEventListener('click', () => { toggleColor(); updateActionLabels(); });
         symbolBtn.addEventListener('click', () => { toggleSymbol(); updateActionLabels(); });
+
+        // View switcher removed from action bar (use header tap or URL param)
 
         // Hide App Store link when running as installed PWA
         try {
