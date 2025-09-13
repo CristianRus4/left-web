@@ -462,20 +462,6 @@
           } catch(_) {}
         }
 
-        function maybePromptInstall(){
-          try {
-            const prompted = localStorage.getItem(LS_PROMPTED) === '1';
-            const optedIn = localStorage.getItem(LS_OPT_IN) === '1';
-            if (prompted || optedIn) return;
-            const isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || (window.navigator && window.navigator.standalone === true);
-            if (!isStandalone) return;
-            // Lightweight prompt
-            const ok = window.confirm('Enable a daily reminder at 9am?');
-            try { localStorage.setItem(LS_PROMPTED, '1'); } catch(_) {}
-            if (ok) requestAndSetup();
-          } catch(_) {}
-        }
-
         // If already opted in, ensure scheduling on load
         window.addEventListener('load', async () => {
           try {
@@ -487,10 +473,50 @@
           } catch(_) {}
         });
 
-        // Prompt after install
-        window.addEventListener('appinstalled', () => { maybePromptInstall(); });
-        // Also prompt on first run in standalone
-        maybePromptInstall();
+        // Gentle, non-blocking prompt triggers after user engagement or time
+        (function setupGentleNotificationPrompt(){
+          const isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || (window.navigator && window.navigator.standalone === true);
+          if (!isStandalone) return; // only prompt when running as PWA
+
+          function eligible(){
+            try {
+              if (!('Notification' in window)) return false;
+              if (Notification.permission === 'granted' || Notification.permission === 'denied') return false;
+              if (localStorage.getItem(LS_PROMPTED) === '1') return false;
+              if (localStorage.getItem(LS_OPT_IN) === '1') return false;
+              return true;
+            } catch(_) { return false; }
+          }
+
+          function showPrompt(){
+            if (!eligible()) return;
+            // Blocking confirm, but only after engagement or delay
+            const ok = window.confirm('Left wants to send you reminders of your time left. Allow notifications?');
+            try { localStorage.setItem(LS_PROMPTED, '1'); } catch(_) {}
+            if (ok) requestAndSetup();
+            removeHandlers();
+          }
+
+          let tapsAnywhere = 0;
+          let tapsFooter = 0;
+          const footer = document.querySelector('.bottom');
+          const onAnyTap = () => { if (!eligible()) return removeHandlers(); if (++tapsAnywhere >= 6) showPrompt(); };
+          const onFooterTap = () => { if (!eligible()) return removeHandlers(); if (++tapsFooter >= 3) showPrompt(); };
+          const timer = setTimeout(() => { showPrompt(); }, 30000); // 30s after load
+
+          function removeHandlers(){
+            try { document.removeEventListener('click', onAnyTap, true); } catch(_) {}
+            try { footer && footer.removeEventListener('click', onFooterTap, true); } catch(_) {}
+            try { clearTimeout(timer); } catch(_) {}
+          }
+
+          // Attach after load to avoid any startup cost
+          setTimeout(() => {
+            if (!eligible()) return removeHandlers();
+            document.addEventListener('click', onAnyTap, true);
+            if (footer) footer.addEventListener('click', onFooterTap, true);
+          }, 0);
+        })();
       })();
 
       (function () {
