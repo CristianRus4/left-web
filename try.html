@@ -311,6 +311,188 @@
         });
       }
 
+      // Notifications: prompt when installed and optionally schedule a daily reminder
+      (function notificationsSetup(){
+        const LS_OPT_IN = 'left_notify_opt_in';
+        const LS_PROMPTED = 'left_notify_prompted';
+        const LS_LAST_SENT = 'left_notify_last_sent'; // yyyy-mm-dd local
+        const LS_SCHEDULED_UNTIL = 'left_notify_scheduled_until'; // yyyy-mm-dd local
+
+        function dayOfYear(d){
+          const start = new Date(d.getFullYear(),0,1); // local midnight Jan 1
+          const ms = d - start;
+          return Math.floor(ms / 86400000);
+        }
+        function daysLeftInYearFor(d){
+          const yearStart = new Date(d.getFullYear(), 0, 1);
+          const nextStart = new Date(d.getFullYear()+1, 0, 1);
+          const total = Math.round((nextStart - yearStart) / 86400000);
+          const todayIndex = Math.floor((new Date(d.getFullYear(), d.getMonth(), d.getDate()) - yearStart)/86400000);
+          return Math.max(0, total - (todayIndex + 1));
+        }
+        function nextNineAMEpoch(){
+          const now = new Date();
+          const next = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 0, 0, 0);
+          if (now.getTime() >= next.getTime()) {
+            next.setDate(next.getDate() + 1);
+          }
+          return next.getTime();
+        }
+        function nineAMOf(d){
+          const t = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 9, 0, 0, 0);
+          return t.getTime();
+        }
+        function todaysKey(){
+          const n = new Date();
+          const mm = String(n.getMonth()+1).padStart(2,'0');
+          const dd = String(n.getDate()).padStart(2,'0');
+          return `${n.getFullYear()}-${mm}-${dd}`;
+        }
+        const messages = [
+          'Only {days} days left this year. Make them count.',
+          '{days} days remain. Do one small thing that matters.',
+          '{days} days to go. Spend them on what you value.',
+          'Tick tock: {days} days left this year.',
+          'You have {days} more chances this year.',
+          '{days} days left. Choose intentionally.',
+          'Make today count. {days} days left this year.',
+          '{days} days remain. Take a step forward today.',
+          'Focus on what matters. {days} days left.',
+          '{days} days left. Tiny steps add up.'
+        ];
+        function messageForDate(d){
+          const idx = dayOfYear(d) % messages.length;
+          return messages[idx].replace('{days}', String(daysLeftInYearFor(d)));
+        }
+        async function sendNotificationNow(reg){
+          try {
+            const title = 'Left';
+            const body = messageForDate(new Date());
+            const options = {
+              body,
+              tag: 'left-daily',
+              renotify: false,
+              icon: '/left-icon/android-chrome-192x192.png',
+              badge: '/left-icon/android-chrome-192x192.png'
+            };
+            if (reg && reg.showNotification) {
+              await reg.showNotification(title, options);
+            } else if (Notification && Notification.permission === 'granted') {
+              new Notification(title, options);
+            }
+            try { localStorage.setItem(LS_LAST_SENT, todaysKey()); } catch(_) {}
+          } catch(_) {}
+        }
+        function parseKey(k){
+          const [y,m,d] = (k||'').split('-').map(v => parseInt(v,10));
+          if (!y || !m || !d) return null;
+          return new Date(y, m-1, d);
+        }
+        function addDays(d, n){ const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setDate(x.getDate()+n); return x; }
+        function keyForDate(d){
+          const mm = String(d.getMonth()+1).padStart(2,'0');
+          const dd = String(d.getDate()).padStart(2,'0');
+          return `${d.getFullYear()}-${mm}-${dd}`;
+        }
+        async function scheduleUpcoming(reg, count = 20){
+          try {
+            // Prefer Notification Triggers (Chrome-based, experimental)
+            if ('TimestampTrigger' in window && reg && reg.showNotification) {
+              const now = new Date();
+              const today9 = nineAMOf(now);
+              const startDate = (Date.now() < today9) ? new Date(now.getFullYear(), now.getMonth(), now.getDate()) : addDays(now, 1);
+
+              const scheduledUntilKey = (function(){ try { return localStorage.getItem(LS_SCHEDULED_UNTIL)||''; } catch(_) { return ''; } })();
+              const scheduledUntil = parseKey(scheduledUntilKey);
+
+              let targetUntil = addDays(startDate, count - 1);
+              // If we already scheduled into the future, only top up beyond that
+              let fromDate = startDate;
+              if (scheduledUntil && scheduledUntil.getTime() >= startDate.getTime()) {
+                fromDate = addDays(scheduledUntil, 1);
+                const daysAhead = Math.ceil((addDays(startDate, count - 1) - startDate)/86400000);
+                targetUntil = addDays(scheduledUntil, Math.max(0, daysAhead));
+              }
+
+              for (let d = new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate()); d.getTime() <= targetUntil.getTime(); d.setDate(d.getDate() + 1)) {
+                const when = nineAMOf(d);
+                // Skip if time somehow in the past
+                if (when <= Date.now()) continue;
+                const tag = `left-daily-${keyForDate(d)}`;
+                const opts = {
+                  tag,
+                  showTrigger: new window.TimestampTrigger(when),
+                  body: messageForDate(new Date(d.getFullYear(), d.getMonth(), d.getDate())),
+                  icon: '/left-icon/android-chrome-192x192.png',
+                  badge: '/left-icon/android-chrome-192x192.png',
+                  data: { date: keyForDate(d) }
+                };
+                await reg.showNotification('Left', opts);
+              }
+              try { localStorage.setItem(LS_SCHEDULED_UNTIL, keyForDate(targetUntil)); } catch(_) {}
+            } else {
+              // Fallback: best-effort timer while app is open
+              const ts = nextNineAMEpoch();
+              const delay = Math.max(0, ts - Date.now());
+              setTimeout(() => { sendNotificationNow(reg); scheduleUpcoming(reg, count); }, delay);
+            }
+          } catch(_) {}
+        }
+        async function enableDaily(){
+          try { localStorage.setItem(LS_OPT_IN, '1'); } catch(_) {}
+          const reg = await navigator.serviceWorker.getRegistration();
+          // If we already sent today (e.g., opening after 9am), don't duplicate
+          const last = (function(){ try { return localStorage.getItem(LS_LAST_SENT)||''; } catch(_) { return ''; }})();
+          if (last !== todaysKey()) {
+            // If already past 9am, fire now; otherwise schedule
+            if (Date.now() >= nextNineAMEpoch()) {
+              await sendNotificationNow(reg);
+            }
+          }
+          scheduleUpcoming(reg, 20);
+        }
+        async function requestAndSetup(){
+          try {
+            if (!('Notification' in window)) return;
+            if (Notification.permission === 'denied') return;
+            const perm = await Notification.requestPermission();
+            if (perm === 'granted') {
+              await enableDaily();
+            }
+          } catch(_) {}
+        }
+
+        function maybePromptInstall(){
+          try {
+            const prompted = localStorage.getItem(LS_PROMPTED) === '1';
+            const optedIn = localStorage.getItem(LS_OPT_IN) === '1';
+            if (prompted || optedIn) return;
+            const isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || (window.navigator && window.navigator.standalone === true);
+            if (!isStandalone) return;
+            // Lightweight prompt
+            const ok = window.confirm('Enable a daily reminder at 9am?');
+            try { localStorage.setItem(LS_PROMPTED, '1'); } catch(_) {}
+            if (ok) requestAndSetup();
+          } catch(_) {}
+        }
+
+        // If already opted in, ensure scheduling on load
+        window.addEventListener('load', async () => {
+          try {
+            if (!('Notification' in window)) return;
+            if (localStorage.getItem(LS_OPT_IN) === '1' && Notification.permission === 'granted') {
+              const reg = await navigator.serviceWorker.getRegistration();
+              scheduleUpcoming(reg, 20);
+            }
+          } catch(_) {}
+        });
+
+        // Prompt after install
+        window.addEventListener('appinstalled', () => { maybePromptInstall(); });
+        // Also prompt on first run in standalone
+        maybePromptInstall();
+      })();
+
       (function () {
         const grid = document.getElementById('grid');
         const yearEl = document.getElementById('year');
@@ -433,6 +615,11 @@
           { name: 'Green',      light: '#E9F5EC', dark: '#4CAF6B' },
           { name: 'Purple',     light: '#F0EAF9', dark: '#A07CFF' },
           { name: 'Orange',     light: '#FBE7DA', dark: '#FFA347' },
+          // New softer-in-light, bolder-in-dark themes
+          { name: 'Brown',      light: '#EFE8E3', dark: '#A37555' },
+          { name: 'Mint',       light: '#E6F5F0', dark: '#48C9A9' },
+          { name: 'Yellow',     light: '#FFF6CC', dark: '#FFD54A' },
+          { name: 'Pink',       light: '#FBE3EE', dark: '#FF7FB0' },
         ];
         const symbols = [
           { key: 'dot', label: 'Dot' },

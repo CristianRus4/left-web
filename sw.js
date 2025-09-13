@@ -39,3 +39,21 @@ self.addEventListener('fetch', (event) => {
     caches.match(request).then((cached) => cached || fetch(request))
   );
 });
+
+// Focus an existing client or open the app when a notification is clicked
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  event.waitUntil((async () => {
+    const allClients = await clients.matchAll({ type: 'window', includeUncontrolled: true });
+    for (const client of allClients) {
+      try {
+        const url = new URL(client.url);
+        if (url.pathname.endsWith('/try.html') || url.pathname === '/' ) {
+          client.focus();
+          return;
+        }
+      } catch(_) {}
+    }
+    await clients.openWindow('/try.html');
+  })());
+});
