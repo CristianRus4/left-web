@@ -164,6 +164,18 @@
         align-items: center;
         line-height: 1; /* avoid extra vertical space */
       }
+      /* Add rounded outline style to specific action buttons */
+      #bdayConfirm,
+      #bdayBtn,
+      #shareBtn,
+      #appBtn {
+        border: 1px solid rgba(0,0,0,0.22);
+        border-radius: 9999px;
+        padding: 6px 12px;
+      }
+      /* Exclude symbol and color pickers from outlined style */
+      #symbolBtn,
+      #colorBtn { border: none; padding: 0; }
       /* Constrain symbol preview box to prevent overflow on mobile */
       #symbolPreview {
         display: inline-flex;
@@ -205,7 +217,7 @@
       /* Align Calculate button to the right inside the row */
       #bdayConfirm { margin-left: auto; }
       .bday-label { font-size: 0.9em; opacity: 0.8; }
-      .bday-row { display: flex; align-items: center; gap: 8px; }
+      .bday-row { display: flex; align-items: center; gap: 8px; width: 100%; }
       @media (prefers-color-scheme: dark) {
         .actions-card, .bday-panel { background: #141413; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06); color: var(--accent-dark, #EEEEEC); }
         .actions-card a.action-btn,
@@ -216,6 +228,10 @@
           -webkit-background-clip: initial !important;
           -webkit-text-fill-color: currentColor !important;
         }
+        #bdayConfirm,
+        #bdayBtn,
+        #shareBtn,
+        #appBtn { border-color: rgba(255,255,255,0.35); }
         .color-swatch { border-color: rgba(255,255,255,0.35); }
       }
     </style>
@@ -273,6 +289,16 @@
         const bdayBtn = document.getElementById('bdayBtn');
         const bdayPanel = document.getElementById('bdayPanel');
         const actionsCard = document.querySelector('.actions-card');
+        // Keep bday panel gap accurate by syncing actions card height to a CSS var
+        function syncActionsHeight() {
+          try {
+            const h = actionsCard ? actionsCard.offsetHeight : 60;
+            document.documentElement.style.setProperty('--actions-height', h + 'px');
+          } catch(_) {}
+        }
+        syncActionsHeight();
+        window.addEventListener('resize', syncActionsHeight);
+        window.addEventListener('orientationchange', syncActionsHeight);
         const bdayMonth = document.getElementById('bdayMonth');
         const bdayYear = document.getElementById('bdayYear');
         const bdayConfirm = document.getElementById('bdayConfirm');
@@ -846,13 +872,3 @@
     </script>
   </body>
   </html>
-        // Keep bday panel gap accurate by syncing actions card height to a CSS var
-        function syncActionsHeight() {
-          try {
-            const h = actionsCard ? actionsCard.offsetHeight : 60;
-            document.documentElement.style.setProperty('--actions-height', h + 'px');
-          } catch(_) {}
-        }
-        syncActionsHeight();
-        window.addEventListener('resize', syncActionsHeight);
-        window.addEventListener('orientationchange', syncActionsHeight);
