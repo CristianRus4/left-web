@@ -105,6 +105,11 @@
         .bottom { opacity: 1; color: var(--accent-dark, #EEEEEC); }
       }
 
+      /* Hide native store CTA in installed PWA context */
+      @media all and (display-mode: standalone) {
+        #appBtn { display: none !important; }
+      }
+
       /* Actions card at the bottom (10% viewport height) */
       .actions-card {
         position: fixed;
@@ -289,6 +294,7 @@
         const bdayBtn = document.getElementById('bdayBtn');
         const bdayPanel = document.getElementById('bdayPanel');
         const actionsCard = document.querySelector('.actions-card');
+        const appBtn = document.getElementById('appBtn');
         // Keep bday panel gap accurate by syncing actions card height to a CSS var
         function syncActionsHeight() {
           try {
@@ -444,9 +450,10 @@
               // Scale glyph inside the preview span, not the button
               const basePx = parseFloat(getComputedStyle(symbolBtn).fontSize) || 16;
               let scale = 1.0;
-              if (sym.key === 'square') scale = 1.6;       // 160% inside 1.1em box
-              else if (sym.key === 'hexagon') scale = 1.3; // 130%
-              else scale = 1.1;                            // slight boost
+              if (sym.key === 'square') scale = 1.6;           // 160% inside 1.1em box
+              else if (sym.key === 'hexagon') scale = 1.3;     // 130%
+              else if (sym.key === 'triangle' || sym.key === 'star') scale = 1.4; // make slightly bigger
+              else scale = 1.1;                                // slight boost
               preview.style.fontSize = (basePx * scale) + 'px';
               // ensure preview itself has no extra styles
               preview.style.width = preview.style.height = '';
@@ -486,9 +493,11 @@
               dot.className = 'dot glyph' + (past ? ' past' : '');
               const sym = currentSymbol();
               dot.textContent = sym.char || '•';
-              // Make square and hexagon visually larger
+              // Make shapes visually larger; triangles/stars slightly bigger than default
               if (sym.key === 'square' || sym.key === 'hexagon') {
                 dot.style.fontSize = `calc(${getComputedStyle(document.documentElement).getPropertyValue('--dot-size').trim()} * 2)`;
+              } else if (sym.key === 'triangle' || sym.key === 'star') {
+                dot.style.fontSize = `calc(${getComputedStyle(document.documentElement).getPropertyValue('--dot-size').trim()} * 1.6)`;
               }
             } else {
               dot.className = 'dot' + (past ? ' past' : '');
@@ -694,6 +703,13 @@
         colorBtn.addEventListener('click', () => { toggleColor(); updateActionLabels(); });
         symbolBtn.addEventListener('click', () => { toggleSymbol(); updateActionLabels(); });
 
+        // Hide App Store link when running as installed PWA
+        try {
+          const isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || (window.navigator && window.navigator.standalone === true);
+          if (isStandalone && appBtn) appBtn.style.display = 'none';
+          window.addEventListener('appinstalled', () => { try { if (appBtn) appBtn.style.display = 'none'; } catch(_){} });
+        } catch(_) {}
+
         // Load persisted theme/symbol
         try {
           const ti = parseInt(localStorage.getItem('left_theme_index') || '0', 10);
@@ -784,10 +800,14 @@
               cell.style.display = 'flex';
               cell.style.alignItems = 'center';
               cell.style.justifyContent = 'center';
-              // Make square/hexagon larger in export
+              // Make shapes larger in export; triangle/star slightly bigger than default
               const exportedSymbolIndex = (function(){ try { return (localStorage.getItem('left_symbol_index')|0); } catch(_) { return 0; }})();
               const baseSize = EXPORT_DOT + 2;
-              const fontSize = (exportedSymbolIndex === 1 || exportedSymbolIndex === 4) ? baseSize * 2 : baseSize; // 1=square,4=hexagon
+              const fontSize = (exportedSymbolIndex === 1 || exportedSymbolIndex === 4)
+                ? baseSize * 2                        // 1=square, 4=hexagon
+                : (exportedSymbolIndex === 2 || exportedSymbolIndex === 3)
+                  ? Math.round(baseSize * 1.6)       // 2=triangle, 3=star
+                  : baseSize;                         // dot
               cell.style.fontSize = fontSize + 'px';
               cell.style.lineHeight = '1';
               cell.style.color = isDark ? accent : '#111110';
@@ -811,6 +831,38 @@
           exportCard.appendChild(exportGrid);
           exportCard.appendChild(exportFooter);
           exportRoot.appendChild(exportCard);
+
+          // Add bottom-centered site label outside the card
+          const cardSide = Math.round((OUTER - CARD) / 2);
+          const exportLabelRight = document.createElement('div');
+          exportLabelRight.textContent = 'left-time.app';
+          exportLabelRight.style.position = 'absolute';
+          // Align label with the card's right edge
+          exportLabelRight.style.right = cardSide + 'px';
+          exportLabelRight.style.textAlign = 'right';
+          exportLabelRight.style.bottom = '40px';
+          exportLabelRight.style.fontFamily = getComputedStyle(document.body).fontFamily;
+          exportLabelRight.style.fontSize = '40px';
+          exportLabelRight.style.fontWeight = '600';
+          exportLabelRight.style.letterSpacing = '-0.01em';
+          exportLabelRight.style.color = isDark ? '#b9b9b9' : '#8a8a8a';
+          exportLabelRight.style.opacity = '0.95';
+          exportRoot.appendChild(exportLabelRight);
+
+          // Add bottom-left label aligned with the card's left edge
+          const exportLabelLeft = document.createElement('div');
+          exportLabelLeft.textContent = 'Visualize Your Time Left';
+          exportLabelLeft.style.position = 'absolute';
+          exportLabelLeft.style.left = cardSide + 'px';
+          exportLabelLeft.style.textAlign = 'left';
+          exportLabelLeft.style.bottom = '40px';
+          exportLabelLeft.style.fontFamily = getComputedStyle(document.body).fontFamily;
+          exportLabelLeft.style.fontSize = '40px';
+          exportLabelLeft.style.fontWeight = '600';
+          exportLabelLeft.style.letterSpacing = '-0.01em';
+          exportLabelLeft.style.color = isDark ? '#b9b9b9' : '#8a8a8a';
+          exportLabelLeft.style.opacity = '0.95';
+          exportRoot.appendChild(exportLabelLeft);
           document.body.appendChild(exportRoot);
 
           // Compute spacing inside export card to center-top grid and align footer width
@@ -855,11 +907,23 @@
           // Cleanup the offscreen DOM
           exportRoot.remove();
 
-          canvas.toBlob((blob) => {
+          canvas.toBlob(async (blob) => {
             if (!blob) return;
-            const a = document.createElement('a');
             const modeLabel = yearEl.textContent.trim();
-            a.download = `left-${modeLabel.replace(/\s+/g,'-').toLowerCase()}.png`;
+            const filename = `left-${modeLabel.replace(/\s+/g,'-').toLowerCase()}.png`;
+
+            try {
+              const file = new File([blob], filename, { type: 'image/png' });
+              const shareData = { files: [file], title: 'Left', text: 'My snapshot from Left' };
+              if (navigator.canShare && navigator.canShare(shareData)) {
+                await navigator.share(shareData);
+                return; // shared successfully
+              }
+            } catch (_) { /* ignore and fall back */ }
+
+            // Fallback: download the image
+            const a = document.createElement('a');
+            a.download = filename;
             a.href = URL.createObjectURL(blob);
             document.body.appendChild(a);
             a.click();
