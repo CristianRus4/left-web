@@ -549,18 +549,19 @@ a:hover { text-decoration: none; font-weight: 700; }
 .trusted-logos img {
   /* Column counts via flex-basis per breakpoint */
   flex: 0 1 45%; /* ~2 columns on mobile (with gap overhead) */
-  width: clamp(90px, 14vw, 160px);
+  display: block;
+  height: 36px;      /* keep logos small on mobile */
+  max-height: 36px;
+  width: auto;
   max-width: 100%;
-  max-height: clamp(28px, 5vw, 48px);
-  height: auto;
   object-fit: contain;
   filter: brightness(1) contrast(1.05);
 }
 @media (min-width: 700px) {
-  .trusted-logos img { flex: 0 1 22%; } /* ~4 columns, second row centers */
+  .trusted-logos img { flex: 0 1 22%; height: 44px; max-height: 44px; } /* ~4 columns */
 }
 @media (min-width: 1200px) {
-  .trusted-logos img { flex: 0 1 14.5%; } /* ~6 columns on large screens */
+  .trusted-logos img { flex: 0 1 14.5%; height: 52px; max-height: 52px; } /* ~6 columns */
 }
 .trusted-jk { margin: 10px 0 0; font-size: 14px; color: var(--text-dim); }
 
