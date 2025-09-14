@@ -27,6 +27,8 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/left-icon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/left-icon/favicon-16x16.png">
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <!-- Material Symbols for Android share icon -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,1,0" />
     <!-- Roboto for Material 3 typography on this page only -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -156,17 +158,20 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 6px 14px; /* tighter padding around text */
+        padding: 6px 10px; /* tighter padding around text */
         box-sizing: border-box;
         z-index: 3;
       }
       .actions-card .actions {
-        display: flex;
-        gap: 1rem 2rem;
+        display: grid;
+        grid-template-columns: 1fr auto auto; /* left icons | primary buttons | app */
         align-items: center;
-        justify-content: space-between;
+        column-gap: 10px;
         width: 100%;
       }
+      .actions-left { display: flex; align-items: center; gap: 12px; justify-self: start; }
+      .actions-primary { display: flex; align-items: center; gap: 0; justify-self: end; }
+      .actions-tail { display: flex; align-items: center; justify-self: end; }
       /* Week view rows */
       .week-row {
         display: flex;
@@ -224,6 +229,12 @@
         /* no shadows on buttons */
         box-shadow: none;
       }
+      /* Icon font setup */
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        font-size: 20px;
+        line-height: 1;
+      }
       /* M3 Title/Medium for button labels */
       .actions-card .action-btn,
       .actions-card a.action-btn {
@@ -244,6 +255,29 @@
         padding: 6px 12px;
         box-shadow: none;
       }
+      /* Filled primary buttons on the right */
+      .btn-filled {
+        background: var(--m3-elements);
+        color: var(--m3-surface);
+        border: none;
+        opacity: 1;
+      }
+      /* Segmented pill radii (inner corners smaller) */
+      .btn-seg-left  { border-top-right-radius: calc(var(--m3-radius) / 2);  border-bottom-right-radius: calc(var(--m3-radius) / 2);  border-top-left-radius: var(--m3-radius); border-bottom-left-radius: var(--m3-radius); }
+      .btn-seg-right { border-top-left-radius: calc(var(--m3-radius) / 2);  border-bottom-left-radius: calc(var(--m3-radius) / 2);  border-top-right-radius: var(--m3-radius); border-bottom-right-radius: var(--m3-radius); }
+      .btn-standalone { border-radius: var(--m3-radius); }
+      /* Left icon buttons: compact, no outline */
+      #symbolBtn, #colorBtn {
+        border: none;
+        padding: 8px 10px;
+        border-radius: 9999px;
+      }
+      /* Symbol preview uses Material Symbols in the picker */
+      #symbolPreview .material-symbols-outlined {
+        font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+        font-size: 20px;
+        line-height: 1;
+      }
       /* Exclude symbol and color pickers from outlined style */
       #symbolBtn,
       #colorBtn { border: none; padding: 0; }
@@ -258,13 +292,17 @@
         overflow: hidden; /* clamp oversized glyphs */
       }
       /* Override global link gradient styles inside the actions card */
-      .actions-card a.action-btn,
-      .actions-card a.action-btn:visited {
+      .actions-card a.action-btn:not(.btn-filled),
+      .actions-card a.action-btn:visited:not(.btn-filled) {
         color: inherit !important;
         background: none !important;
         -webkit-background-clip: initial !important;
         -webkit-text-fill-color: currentColor !important;
         text-decoration: none;
+      }
+      .actions-card a.action-btn.btn-filled {
+        color: var(--m3-surface) !important;
+        background: var(--m3-elements) !important;
       }
       .actions-card a.action-btn:hover { text-decoration: none; }
       .bday-panel {
@@ -329,13 +367,15 @@
     <div class="actions-card">
       <div class="actions">
         <div class="actions-left">
-          <button id="bdayBtn" aria-label="Calculate your life left" class="action-btn">Your life</button>
-        </div>
-        <div class="actions-right">
           <button id="symbolBtn" class="action-btn" aria-label="Change symbol"><span id="symbolPreview"></span></button>
-          <button id="colorBtn" class="action-btn" aria-label="Change color"><span class="color-swatch"></span></button>
-          <button id="shareBtn" aria-label="Share snapshot" class="action-btn">Share</button>
-          <a id="appBtn" class="action-btn" href="https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884" target="_blank" rel="noopener">Get app</a>
+          <button id="colorBtn" class="action-btn" aria-label="Change color"><span class="material-symbols-outlined" aria-hidden="true">palette</span></button>
+        </div>
+        <div class="actions-primary">
+          <button id="bdayBtn" aria-label="Calculate your life left" class="action-btn btn-filled btn-seg-left">Your life</button>
+          <button id="shareBtn" aria-label="Share snapshot" class="action-btn btn-filled btn-seg-right"><span class="material-symbols-outlined" aria-hidden="true">share</span></button>
+        </div>
+        <div class="actions-tail">
+          <a id="appBtn" class="action-btn btn-filled btn-standalone" href="https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884" target="_blank" rel="noopener">Get app</a>
         </div>
       </div>
       <div id="bdayPanel" class="bday-panel">
@@ -716,11 +756,11 @@
           { name: 'Pink',       light: '#FBE3EE', dark: '#FF7FB0' },
         ];
         const symbols = [
-          { key: 'dot', label: 'Dot' },
-          { key: 'square', label: 'Square', char: '■' },
-          { key: 'triangle', label: 'Triangle', char: '▲' },
-          { key: 'star', label: 'Star', char: '★' },
-          { key: 'hexagon', label: 'Hexagon', char: '⬢' },
+          { key: 'dot', label: 'Dot', char: '•', icon: 'circle' },
+          { key: 'square', label: 'Square', char: '■', icon: 'square' },
+          { key: 'triangle', label: 'Triangle', char: '▲', icon: 'triangle' },
+          { key: 'star', label: 'Star', char: '★', icon: 'star' },
+          { key: 'hexagon', label: 'Hexagon', char: '⬢', icon: 'hexagon' },
         ];
         // Hand-tuned palettes inspired by Material 3 tones (bg, container, element)
         const palettes = {
@@ -927,40 +967,22 @@
             const sym = currentSymbol();
             const preview = document.getElementById('symbolPreview');
             symbolBtn.style.fontSize = '1em'; // reset
-            if (sym.key === 'dot') {
-              // Use real HTML circle sized by scale factor
-              const sizeEm = 0.5; // 50%
-              preview.className = 'symbol-circle';
-              preview.textContent = '';
-              preview.style.width = sizeEm + 'em';
-              preview.style.height = sizeEm + 'em';
+            preview.className = '';
+            preview.style.width = '';
+            preview.style.height = '';
+            preview.style.fontSize = '';
+            // Use HTML triangle glyph for triangle; Material icon for others
+            if (sym.key === 'triangle') {
+              preview.textContent = sym.char || '▲';
             } else {
-              // Use glyphs for other symbols
-              preview.className = '';
-              preview.textContent = sym.char || '•';
-              // Scale glyph inside the preview span, not the button
-              const basePx = parseFloat(getComputedStyle(symbolBtn).fontSize) || 16;
-              let scale = 1.0;
-              if (sym.key === 'square') scale = 1.6;           // 160% inside 1.1em box
-              else if (sym.key === 'hexagon') scale = 1.3;     // 130%
-              else if (sym.key === 'triangle' || sym.key === 'star') scale = 1.4; // make slightly bigger
-              else scale = 1.1;                                // slight boost
-              preview.style.fontSize = (basePx * scale) + 'px';
-              // ensure preview itself has no extra styles
-              preview.style.width = preview.style.height = '';
+              const iconName = sym.icon || (sym.key === 'dot' ? 'circle' : 'star');
+              preview.innerHTML = `<span class="material-symbols-outlined" aria-hidden="true">${iconName}</span>`;
             }
             symbolBtn.setAttribute('aria-label', 'Change symbol: ' + sym.label);
           } catch(_) {}
-          // Color button shows current primary color
+          // Color button label reflects current theme name (icon is static palette)
           try {
             const t = themes[themeIndex];
-            const sw = document.querySelector('.color-swatch');
-            if (sw) {
-              const computedElements = getComputedStyle(document.documentElement).getPropertyValue('--m3-elements').trim();
-              const computedPrimary  = getComputedStyle(document.documentElement).getPropertyValue('--m3-primary').trim();
-              const fallback = computedPrimary || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? (t.dark || '#EEEEEC') : (t.light || '#f7f7f4'));
-              sw.style.background = computedElements || fallback;
-            }
             colorBtn.setAttribute('aria-label', 'Change color: ' + t.name);
           } catch(_) {}
         }
