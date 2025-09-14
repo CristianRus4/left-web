@@ -85,6 +85,13 @@ img {
   height: 56px;
 }
 
+/* Group right-side nav buttons together */
+.nav-cta {
+  margin-left: auto;
+  display: inline-flex;
+  gap: 8px;
+}
+
 .brand {
   color: var(--text);
   text-decoration: none;

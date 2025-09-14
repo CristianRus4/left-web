@@ -173,7 +173,10 @@
     <nav class="top-nav" aria-label="Primary">
       <div class="container nav-inner">
         <a href="#" class="brand" aria-label="Left home">Left</a>
-        <a class="btn download-btn" href="https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884?itscg=30200&itsct=apps_box_badge&mttnsubad=6740155884" target="_blank" rel="noopener">Get Left free</a>
+        <div class="nav-cta">
+          <a class="btn nav-web-btn" href="try.html">Try on web</a>
+          <a class="btn download-btn" href="https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884?itscg=30200&itsct=apps_box_badge&mttnsubad=6740155884" target="_blank" rel="noopener">Get Left</a>
+        </div>
       </div>
     </nav>
 
@@ -723,6 +726,25 @@
       setScrolled();
       updateHeroEffects();
       window.addEventListener('scroll', onScroll, { passive: true });
+
+      // Navbar buttons: default to Try on web + Get Left.
+      // If Android, show Left for Android (-> try.html) + Left for iOS (App Store)
+      (function() {
+        const webBtn = document.querySelector('.nav-web-btn');
+        const dlBtn = document.querySelector('.download-btn');
+        if (!webBtn || !dlBtn) return;
+        const ua = navigator.userAgent || '';
+        const isAndroid = /android/i.test(ua);
+        if (isAndroid) {
+          webBtn.textContent = 'Left for Android';
+          webBtn.setAttribute('href', 'try.html');
+          dlBtn.textContent = 'Left for iOS';
+        } else {
+          webBtn.textContent = 'Try on web';
+          webBtn.setAttribute('href', 'try.html');
+          dlBtn.textContent = 'Get Left';
+        }
+      })();
     </script>
   </body>
   </html>
