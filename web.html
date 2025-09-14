@@ -63,7 +63,9 @@
       }
 
       /* Page font and base typography */
-      body { font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
+      /* Use Roboto everywhere (Material 3 default) */
+      body { font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif; }
+      button, input, select, textarea { font-family: inherit; }
 
       /* App-specific layout (minimal; uses site styles) */
       .card {
@@ -127,6 +129,8 @@
         opacity: 1; /* match full-opacity future dots */
         color: var(--m3-elements, var(--footer-color));
         font-size: 0.95em;
+        font-weight: 500; /* match button weight */
+        letter-spacing: 0.15px; /* align with button typography */
         pointer-events: auto; /* allow clicking/tapping labels */
         z-index: 2;
       }
@@ -243,31 +247,39 @@
         line-height: 24px;
         letter-spacing: 0.15px;
       }
-      /* Add rounded outline style to specific action buttons */
-      #bdayConfirm,
-      #bdayBtn,
-      #shareBtn,
-      #appBtn {
+      /* Add rounded outline style to specific action buttons when NOT filled */
+      #bdayConfirm:not(.btn-filled),
+      #bdayBtn:not(.btn-filled),
+      #appBtn:not(.btn-filled) {
         border: 0.4px solid currentColor; /* thinner outline */
         /* reduce border opacity by 20% while keeping hue */
         border-color: color-mix(in srgb, currentColor 80%, transparent);
         border-radius: 9999px;
-        padding: 6px 12px;
+        padding: 8px 14px;
         box-shadow: none;
       }
       /* Filled primary buttons on the right */
       .btn-filled {
-        background: var(--m3-elements);
-        color: var(--m3-surface);
-        border: none;
+        background: var(--m3-elements) !important;
+        color: var(--m3-surface) !important;
+        border: none !important;
         opacity: 1;
       }
+      /* Ensure filled action buttons have consistent height */
+      .actions-primary .action-btn.btn-filled,
+      .actions-tail .action-btn.btn-filled,
+      #bdayConfirm.btn-filled {
+        padding: 8px 16px; /* slightly reduced height */
+        min-height: 40px;
+        border-radius: 9999px;
+      }
+      .actions-primary .material-symbols-outlined { font-size: 22px; }
       /* Segmented pill radii (inner corners smaller) */
       .btn-seg-left  { border-top-right-radius: calc(var(--m3-radius) / 2);  border-bottom-right-radius: calc(var(--m3-radius) / 2);  border-top-left-radius: var(--m3-radius); border-bottom-left-radius: var(--m3-radius); }
       .btn-seg-right { border-top-left-radius: calc(var(--m3-radius) / 2);  border-bottom-left-radius: calc(var(--m3-radius) / 2);  border-top-right-radius: var(--m3-radius); border-bottom-right-radius: var(--m3-radius); }
       .btn-standalone { border-radius: var(--m3-radius); }
       /* Left icon buttons: compact, no outline */
-      #symbolBtn, #colorBtn {
+      #viewBtn, #symbolBtn, #colorBtn, #personBtn {
         border: none;
         padding: 8px 10px;
         border-radius: 9999px;
@@ -280,7 +292,16 @@
       }
       /* Exclude symbol and color pickers from outlined style */
       #symbolBtn,
-      #colorBtn { border: none; padding: 0; }
+      #colorBtn,
+      #personBtn { border: none; padding: 6px; }
+      /* Share button styled like left-side icons but stays right-aligned */
+      #shareBtn { border: none; padding: 6px; background: transparent; }
+      #shareBtn .material-symbols-outlined { font-size: 25px; }
+      /* Make the view button larger (about 2x icon size) */
+      #viewBtn { padding: 6px; }
+      #viewBtn .material-symbols-outlined { font-size: 30px; }
+      #personBtn { padding: 6px; }
+      #personBtn .material-symbols-outlined { font-size: 25px; }
       /* Constrain symbol preview box to prevent overflow on mobile */
       #symbolPreview {
         display: inline-flex;
@@ -344,10 +365,10 @@
         }
         /* no shadows on buttons in dark mode */
         .action-btn { box-shadow: none; }
-        #bdayConfirm,
-        #bdayBtn,
-        #shareBtn,
-        #appBtn {
+        #bdayConfirm:not(.btn-filled),
+        #bdayBtn:not(.btn-filled),
+        #shareBtn:not(.btn-filled),
+        #appBtn:not(.btn-filled) {
           /* thinner + 20% less opaque, synced with font color */
           border-color: color-mix(in srgb, currentColor 80%, transparent);
           box-shadow: none;
@@ -367,15 +388,16 @@
     <div class="actions-card">
       <div class="actions">
         <div class="actions-left">
+          <button id="viewBtn" class="action-btn" aria-label="Change view"><span class="material-symbols-outlined" aria-hidden="true">view_carousel</span></button>
           <button id="symbolBtn" class="action-btn" aria-label="Change symbol"><span id="symbolPreview"></span></button>
           <button id="colorBtn" class="action-btn" aria-label="Change color"><span class="material-symbols-outlined" aria-hidden="true">palette</span></button>
+          <button id="personBtn" class="action-btn" aria-label="Set your birthday"><span class="material-symbols-outlined" aria-hidden="true">person_edit</span></button>
         </div>
         <div class="actions-primary">
-          <button id="bdayBtn" aria-label="Calculate your life left" class="action-btn btn-filled btn-seg-left">Your life</button>
-          <button id="shareBtn" aria-label="Share snapshot" class="action-btn btn-filled btn-seg-right"><span class="material-symbols-outlined" aria-hidden="true">share</span></button>
+          <button id="shareBtn" aria-label="Share snapshot" class="action-btn"><span class="material-symbols-outlined" aria-hidden="true">share</span></button>
         </div>
         <div class="actions-tail">
-          <a id="appBtn" class="action-btn btn-filled btn-standalone" href="https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884" target="_blank" rel="noopener">Get app</a>
+          <button id="appBtn" class="action-btn btn-filled btn-standalone">Get app</button>
         </div>
       </div>
       <div id="bdayPanel" class="bday-panel">
@@ -383,7 +405,7 @@
         <div class="bday-row">
           <select id="bdayMonth" class="action-select"></select>
           <select id="bdayYear" class="action-select"></select>
-          <button id="bdayConfirm" class="action-btn">Calculate</button>
+          <button id="bdayConfirm" class="action-btn btn-filled">Calculate</button>
         </div>
       </div>
     </div>
@@ -614,9 +636,10 @@
         const yearEl = document.getElementById('year');
         const infoEl = document.getElementById('right-info');
         const shareBtn = document.getElementById('shareBtn');
+        const viewBtn = document.getElementById('viewBtn');
         const colorBtn = document.getElementById('colorBtn');
         const symbolBtn = document.getElementById('symbolBtn');
-        const bdayBtn = document.getElementById('bdayBtn');
+        const personBtn = document.getElementById('personBtn');
         const bdayPanel = document.getElementById('bdayPanel');
         const actionsCard = document.querySelector('.actions-card');
         const appBtn = document.getElementById('appBtn');
@@ -964,26 +987,26 @@
         function updateActionLabels() {
           // Symbol button shows current glyph
           try {
-            const sym = currentSymbol();
             const preview = document.getElementById('symbolPreview');
             symbolBtn.style.fontSize = '1em'; // reset
             preview.className = '';
             preview.style.width = '';
             preview.style.height = '';
             preview.style.fontSize = '';
-            // Use HTML triangle glyph for triangle; Material icon for others
-            if (sym.key === 'triangle') {
-              preview.textContent = sym.char || '▲';
-            } else {
-              const iconName = sym.icon || (sym.key === 'dot' ? 'circle' : 'star');
-              preview.innerHTML = `<span class="material-symbols-outlined" aria-hidden="true">${iconName}</span>`;
-            }
-            symbolBtn.setAttribute('aria-label', 'Change symbol: ' + sym.label);
+            // Always show a generic Shapes icon in the picker button
+            preview.innerHTML = `<span class="material-symbols-outlined" aria-hidden="true">shapes</span>`;
+            symbolBtn.setAttribute('aria-label', 'Change symbol');
           } catch(_) {}
           // Color button label reflects current theme name (icon is static palette)
           try {
             const t = themes[themeIndex];
             colorBtn.setAttribute('aria-label', 'Change color: ' + t.name);
+          } catch(_) {}
+          // Person button icon reflects whether birthdate is set
+          try {
+            const saved = localStorage.getItem('left_birthdate');
+            const el = document.querySelector('#personBtn .material-symbols-outlined');
+            if (el) el.textContent = saved ? 'person' : 'person_edit';
           } catch(_) {}
         }
 
@@ -1131,6 +1154,9 @@
           renderGrid();
         });
 
+        // View button mirrors the left footer label behavior
+        if (viewBtn) viewBtn.addEventListener('click', () => { yearEl && yearEl.click(); });
+
         // Birthday flow → Life mode (7x12 = 84 years)
         function lifeState(birth) {
           const birthDate = new Date(birth.getFullYear(), birth.getMonth(), birth.getDate());
@@ -1183,8 +1209,8 @@
           bdayYear.innerHTML = years.join('');
         })();
 
-        // Hook up birthday button and panel
-        bdayBtn.addEventListener('click', () => {
+        // Hook up birthday button and panel (icon button in actions-left)
+        function openBirthdayFlow() {
           const savedBirth = getSavedBirthDate();
           // If a birthday is saved and we are not in life mode, jump straight to life
           if (savedBirth && mode !== 'life') {
@@ -1205,7 +1231,8 @@
             }
           } catch(_){}
           bdayPanel.style.display = bdayPanel.style.display === 'none' ? 'flex' : 'none';
-        });
+        }
+        if (personBtn) personBtn.addEventListener('click', openBirthdayFlow);
         bdayConfirm.addEventListener('click', () => {
           const yy = parseInt(bdayYear.value, 10);
           const mm = parseInt(bdayMonth.value, 10);
@@ -1279,6 +1306,7 @@
 
         // On Android, intercept the Get app link and guide install
         try {
+          const APP_URL = 'https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884';
           const isAndroid = /Android/i.test(navigator.userAgent || '');
           if (isAndroid && appBtn) {
             appBtn.addEventListener('click', async (e) => {
@@ -1295,6 +1323,8 @@
                 alert('To install Left:\n\n1) Open the browser menu (⋮).\n2) Tap "Install app" or "Add to Home screen".\n3) Follow the prompts to add it to your home screen.\n\nTip: In Samsung Internet, open the ≡ menu and choose "Add page to" → "Home screen".');
               } catch(_) {}
             });
+          } else if (appBtn) {
+            appBtn.addEventListener('click', () => { try { window.open(APP_URL, '_blank', 'noopener'); } catch(_) {} });
           }
         } catch(_) {}
 
