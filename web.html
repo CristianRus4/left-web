@@ -33,6 +33,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Roboto Condensed for quotes only -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
       /* Material 3 color tokens (scoped to this page) */
       :root {
@@ -240,6 +242,20 @@
         font-size: 20px;
         line-height: 1;
       }
+      /* Quote view */
+      .quote {
+        display: none;
+        max-width: 85%;
+        text-align: center;
+        font-family: 'Roboto Condensed', 'Roboto', system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
+        font-weight: 300;
+        font-size: clamp(28px, 5.5vw, 56px);
+        line-height: 1.2;
+        color: var(--m3-elements, currentColor);
+        white-space: pre-wrap;
+      }
+      .card.quote-mode .grid, .card.quote-mode .bottom { display: none; }
+      .card.quote-mode .quote { display: block; }
       /* M3 Title/Medium for button labels */
       .actions-card .action-btn,
       .actions-card a.action-btn {
@@ -296,8 +312,9 @@
       #colorBtn,
       #personBtn { border: none; padding: 6px; }
       /* Share button styled like left-side icons but stays right-aligned */
-      #shareBtn { border: none; padding: 6px; background: transparent; }
-      #shareBtn .material-symbols-outlined { font-size: 22px; }
+      #shareBtn, #quoteBtn { border: none; padding: 6px; background: transparent; }
+      #shareBtn .material-symbols-outlined,
+      #quoteBtn .material-symbols-outlined { font-size: 22px; }
       /* Make the view button larger (about 2x icon size) */
       #viewBtn { padding: 6px; }
       #viewBtn .material-symbols-outlined { font-size: 30px; }
@@ -381,6 +398,7 @@
   <body>
     <div class="card">
       <div id="grid" class="grid" aria-label="Days of the year"></div>
+      <div id="quote" class="quote" aria-live="polite"></div>
       <div class="bottom">
         <span id="year"></span>
         <span id="right-info" aria-live="polite"></span>
@@ -395,6 +413,7 @@
           <button id="personBtn" class="action-btn" aria-label="Set your birthday"><span class="material-symbols-outlined" aria-hidden="true">person_edit</span></button>
         </div>
         <div class="actions-primary">
+          <button id="quoteBtn" aria-label="Show a quote" class="action-btn"><span class="material-symbols-outlined" aria-hidden="true">format_quote</span></button>
           <button id="shareBtn" aria-label="Share snapshot" class="action-btn"><span class="material-symbols-outlined" aria-hidden="true">share</span></button>
         </div>
         <div class="actions-tail">
@@ -634,9 +653,12 @@
 
       (function () {
         const grid = document.getElementById('grid');
+        const cardEl = document.querySelector('.card');
+        const quoteEl = document.getElementById('quote');
         const yearEl = document.getElementById('year');
         const infoEl = document.getElementById('right-info');
         const shareBtn = document.getElementById('shareBtn');
+        const quoteBtn = document.getElementById('quoteBtn');
         const viewBtn = document.getElementById('viewBtn');
         const colorBtn = document.getElementById('colorBtn');
         const symbolBtn = document.getElementById('symbolBtn');
@@ -764,6 +786,57 @@
         }
 
         let showPercent = false; // right label mode
+
+        // Quotes for quote mode
+        const quotes = [
+          'Time is a nonrenewable budget. Spend it on what matters.',
+          'Days are currency. Spend them with care.',
+          'You are not late. You are finite. Choose.',
+          'Memento mori. Memento vivere.',
+          'The clock is honest. Be too.',
+          'Fewer days ahead than behind. Make this one count.',
+          'Attention is life. Guard it.',
+          'Do not wait for the mood. Act.',
+          'Most things can wait. Your life cannot.',
+          'The years are short. Today is the unit.',
+          'You cannot save time. You can shape it.',
+          'Do one small thing that matters.',
+          'Death gives today its edge.',
+          'The calendar will not plead. You must.',
+          'Your schedule is your values in motion.',
+          'Leave something better than you found it.',
+          'Less scrolling. More making.',
+          'Move like your time is yours.',
+          'Say no so you can say yes.',
+          'Time left is not a threat. It is permission.'
+        ];
+        let quoteMode = false;
+        let lastQuoteIndex = -1;
+        function nextQuoteIndex(){
+          if (!quotes.length) return 0;
+          if (quotes.length === 1) return 0;
+          let idx = -1;
+          do { idx = Math.floor(Math.random() * quotes.length); } while (idx === lastQuoteIndex);
+          lastQuoteIndex = idx;
+          return idx;
+        }
+        function showRandomQuote(){
+          try {
+            const idx = nextQuoteIndex();
+            if (quoteEl) quoteEl.textContent = quotes[idx];
+          } catch(_) {}
+        }
+        function enterQuoteMode(){
+          quoteMode = true;
+          try { cardEl && cardEl.classList.add('quote-mode'); } catch(_) {}
+          showRandomQuote();
+          try { quoteBtn && quoteBtn.setAttribute('aria-label', 'New quote'); } catch(_) {}
+        }
+        function exitQuoteMode(){
+          quoteMode = false;
+          try { cardEl && cardEl.classList.remove('quote-mode'); } catch(_) {}
+          try { quoteBtn && quoteBtn.setAttribute('aria-label', 'Show a quote'); } catch(_) {}
+        }
 
         // Theme colors and symbols
         const themes = [
@@ -1156,7 +1229,7 @@
         });
 
         // View button mirrors the left footer label behavior
-        if (viewBtn) viewBtn.addEventListener('click', () => { yearEl && yearEl.click(); });
+        if (viewBtn) viewBtn.addEventListener('click', () => { if (quoteMode) exitQuoteMode(); else { yearEl && yearEl.click(); } });
 
         // Birthday flow → Life mode (7x12 = 84 years)
         function lifeState(birth) {
@@ -1298,6 +1371,14 @@
 
         // View switcher removed from action bar (use header tap or URL param)
 
+        // Quote button: toggles quote mode and cycles quotes
+        if (quoteBtn) {
+          quoteBtn.addEventListener('click', () => {
+            if (!quoteMode) enterQuoteMode();
+            else showRandomQuote();
+          });
+        }
+
         // Hide App Store link when running as installed PWA
         try {
           const isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || (window.navigator && window.navigator.standalone === true);
@@ -1408,6 +1489,96 @@
           exportCard.style.padding = '120px';
           exportCard.style.boxSizing = 'border-box';
 
+          // Primary color for elements
+          const primary = getComputedStyle(document.documentElement).getPropertyValue('--m3-elements').trim() || getComputedStyle(document.documentElement).getPropertyValue('--m3-primary').trim() || '#4462FF';
+
+          if (quoteMode) {
+            // Build only a centered quote inside the export card
+            const exportQuote = document.createElement('div');
+            const currentQuote = (quoteEl && quoteEl.textContent && quoteEl.textContent.trim()) ? quoteEl.textContent.trim() : quotes[0];
+            exportQuote.textContent = currentQuote;
+            exportQuote.style.maxWidth = '80%';
+            exportQuote.style.textAlign = 'center';
+            exportQuote.style.fontFamily = "'Roboto Condensed', " + getComputedStyle(document.body).fontFamily;
+            exportQuote.style.fontSize = '80px';
+            exportQuote.style.lineHeight = '1.2';
+            exportQuote.style.fontWeight = '300';
+            exportQuote.style.letterSpacing = '0.015em';
+            exportQuote.style.color = primary;
+            exportQuote.style.whiteSpace = 'pre-wrap';
+            exportCard.appendChild(exportQuote);
+            exportRoot.appendChild(exportCard);
+            // Add bottom labels outside the card (same as non-quote)
+            const cardSide = Math.round((OUTER - CARD) / 2);
+            const exportLabelRight = document.createElement('div');
+            exportLabelRight.textContent = 'left-time.app';
+            exportLabelRight.style.position = 'absolute';
+            exportLabelRight.style.right = cardSide + 'px';
+            exportLabelRight.style.textAlign = 'right';
+            exportLabelRight.style.bottom = '40px';
+            exportLabelRight.style.fontFamily = getComputedStyle(document.body).fontFamily;
+            exportLabelRight.style.fontSize = '40px';
+            exportLabelRight.style.fontWeight = '500';
+            exportLabelRight.style.letterSpacing = '0.15px';
+            exportLabelRight.style.color = primary;
+            exportLabelRight.style.opacity = '1';
+            exportRoot.appendChild(exportLabelRight);
+
+            const exportLabelLeft = document.createElement('div');
+            exportLabelLeft.textContent = 'Visualize your time left';
+            exportLabelLeft.style.position = 'absolute';
+            exportLabelLeft.style.left = cardSide + 'px';
+            exportLabelLeft.style.textAlign = 'left';
+            exportLabelLeft.style.bottom = '40px';
+            exportLabelLeft.style.fontFamily = getComputedStyle(document.body).fontFamily;
+            exportLabelLeft.style.fontSize = '40px';
+            exportLabelLeft.style.fontWeight = '500';
+            exportLabelLeft.style.letterSpacing = '0.15px';
+            exportLabelLeft.style.color = primary;
+            exportLabelLeft.style.opacity = '1';
+            exportRoot.appendChild(exportLabelLeft);
+            document.body.appendChild(exportRoot);
+
+            const canvas = await window.html2canvas(exportRoot, {
+              backgroundColor: siteBg,
+              scale: 1,
+              width: OUTER,
+              height: OUTER
+            });
+
+            // Cleanup the offscreen DOM
+            exportRoot.remove();
+
+            canvas.toBlob(async (blob) => {
+              if (!blob) return;
+              const filename = 'left-quote.png';
+              let shared = false;
+              try {
+                const file = new File([blob], filename, { type: 'image/png' });
+                const shareData = { files: [file], title: 'Left', text: 'A thought on time from Left — https://left-time.app' };
+                if ((navigator.canShare && navigator.canShare(shareData)) || (navigator.share && !('canShare' in navigator))) {
+                  await navigator.share(shareData);
+                  shared = true;
+                }
+              } catch (err) {
+                if (err && (err.name === 'AbortError' || err.name === 'NotAllowedError')) return; // user dismissed
+              }
+              try {
+                if (!shared) {
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = filename;
+                  document.body.appendChild(a);
+                  a.click();
+                  a.remove();
+                  setTimeout(() => URL.revokeObjectURL(url), 2000);
+                }
+              } catch(_) {}
+            });
+            return; // quote mode handled
+          }
+
           const exportGrid = document.createElement('div');
           if (state.kind === 'week') {
             // Use flex column so words space evenly and avoid footer overlap
@@ -1446,7 +1617,6 @@
           exportFooter.appendChild(rightLabel);
 
           // Build dots or symbols for export (use M3 primary)
-          const primary = getComputedStyle(document.documentElement).getPropertyValue('--m3-elements').trim() || getComputedStyle(document.documentElement).getPropertyValue('--m3-primary').trim() || '#4462FF';
           const useGlyph = (function(){
             try { return (document.getElementById('symbolBtn') && (localStorage.getItem('left_symbol_index')|0) !== 0) || (typeof symbolIndex !== 'undefined' && symbolIndex !== 0); } catch(_) { return false; }
           })();
@@ -1545,7 +1715,7 @@
 
           // Add bottom-left label aligned with the card's left edge
           const exportLabelLeft = document.createElement('div');
-          exportLabelLeft.textContent = 'Visualize Your Time Left';
+          exportLabelLeft.textContent = 'Visualize your time left';
           exportLabelLeft.style.position = 'absolute';
           exportLabelLeft.style.left = cardSide + 'px';
           exportLabelLeft.style.textAlign = 'left';
