@@ -508,6 +508,7 @@ a:hover { text-decoration: none; font-weight: 700; }
     transform: translateY(-2px);
   }
 }
+.container + .container { margin-top: clamp(28px, 6vw, 72px); }
 .seo-intro { padding-block: 20px 14px; }
 .seo-intro h2 { margin: 0 0 8px; font-size: clamp(24px, 3.5vw, 32px); }
 .seo-intro p { color: var(--text-dim); margin: 8px 0; }
@@ -532,6 +533,36 @@ a:hover { text-decoration: none; font-weight: 700; }
 .checklist { margin: 0; padding-left: 0; color: var(--text-dim); list-style: none; }
 .checklist li { margin: 6px 0; position: relative; padding-left: 16px; }
 .checklist li::before { content: "-"; position: absolute; left: 0; color: var(--text); opacity: 0.95; }
+
+/* Trusted-by logos */
+.trusted { padding-block: 26px 8px; text-align: center; }
+.trusted-eyebrow { margin: 0 0 14px; letter-spacing: 0.08em; opacity: 0.8; font-weight: 700; font-size: clamp(12px, 1.8vw, 16px); }
+/* Use flex so the last row centers nicely */
+.trusted-logos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* center all rows, incl. last */
+  align-items: center;
+  gap: clamp(16px, 4vw, 32px);
+}
+/* Keep SVGs from growing too large while staying crisp */
+.trusted-logos img {
+  /* Column counts via flex-basis per breakpoint */
+  flex: 0 1 45%; /* ~2 columns on mobile (with gap overhead) */
+  width: clamp(90px, 14vw, 160px);
+  max-width: 100%;
+  max-height: clamp(28px, 5vw, 48px);
+  height: auto;
+  object-fit: contain;
+  filter: brightness(1) contrast(1.05);
+}
+@media (min-width: 700px) {
+  .trusted-logos img { flex: 0 1 22%; } /* ~4 columns, second row centers */
+}
+@media (min-width: 1200px) {
+  .trusted-logos img { flex: 0 1 14.5%; } /* ~6 columns on large screens */
+}
+.trusted-jk { margin: 10px 0 0; font-size: 14px; color: var(--text-dim); }
 
 /* Defer rendering of below-the-fold sections to reduce initial work */
 .features,
