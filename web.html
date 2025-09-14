@@ -296,7 +296,7 @@
       #personBtn { border: none; padding: 6px; }
       /* Share button styled like left-side icons but stays right-aligned */
       #shareBtn { border: none; padding: 6px; background: transparent; }
-      #shareBtn .material-symbols-outlined { font-size: 25px; }
+      #shareBtn .material-symbols-outlined { font-size: 22px; }
       /* Make the view button larger (about 2x icon size) */
       #viewBtn { padding: 6px; }
       #viewBtn .material-symbols-outlined { font-size: 30px; }
@@ -397,7 +397,7 @@
           <button id="shareBtn" aria-label="Share snapshot" class="action-btn"><span class="material-symbols-outlined" aria-hidden="true">share</span></button>
         </div>
         <div class="actions-tail">
-          <button id="appBtn" class="action-btn btn-filled btn-standalone">Get app</button>
+          <button id="appBtn" class="action-btn btn-filled btn-standalone">Get the app</button>
         </div>
       </div>
       <div id="bdayPanel" class="bday-panel">
@@ -1603,7 +1603,7 @@
             let shared = false;
             try {
               const file = new File([blob], filename, { type: 'image/png' });
-              const shareData = { files: [file], title: 'Left', text: 'My time left! Check yours on left-time.app' };
+              const shareData = { files: [file], title: 'Left', text: 'My time left! Check yours on https://left-time.app' };
               if ((navigator.canShare && navigator.canShare(shareData)) || (navigator.share && !('canShare' in navigator))) {
                 await navigator.share(shareData);
                 shared = true;
