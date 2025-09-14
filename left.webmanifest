@@ -1,17 +1,17 @@
 {
   "name": "Left",
   "short_name": "Left",
-  "start_url": "/try.html",
+  "start_url": "/web.html",
   "display": "standalone",
   "background_color": "#FDFDFC",
   "theme_color": "#f7f7f4",
   "scope": "/",
   "shortcuts": [
-    { "name": "Year", "short_name": "Year", "url": "/try.html?mode=year" },
-    { "name": "Month", "short_name": "Month", "url": "/try.html?mode=month" },
-    { "name": "Week", "short_name": "Week", "url": "/try.html?mode=week" },
-    { "name": "Day", "short_name": "Day", "url": "/try.html?mode=day" },
-    { "name": "Life", "short_name": "Life", "url": "/try.html?mode=life" }
+    { "name": "Year", "short_name": "Year", "url": "/web.html?mode=year" },
+    { "name": "Month", "short_name": "Month", "url": "/web.html?mode=month" },
+    { "name": "Week", "short_name": "Week", "url": "/web.html?mode=week" },
+    { "name": "Day", "short_name": "Day", "url": "/web.html?mode=day" },
+    { "name": "Life", "short_name": "Life", "url": "/web.html?mode=life" }
   ],
   "icons": [
     {

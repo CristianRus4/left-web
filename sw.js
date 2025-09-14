@@ -1,6 +1,6 @@
-const CACHE_NAME = 'left-cache-v2';
+const CACHE_NAME = 'left-cache-v3';
 const ASSETS = [
-  '/try.html',
+  '/web.html',
 	'/left.webmanifest',
 	'/style.css',
 	'/left-icon/android-chrome-192x192.png',
@@ -29,9 +29,9 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
       fetch(request).then((res) => {
         const copy = res.clone();
-        caches.open(CACHE_NAME).then((c) => c.put('/try.html', copy));
+        caches.open(CACHE_NAME).then((c) => c.put('/web.html', copy));
         return res;
-      }).catch(() => caches.match('/try.html'))
+      }).catch(() => caches.match('/web.html'))
     );
     return;
   }
@@ -48,12 +48,12 @@ self.addEventListener('notificationclick', (event) => {
     for (const client of allClients) {
       try {
         const url = new URL(client.url);
-        if (url.pathname.endsWith('/try.html') || url.pathname === '/' ) {
+        if (url.pathname.endsWith('/web.html') || url.pathname === '/' ) {
           client.focus();
           return;
         }
       } catch(_) {}
     }
-    await clients.openWindow('/try.html');
+    await clients.openWindow('/web.html');
   })());
 });
