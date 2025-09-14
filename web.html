@@ -1331,12 +1331,28 @@
 
         // Load persisted theme/symbol
         try {
-          const ti = parseInt(localStorage.getItem('left_theme_index') || '0', 10);
-          if (!Number.isNaN(ti)) { themeIndex = (ti % themes.length + themes.length) % themes.length; }
-          const si = parseInt(localStorage.getItem('left_symbol_index') || '0', 10);
-          if (!Number.isNaN(si)) { symbolIndex = (si % symbols.length + symbols.length) % symbols.length; }
+          // Theme: if not set, choose a random theme per user and persist it
+          const storedTi = localStorage.getItem('left_theme_index');
+          if (storedTi == null) {
+            themeIndex = Math.floor(Math.random() * themes.length) % themes.length;
+            try { localStorage.setItem('left_theme_index', String(themeIndex)); } catch(_) {}
+          } else {
+            const ti = parseInt(storedTi, 10);
+            if (!Number.isNaN(ti)) themeIndex = (ti % themes.length + themes.length) % themes.length;
+          }
+          // Symbol: default to Square (index 1) if not set
+          const storedSi = localStorage.getItem('left_symbol_index');
+          if (storedSi == null) {
+            symbolIndex = 1;
+            try { localStorage.setItem('left_symbol_index', '1'); } catch(_) {}
+          } else {
+            const si = parseInt(storedSi, 10);
+            if (!Number.isNaN(si)) symbolIndex = (si % symbols.length + symbols.length) % symbols.length;
+          }
         } catch(_) {}
         applyTheme();
+        // Re-render grid now that themeIndex/symbolIndex may have changed from defaults
+        renderGrid();
         updateActionLabels();
         // Re-apply theme on OS theme change to keep tokens fresh
         try {
