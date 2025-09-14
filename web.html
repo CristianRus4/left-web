@@ -45,7 +45,8 @@
       /* Light mode overrides for this page only */
       @media (prefers-color-scheme: light) {
         /* Keep site light background as-is */
-        html, body { color: var(--m3-on-surface); background: #FDFDFC; }
+        /* Light mode: page background follows themed page tint */
+        html, body { color: var(--m3-on-surface); background: var(--m3-page-bg); }
         .card { color: var(--m3-on-surface); }
       }
 
