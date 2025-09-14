@@ -249,8 +249,9 @@
         text-align: center;
         font-family: 'Roboto Condensed', 'Roboto', system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
         font-weight: 300;
-        font-size: clamp(28px, 5.5vw, 56px);
+        font-size: clamp(34px, 6.5vw, 72px);
         line-height: 1.2;
+        font-style: italic;
         color: var(--m3-elements, currentColor);
         white-space: pre-wrap;
       }
@@ -808,7 +809,38 @@
           'Less scrolling. More making.',
           'Move like your time is yours.',
           'Say no so you can say yes.',
-          'Time left is not a threat. It is permission.'
+          'Time left is not a threat. It is permission.',
+          'Make a plan. Then make a start.',
+          'If it matters, put it on today.',
+          'Small effort, repeated, changes the shape of time.',
+          'You can be busy or you can be present.',
+          'The moment asks for attention, not perfection.',
+          'Trade comfort for meaning when you can.',
+          'Chase fewer goals. Finish more.',
+          'Focus is generosity to your future self.',
+          'Leave gaps in the calendar so life can breathe.',
+          'You own your minutes. Spend them like they are yours.',
+          'Most progress is quiet. Keep going.',
+          'Skip one distraction today.',
+          'Make the next hour obvious and simple.',
+          'Choose depth over speed.',
+          'The clock keeps moving. Move with it.',
+          'Time clarifies values. Let it guide your choices.',
+          'A good day has one thing that mattered.',
+          'If you cannot do a lot, do a little well.',
+          'Routine is a kindness to the future.',
+          'The finish line is a series of starts.',
+          'Say later to most things so you can say now to one.',
+          'Less urgency. More intent.',
+          'Your life will be a set of days like this one.',
+          'Hold attention like it is a candle.',
+          'You cannot borrow time. You can only direct it.',
+          'Make room for what you care about or it will not happen.',
+          'Tomorrow is built from small todays.',
+          'You will forget much. Make something worth remembering.',
+          'Time left invites courage.',
+          'You cannot do everything. You can do something.',
+          'Decide what to keep. Let the rest go.'
         ];
         let quoteMode = false;
         let lastQuoteIndex = -1;
@@ -1500,9 +1532,10 @@
             exportQuote.style.maxWidth = '80%';
             exportQuote.style.textAlign = 'center';
             exportQuote.style.fontFamily = "'Roboto Condensed', " + getComputedStyle(document.body).fontFamily;
-            exportQuote.style.fontSize = '80px';
-            exportQuote.style.lineHeight = '1.2';
+            exportQuote.style.fontSize = '96px';
+            exportQuote.style.lineHeight = '1.15';
             exportQuote.style.fontWeight = '300';
+            exportQuote.style.fontStyle = 'italic';
             exportQuote.style.letterSpacing = '0.015em';
             exportQuote.style.color = primary;
             exportQuote.style.whiteSpace = 'pre-wrap';
