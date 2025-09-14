@@ -1386,7 +1386,8 @@
           exportCard.style.display = 'flex';
           exportCard.style.flexDirection = 'column';
           exportCard.style.alignItems = 'center';
-          exportCard.style.justifyContent = 'flex-start';
+          // Center grid vertically inside the card, similar to on-page layout
+          exportCard.style.justifyContent = 'center';
           exportCard.style.padding = '120px';
           exportCard.style.boxSizing = 'border-box';
 
@@ -1408,6 +1409,8 @@
             exportGrid.style.gridTemplateColumns = `repeat(${state.cols}, ${EXPORT_DOT}px)`;
           }
           exportGrid.style.margin = '0 auto';
+          // Reserve space at the bottom for the footer so centering looks correct
+          exportGrid.style.marginBottom = '120px';
 
           const exportFooter = document.createElement('div');
           exportFooter.style.position = 'absolute';
@@ -1517,10 +1520,10 @@
           exportLabelRight.style.bottom = '40px';
           exportLabelRight.style.fontFamily = getComputedStyle(document.body).fontFamily;
           exportLabelRight.style.fontSize = '40px';
-          exportLabelRight.style.fontWeight = '600';
-          exportLabelRight.style.letterSpacing = '-0.01em';
-          exportLabelRight.style.color = isDark ? '#b9b9b9' : '#8a8a8a';
-          exportLabelRight.style.opacity = '0.95';
+          exportLabelRight.style.fontWeight = '500';
+          exportLabelRight.style.letterSpacing = '0.15px';
+          exportLabelRight.style.color = primary; // match footer color
+          exportLabelRight.style.opacity = '1';
           exportRoot.appendChild(exportLabelRight);
 
           // Add bottom-left label aligned with the card's left edge
@@ -1532,10 +1535,10 @@
           exportLabelLeft.style.bottom = '40px';
           exportLabelLeft.style.fontFamily = getComputedStyle(document.body).fontFamily;
           exportLabelLeft.style.fontSize = '40px';
-          exportLabelLeft.style.fontWeight = '600';
-          exportLabelLeft.style.letterSpacing = '-0.01em';
-          exportLabelLeft.style.color = isDark ? '#b9b9b9' : '#8a8a8a';
-          exportLabelLeft.style.opacity = '0.95';
+          exportLabelLeft.style.fontWeight = '500';
+          exportLabelLeft.style.letterSpacing = '0.15px';
+          exportLabelLeft.style.color = primary; // match footer color
+          exportLabelLeft.style.opacity = '1';
           exportRoot.appendChild(exportLabelLeft);
           document.body.appendChild(exportRoot);
 
@@ -1567,7 +1570,8 @@
               // Give the week list a fixed vertical space to avoid footer overlap
               const gridW = Math.min(innerW, yearBase.gridW);
               exportGrid.style.width = gridW + 'px';
-              exportGrid.style.height = Math.max(0, innerH - 240) + 'px';
+              // Let height auto so vertical centering works
+              exportGrid.style.height = 'auto';
             } else {
               exportGrid.style.gap = capped.gap + 'px';
               exportGrid.style.width = capped.gridW + 'px';
