@@ -27,24 +27,41 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/left-icon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/left-icon/favicon-16x16.png">
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <!-- Roboto for Material 3 typography on this page only -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+      /* Material 3 color tokens (scoped to this page) */
+      :root {
+        --m3-primary: #6750A4;      /* strong brand accent */
+        --m3-on-surface: #111110;   /* readable text */
+        --m3-surface: #FFFBFE;      /* container background */
+        --m3-page-bg: #F6F3FF;      /* page background tint */
+      }
+
       /* Light mode overrides for this page only */
       @media (prefers-color-scheme: light) {
-        html, body { color: #111110 !important; background: #FDFDFC !important; }
-        .card, .actions-card, .bday-panel, .bottom { color: #111110 !important; }
+        /* Keep site light background as-is */
+        html, body { color: var(--m3-on-surface); background: #FDFDFC; }
+        .card { color: var(--m3-on-surface); }
       }
 
       :root {
         /* Fixed sizes: dots never change size */
         --dot-size: 8px;
         --gap: 6px; /* updated by JS; only spacing changes */
-        --panel-bg: #f7f7f4; /* light background for cards */
-        --accent-dark: #EEEEEC; /* dark mode accent for dots/text */
+        --panel-bg: var(--m3-surface, #f7f7f4); /* card surface */
+        --accent-dark: var(--m3-primary, #EEEEEC); /* unify with primary for legacy refs */
         --footer-color: inherit;
+        --m3-radius: 16px; /* Material rounded corners */
         /* Shared card width cap so all cards match */
         --card-width: min(90vw, 600px);
         --actions-height: 60px; /* approx actions card total height (min) */
       }
+
+      /* Page font and base typography */
+      body { font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
 
       /* App-specific layout (minimal; uses site styles) */
       .card {
@@ -55,13 +72,10 @@
         width: var(--card-width);
         height: 70vh; /* 70% viewport height */
         min-width: 300px; /* enforce minimum width; grid/footer follow */
-        border-radius: 28px;
+        border-radius: var(--m3-radius);
         background: var(--panel-bg);
-        /* Subtle neumorphic-like shadow + soft border */
-        box-shadow:
-          inset 0 0 0 1px rgba(0,0,0,0.05),
-          0 12px 24px rgba(0,0,0,0.10),
-          0 1px 2px rgba(0,0,0,0.06);
+        /* flat style, no shadows */
+        box-shadow: none;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -83,7 +97,7 @@
         width: var(--dot-size);
         height: var(--dot-size);
         border-radius: 50%;
-        background: #111110; /* visible in light mode too (site text color is dark) */
+        background: var(--m3-elements, var(--m3-primary, #111110)); /* Elements tint */
       }
       /* Glyph-based symbols */
       .dot.glyph {
@@ -94,7 +108,7 @@
         justify-content: center;
         font-size: calc(var(--dot-size) + 2px);
         line-height: 1;
-        color: #111110;
+        color: var(--m3-elements, var(--m3-primary, #111110));
       }
       .dot.past { opacity: 0.5; }
 
@@ -109,7 +123,7 @@
         justify-content: space-between;
         align-items: center;
         opacity: 1; /* match full-opacity future dots */
-        color: var(--footer-color);
+        color: var(--m3-elements, var(--footer-color));
         font-size: 0.95em;
         pointer-events: auto; /* allow clicking/tapping labels */
         z-index: 2;
@@ -117,18 +131,8 @@
 
       /* Respect dark mode */
       @media (prefers-color-scheme: dark) {
-        .dot { background: var(--accent-dark, #EEEEEC); }
-        .dot.glyph { color: var(--accent-dark, #EEEEEC); }
-        .card {
-          background: #141413;
-          box-shadow:
-            inset 0 0 0 1px rgba(255,255,255,0.06),
-            0 12px 28px rgba(0,0,0,0.50),
-            0 1px 2px rgba(0,0,0,0.40);
-        }
-        /* Use theme accent color for Week/Months text */
-        .week-row, .month-cell { color: var(--accent-dark, #EEEEEC); }
-        .bottom { opacity: 1; color: var(--accent-dark, #EEEEEC); }
+        html, body { color: var(--m3-on-surface) !important; background: var(--m3-page-bg) !important; }
+        .card { background: var(--panel-bg, #141413); box-shadow: none; }
       }
 
       /* Hide native store CTA in installed PWA context */
@@ -145,12 +149,10 @@
         width: var(--card-width);
         min-width: 300px; /* match main card minimum */
         min-height: 48px; /* auto height based on content */
-        border-radius: 28px;
+        border-radius: var(--m3-radius);
         background: var(--panel-bg);
-        box-shadow:
-          inset 0 0 0 1px rgba(0,0,0,0.05),
-          0 10px 22px rgba(0,0,0,0.10),
-          0 1px 2px rgba(0,0,0,0.06);
+        color: var(--m3-elements, currentColor);
+        box-shadow: none;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -173,6 +175,7 @@
         padding: 6px 0;
         font-weight: 800;
         letter-spacing: 0.02em;
+        color: var(--m3-elements, currentColor);
       }
       .week-row.past { opacity: 0.5; }
       /* Months view grid cells */
@@ -183,6 +186,7 @@
         font-weight: 800;
         letter-spacing: 0.02em;
         text-transform: uppercase;
+        color: var(--m3-elements, currentColor);
       }
       .month-cell.past { opacity: 0.5; }
       .actions-right {
@@ -217,8 +221,16 @@
         display: inline-flex;
         align-items: center;
         line-height: 1; /* avoid extra vertical space */
-        /* subtle ambient for all action buttons */
-        box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+        /* no shadows on buttons */
+        box-shadow: none;
+      }
+      /* M3 Title/Medium for button labels */
+      .actions-card .action-btn,
+      .actions-card a.action-btn {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 24px;
+        letter-spacing: 0.15px;
       }
       /* Add rounded outline style to specific action buttons */
       #bdayConfirm,
@@ -230,10 +242,7 @@
         border-color: color-mix(in srgb, currentColor 80%, transparent);
         border-radius: 9999px;
         padding: 6px 12px;
-        /* slightly stronger, soft shadow for pill buttons */
-        box-shadow:
-          0 1px 2px rgba(0,0,0,0.08),
-          0 4px 10px rgba(0,0,0,0.06);
+        box-shadow: none;
       }
       /* Exclude symbol and color pickers from outlined style */
       #symbolBtn,
@@ -271,11 +280,9 @@
         align-items: flex-start;
         flex-direction: column;
         background: var(--panel-bg);
-        border-radius: 28px; /* match actions-card/card radius */
-        box-shadow:
-          inset 0 0 0 1px rgba(0,0,0,0.05),
-          0 10px 22px rgba(0,0,0,0.10),
-          0 1px 2px rgba(0,0,0,0.06);
+        color: var(--m3-elements, currentColor);
+        border-radius: var(--m3-radius); /* match actions-card/card radius */
+        box-shadow: none;
         padding: 12px 16px;
         box-sizing: border-box;
       }
@@ -285,33 +292,28 @@
       .bday-row { display: flex; align-items: center; gap: 8px; width: 100%; }
       @media (prefers-color-scheme: dark) {
         .actions-card, .bday-panel {
-          background: #141413;
-          box-shadow:
-            inset 0 0 0 1px rgba(255,255,255,0.06),
-            0 10px 24px rgba(0,0,0,0.45),
-            0 1px 2px rgba(0,0,0,0.35);
-          color: var(--accent-dark, #EEEEEC);
+          background: var(--panel-bg, #141413);
+          box-shadow: none;
+          color: var(--m3-elements, var(--m3-on-surface, #EEEEEC));
         }
         .actions-card a.action-btn,
         .actions-card a.action-btn:hover,
         .actions-card a.action-btn:visited {
-          color: inherit !important;
+          color: var(--m3-elements, var(--m3-on-surface, inherit)) !important;
           background: none !important;
           -webkit-background-clip: initial !important;
           -webkit-text-fill-color: currentColor !important;
         }
-        /* dark-mode subtle shadows for buttons */
-        .action-btn { box-shadow: 0 1px 2px rgba(0,0,0,0.35); }
+        /* no shadows on buttons in dark mode */
+        .action-btn { box-shadow: none; }
         #bdayConfirm,
         #bdayBtn,
         #shareBtn,
         #appBtn {
           /* thinner + 20% less opaque, synced with font color */
           border-color: color-mix(in srgb, currentColor 80%, transparent);
-          box-shadow:
-            0 1px 2px rgba(0,0,0,0.50),
-            0 6px 16px rgba(0,0,0,0.35);
-        }
+          box-shadow: none;
+      }
         .color-swatch { border-color: rgba(255,255,255,0.35); }
       }
     </style>
@@ -720,19 +722,143 @@
           { key: 'star', label: 'Star', char: '★' },
           { key: 'hexagon', label: 'Hexagon', char: '⬢' },
         ];
+        // Hand-tuned palettes inspired by Material 3 tones (bg, container, element)
+        const palettes = {
+          'Purple': {
+            light: { bg: '#F6EDFF', surface: '#EADDFF', elements: '#4F378A' },
+            dark:  { bg: '#140B24', surface: '#1F1336', elements: '#D0BCFF' }
+          },
+          'Yellow': {
+            light: { bg: '#FFF6CC', surface: '#FFE082', elements: '#5C4B00' },
+            dark:  { bg: '#1F1A00', surface: '#2A2300', elements: '#FFE271' }
+          },
+          'Orange': {
+            light: { bg: '#FFE9D6', surface: '#FFCC9E', elements: '#7C2E00' },
+            dark:  { bg: '#2C1400', surface: '#3A1C00', elements: '#FFB68A' }
+          },
+          'Red': {
+            light: { bg: '#FFE5E7', surface: '#FFCDD2', elements: '#7F1D1D' },
+            dark:  { bg: '#2A0C0E', surface: '#3B0B0B', elements: '#FFB4A9' }
+          },
+          'Blue': {
+            light: { bg: '#E7F0FF', surface: '#CFE4FF', elements: '#0B4AA2' },
+            dark:  { bg: '#001326', surface: '#001A40', elements: '#8CC4FF' }
+          },
+          'Green': {
+            light: { bg: '#E9F6EE', surface: '#C8E6D1', elements: '#0B5B30' },
+            dark:  { bg: '#001E16', surface: '#00281F', elements: '#7EE0A6' }
+          },
+          'Mint': {
+            light: { bg: '#E6F7F2', surface: '#C4ECE3', elements: '#005046' },
+            dark:  { bg: '#001F1C', surface: '#002B26', elements: '#8EE6D1' }
+          },
+          'Pink': {
+            light: { bg: '#FFE7F1', surface: '#FFD0E1', elements: '#7A174A' },
+            dark:  { bg: '#2A0E1D', surface: '#3A0F23', elements: '#FFB1D1' }
+          },
+          'Brown': {
+            light: { bg: '#F2E8E1', surface: '#E4D0C4', elements: '#5D4037' },
+            dark:  { bg: '#1D140F', surface: '#2D1E16', elements: '#E0C2A7' }
+          },
+          'Monochrome': {
+            light: { bg: '#F3F3F3', surface: '#E5E5E5', elements: '#222222' },
+            dark:  { bg: '#121212', surface: '#1E1E1E', elements: '#E0E0E0' }
+          }
+        };
         let themeIndex = 0;
         let symbolIndex = 0; // 0 = dot
 
+        // Simple color helpers
+        function hexToRgb(hex){
+          const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex||'');
+          return m ? { r: parseInt(m[1],16), g: parseInt(m[2],16), b: parseInt(m[3],16) } : null;
+        }
+        function rgbToHex(r,g,b){
+          const to = (x)=> Math.max(0, Math.min(255, Math.round(x))).toString(16).padStart(2,'0');
+          return `#${to(r)}${to(g)}${to(b)}`;
+        }
+        function mix(a, b, p){
+          const ra = hexToRgb(a), rb = hexToRgb(b);
+          if (!ra || !rb) return a || b;
+          const q = Math.max(0, Math.min(1, p));
+          return rgbToHex(ra.r*(1-q)+rb.r*q, ra.g*(1-q)+rb.g*q, ra.b*(1-q)+rb.b*q);
+        }
         function applyTheme() {
           const t = themes[themeIndex];
           const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-          if (isDark) {
-            document.documentElement.style.setProperty('--accent-dark', t.dark);
-            document.documentElement.style.setProperty('--footer-color', t.dark);
-          } else {
-            document.documentElement.style.setProperty('--panel-bg', t.light);
-            document.documentElement.style.setProperty('--footer-color', 'inherit');
+          // Prefer hand-tuned palettes when available
+          const pal = palettes[t.name];
+          if (pal) {
+            const p = isDark ? pal.dark : pal.light;
+            const primary = p.elements;
+            const elements = p.elements;
+            const surface = p.surface;
+            const pageBg = p.bg;
+
+            document.documentElement.style.setProperty('--m3-primary', primary);
+            document.documentElement.style.setProperty('--m3-elements', elements);
+            document.documentElement.style.setProperty('--m3-on-surface', isDark ? '#EEEEEC' : '#111110');
+            document.documentElement.style.setProperty('--m3-surface', surface);
+            document.documentElement.style.setProperty('--m3-page-bg', pageBg);
+            document.documentElement.style.setProperty('--accent-dark', primary);
+            document.documentElement.style.setProperty('--panel-bg', surface);
+            document.documentElement.style.setProperty('--footer-color', isDark ? elements : 'inherit');
+            try { localStorage.setItem('left_theme_index', String(themeIndex)); } catch(_) {}
+            return;
           }
+
+          // Fallback: derive tones from theme swatches
+          const darkSeed = t.dark || '#6BA8FF';
+          const lightSeed = t.light || '#f7f7f4';
+          // Primary: vibrant version of the seed
+          let primary = toVibrant(isDark ? darkSeed : lightSeed, isDark ? 'dark' : 'light');
+          // In dark mode, boost vibrancy for specific themes
+          if (isDark) {
+            const n = (t.name || '').toLowerCase();
+            if (n === 'red' || n === 'orange') {
+              primary = adjustSaturationLightness(primary, 1.25, 0.06);
+            } else if (n === 'yellow') {
+              primary = adjustSaturationLightness(primary, 1.10, 0.03);
+            }
+          }
+          // Surfaces: lightly tinted in light, subtly in dark
+          let pageBg = isDark ? mix('#0B0B0B', darkSeed, 0.12) : mix('#FFFFFF', lightSeed, 0.20);
+          // Card/container surface
+          let lightMix = 0.32; // stronger, mid tint for card
+          if (!isDark) {
+            const n = (t.name || '').toLowerCase();
+            if (n === 'brown') lightMix = 0.38;       // more brown in card
+            else if (n === 'yellow') lightMix = 0.36; // more yellow in card
+            else if (n === 'purple') lightMix = 0.34; // separation for purple
+          }
+          let surface = isDark ? mix('#141413', darkSeed, 0.22) : mix('#FFFEFC', lightSeed, lightMix);
+
+          // Elements tint:
+          // - dark: follow primary (already boosted for some themes)
+          // - light: strongly tinted version of light seed (more saturated, slightly darker)
+          let elements = primary;
+          if (!isDark) {
+            // Much stronger-tinted element color from the same hue
+            elements = adjustSaturationLightness(primary, 1.60, -0.20);
+          }
+
+          // Explicit mapping for Material Purple tones in light mode
+          if (!isDark && (t.name || '').toLowerCase() === 'purple') {
+            pageBg = '#F6EDFF';        // soft background
+            surface = '#EADDFF';       // primary-container
+            primary = '#4F378A';       // on-primary-container (used for elements)
+            elements = '#4F378A';
+          }
+
+          document.documentElement.style.setProperty('--m3-primary', primary);
+          document.documentElement.style.setProperty('--m3-elements', elements);
+          document.documentElement.style.setProperty('--m3-on-surface', isDark ? '#EEEEEC' : '#111110');
+          document.documentElement.style.setProperty('--m3-surface', surface);
+          document.documentElement.style.setProperty('--m3-page-bg', pageBg);
+          // Keep legacy vars in sync
+          document.documentElement.style.setProperty('--accent-dark', primary);
+          document.documentElement.style.setProperty('--panel-bg', surface);
+          document.documentElement.style.setProperty('--footer-color', isDark ? elements : 'inherit');
           try { localStorage.setItem('left_theme_index', String(themeIndex)); } catch(_) {}
         }
 
@@ -759,6 +885,33 @@
           }
           s = Math.min(1, s * 1.3 + 0.06);
           l = mode === 'light' ? Math.max(0, l - 0.06) : Math.min(1, l + 0.04);
+          function h2rgb(p, q, t){ if(t<0) t+=1; if(t>1) t-=1; if(t<1/6) return p + (q - p) * 6 * t; if(t<1/2) return q; if(t<2/3) return p + (q - p) * (2/3 - t) * 6; return p; }
+          const q = l < 0.5 ? l * (1 + s) : l + s - l * s; const p = 2 * l - q;
+          const rr = Math.round(h2rgb(p, q, h + 1/3) * 255);
+          const gg = Math.round(h2rgb(p, q, h) * 255);
+          const bb = Math.round(h2rgb(p, q, h - 1/3) * 255);
+          const toHex = (x) => x.toString(16).padStart(2, '0');
+          return `#${toHex(rr)}${toHex(gg)}${toHex(bb)}`;
+        }
+
+        // Adjust saturation/lightness in HSL for specific cases
+        function adjustSaturationLightness(hex, satMul, lightDelta){
+          const m = String(hex).match(/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i);
+          if (!m) return hex;
+          let r = parseInt(m[1], 16) / 255;
+          let g = parseInt(m[2], 16) / 255;
+          let b = parseInt(m[3], 16) / 255;
+          const max = Math.max(r, g, b), min = Math.min(r, g, b);
+          let h, s, l = (max + min) / 2;
+          if (max === min) { h = s = 0; }
+          else {
+            const d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) { case r: h = (g - b) / d + (g < b ? 6 : 0); break; case g: h = (b - r) / d + 2; break; default: h = (r - g) / d + 4; }
+            h /= 6;
+          }
+          s = Math.max(0, Math.min(1, s * satMul));
+          l = Math.max(0, Math.min(1, l + lightDelta));
           function h2rgb(p, q, t){ if(t<0) t+=1; if(t>1) t-=1; if(t<1/6) return p + (q - p) * 6 * t; if(t<1/2) return q; if(t<2/3) return p + (q - p) * (2/3 - t) * 6; return p; }
           const q = l < 0.5 ? l * (1 + s) : l + s - l * s; const p = 2 * l - q;
           const rr = Math.round(h2rgb(p, q, h + 1/3) * 255);
@@ -798,14 +951,15 @@
             }
             symbolBtn.setAttribute('aria-label', 'Change symbol: ' + sym.label);
           } catch(_) {}
-          // Color button shows a swatch with current color
+          // Color button shows current primary color
           try {
             const t = themes[themeIndex];
-            const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
             const sw = document.querySelector('.color-swatch');
             if (sw) {
-              const base = isDark ? (t.dark || '#EEEEEC') : (t.light || '#f7f7f4');
-              sw.style.background = toVibrant(base, isDark ? 'dark' : 'light');
+              const computedElements = getComputedStyle(document.documentElement).getPropertyValue('--m3-elements').trim();
+              const computedPrimary  = getComputedStyle(document.documentElement).getPropertyValue('--m3-primary').trim();
+              const fallback = computedPrimary || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? (t.dark || '#EEEEEC') : (t.light || '#f7f7f4'));
+              sw.style.background = computedElements || fallback;
             }
             colorBtn.setAttribute('aria-label', 'Change color: ' + t.name);
           } catch(_) {}
@@ -1131,6 +1285,14 @@
         } catch(_) {}
         applyTheme();
         updateActionLabels();
+        // Re-apply theme on OS theme change to keep tokens fresh
+        try {
+          if (window.matchMedia) {
+            const mm = window.matchMedia('(prefers-color-scheme: dark)');
+            if (mm && mm.addEventListener) mm.addEventListener('change', applyTheme);
+            else if (mm && mm.addListener) mm.addListener(applyTheme);
+          }
+        } catch(_) {}
 
         // --- Share: capture card and download ---
         async function shareSnapshot() {
@@ -1151,7 +1313,8 @@
           exportRoot.style.width = OUTER + 'px';
           exportRoot.style.height = OUTER + 'px';
           const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-          const siteBg = isDark ? '#222222' : '#FDFDFC'; // solid to avoid banding
+          const computedPageBg = getComputedStyle(document.documentElement).getPropertyValue('--m3-page-bg').trim();
+          const siteBg = computedPageBg || (isDark ? '#222222' : '#FDFDFC'); // solid to avoid banding
           exportRoot.style.background = siteBg;
           exportRoot.style.overflow = 'hidden';
 
@@ -1210,8 +1373,8 @@
           exportFooter.appendChild(leftLabel);
           exportFooter.appendChild(rightLabel);
 
-          // Build dots or symbols for export
-          const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent-dark').trim() || '#EEEEEC';
+          // Build dots or symbols for export (use M3 primary)
+          const primary = getComputedStyle(document.documentElement).getPropertyValue('--m3-elements').trim() || getComputedStyle(document.documentElement).getPropertyValue('--m3-primary').trim() || '#4462FF';
           const useGlyph = (function(){
             try { return (document.getElementById('symbolBtn') && (localStorage.getItem('left_symbol_index')|0) !== 0) || (typeof symbolIndex !== 'undefined' && symbolIndex !== 0); } catch(_) { return false; }
           })();
@@ -1228,7 +1391,7 @@
               row.style.letterSpacing = '0.02em';
               row.style.fontSize = '72px';
               row.style.lineHeight = '1';
-              row.style.color = isDark ? accent : '#111110';
+              row.style.color = primary;
               row.style.opacity = (i < state.todayIndex) ? '0.5' : '1';
               row.textContent = days[i];
               exportGrid.appendChild(row);
@@ -1243,7 +1406,7 @@
               cell.style.letterSpacing = '0.02em';
               cell.style.fontSize = '72px';
               cell.style.lineHeight = '1';
-              cell.style.color = isDark ? accent : '#111110';
+              cell.style.color = primary;
               cell.style.opacity = (i < state.todayIndex) ? '0.5' : '1';
               cell.textContent = monthsShort[i].toUpperCase();
               exportGrid.appendChild(cell);
@@ -1268,7 +1431,7 @@
                     : baseSize;                         // dot
                 cell.style.fontSize = fontSize + 'px';
                 cell.style.lineHeight = '1';
-                cell.style.color = isDark ? accent : '#111110';
+                cell.style.color = primary;
                 cell.style.opacity = isPast ? '0.5' : '1';
                 cell.textContent = symChar || '•';
                 exportGrid.appendChild(cell);
@@ -1277,15 +1440,15 @@
                 dot.style.width = EXPORT_DOT + 'px';
                 dot.style.height = EXPORT_DOT + 'px';
                 dot.style.borderRadius = '50%';
-                dot.style.background = isDark ? accent : '#111110';
+                dot.style.background = primary;
                 dot.style.opacity = isPast ? '0.5' : '1';
                 exportGrid.appendChild(dot);
               }
             }
           }
 
-          // Footer color in dark mode uses accent
-          if (isDark) { exportFooter.style.color = accent; }
+          // Footer color uses same tint as elements
+          exportFooter.style.color = primary;
 
           exportCard.appendChild(exportGrid);
           exportCard.appendChild(exportFooter);
