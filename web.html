@@ -1796,11 +1796,16 @@
             const capped = compute(cols, rows, Math.min(innerW, yearBase.gridW));
 
             if (state.kind === 'week' || state.kind === 'months') {
-              // Give the week list a fixed vertical space to avoid footer overlap
+              // For week/months views, allocate a fixed height so rows can breathe
               const gridW = Math.min(innerW, yearBase.gridW);
               exportGrid.style.width = gridW + 'px';
-              // Let height auto so vertical centering works
-              exportGrid.style.height = 'auto';
+              const targetH = Math.round(innerH * 0.82);
+              exportGrid.style.height = targetH + 'px';
+              if (state.kind === 'months') {
+                // Even spacing between the 4 rows of months
+                exportGrid.style.gridTemplateRows = 'repeat(4, 1fr)';
+                exportGrid.style.rowGap = '48px';
+              }
             } else {
               exportGrid.style.gap = capped.gap + 'px';
               exportGrid.style.width = capped.gridW + 'px';
