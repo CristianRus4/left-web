@@ -1,0 +1,309 @@
+/*
+  Left Blog — Article Styles
+  Extends ../style.css for base theme (gradient, colors, fonts, dark mode)
+*/
+
+@import "../style.css";
+
+/* Article layout */
+.blog-article {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: calc(80px + env(safe-area-inset-top)) clamp(24px, 6.5vw, 96px) 40px;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+}
+.breadcrumb a {
+  color: var(--text-dim);
+  text-decoration: none;
+}
+.breadcrumb a:hover {
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* Article header */
+.article-header {
+  margin-bottom: 32px;
+}
+.article-header h1 {
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 0 0 12px;
+}
+.article-meta {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin: 0;
+}
+
+/* Prose body */
+.article-body {
+  line-height: 1.7;
+  font-size: clamp(16px, 2vw, 18px);
+  color: var(--text-dim);
+}
+.article-body h2 {
+  color: var(--text);
+  font-size: clamp(22px, 3.5vw, 28px);
+  font-weight: 700;
+  margin: 40px 0 12px;
+  letter-spacing: -0.01em;
+}
+.article-body h3 {
+  color: var(--text);
+  font-size: clamp(18px, 2.8vw, 22px);
+  font-weight: 700;
+  margin: 28px 0 8px;
+}
+.article-body p {
+  margin: 0 0 16px;
+}
+.article-body a {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.article-body a:hover {
+  font-weight: 700;
+}
+.article-body strong {
+  color: var(--text);
+  font-weight: 700;
+}
+.article-body ul, .article-body ol {
+  margin: 0 0 16px;
+  padding-left: 20px;
+}
+.article-body li {
+  margin: 6px 0;
+}
+
+/* Comparison table */
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  font-size: 15px;
+}
+.comparison-table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 24px 0;
+  border-radius: 14px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.comparison-table th {
+  text-align: left;
+  padding: 12px 16px;
+  font-weight: 700;
+  color: var(--text);
+  border-bottom: 1px solid var(--card-border);
+  white-space: nowrap;
+}
+.comparison-table td {
+  padding: 10px 16px;
+  color: var(--text-dim);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  white-space: nowrap;
+}
+.comparison-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* App card (used in "best of" lists) */
+.app-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin: 20px 0;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.app-card h3 {
+  margin: 0 0 8px !important;
+  color: var(--text);
+}
+.app-card .app-meta {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin: 0 0 12px;
+}
+
+/* Pros/Cons */
+.pros-cons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 12px 0 0;
+}
+@media (max-width: 480px) {
+  .pros-cons { grid-template-columns: 1fr; }
+}
+.pros h4, .cons h4 {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: var(--text);
+}
+.pros ul, .cons ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+}
+.pros li::before {
+  content: "+ ";
+  color: #4ade80;
+  font-weight: 700;
+}
+.cons li::before {
+  content: "- ";
+  color: #f87171;
+  font-weight: 700;
+}
+.pros li, .cons li {
+  margin: 4px 0;
+  padding-left: 0;
+}
+
+/* CTA box */
+.cta-box {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 24px;
+  margin: 40px 0;
+  text-align: center;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.cta-box p {
+  margin: 0 0 16px;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 18px;
+}
+.cta-box .cta-sub {
+  font-size: 14px;
+  color: var(--text-dim);
+  font-weight: 400;
+}
+.cta-box a img {
+  width: 200px;
+  height: auto;
+}
+
+/* Related articles */
+.related-articles {
+  margin: 40px 0 20px;
+}
+.related-articles h2 {
+  font-size: 20px;
+  margin: 0 0 16px;
+  color: var(--text);
+}
+.related-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+@media (max-width: 480px) {
+  .related-grid { grid-template-columns: 1fr; }
+}
+.related-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.related-card a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+}
+.related-card a:hover {
+  font-weight: 700;
+}
+.related-card p {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+/* Blog index grid */
+.blog-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+@media (min-width: 600px) {
+  .blog-grid { grid-template-columns: 1fr 1fr; }
+}
+.blog-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 20px 24px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background-color 180ms ease;
+}
+.blog-card:hover {
+  background: var(--btn-hover-bg);
+}
+.blog-card a {
+  color: var(--text);
+  text-decoration: none;
+  display: block;
+}
+.blog-card h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+.blog-card p {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin: 0;
+}
+
+/* Verdict box */
+.verdict-box {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin: 24px 0;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.verdict-box h3 {
+  margin: 0 0 8px !important;
+  color: var(--text);
+}
+.verdict-box p {
+  margin: 0;
+}
+
+/* Defer rendering of below-the-fold sections */
+.related-articles {
+  content-visibility: auto;
+  contain-intrinsic-size: 300px;
+}
