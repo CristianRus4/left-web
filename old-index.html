@@ -1,0 +1,807 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Left — Habit Tracker, Countdown & Life Widgets for iPhone</title>
+    <meta name="description" content="Track your habits, countdowns, and life — all in beautiful iPhone widgets. Left is a habit tracker, countdown timer, year progress, days since counter, and life-in-weeks app with 3000+ widget combinations for your Home Screen, Lock Screen, and StandBy. Free download." />
+
+    <!-- Smart App Banner (iOS Safari) -->
+    <meta name="apple-itunes-app" content="app-id=6740155884, app-argument=https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884" />
+
+    <!-- Theme/UI colors for iOS Safari and Android Chrome -->
+    <meta name="theme-color" content="#FF6B24" />
+    <meta name="theme-color" content="#FF6B24" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#131415" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <!-- Open Graph / Twitter (basic) -->
+    <meta property="og:title" content="Left — Habit Tracker, Countdown & Life Widgets for iPhone" />
+    <meta property="og:description" content="Track your habits, countdowns, and life — all in beautiful iPhone widgets. Year progress, days since counter, streaks, and life in weeks. 3000+ widget combinations. Free download." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="images/left-hero.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:site_name" content="Left" />
+    <meta name="twitter:title" content="Left — Habit Tracker, Countdown & Life Widgets for iPhone" />
+    <meta name="twitter:description" content="Track your habits, countdowns, and life — all in beautiful iPhone widgets. Year progress, days since counter, streaks, and life in weeks. 3000+ widget combinations. Free download." />
+    <meta name="twitter:image" content="images/left-hero.webp" />
+
+    <!-- Canonical + icons -->
+    <link rel="canonical" href="" id="canonical-link" />
+    <!-- Favicons (place files under /favicon) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png" />
+    <link rel="manifest" href="favicon/site.webmanifest" />
+    <link rel="shortcut icon" href="favicon/favicon.ico" />
+    <!-- Optional explicit Android icons (also covered by manifest) -->
+    <link rel="icon" sizes="192x192" href="favicon/android-chrome-192x192.png" />
+    <link rel="icon" sizes="512x512" href="favicon/android-chrome-512x512.png" />
+    <link rel="preload" as="image" href="images/left-hero.webp" />
+    <meta name="robots" content="index,follow" />
+
+    <!-- System fonts only: remove external Google Fonts to shorten critical path -->
+
+    <!-- Speed up App Store badge load -->
+    <link rel="preconnect" href="https://toolbox.marketingtools.apple.com" crossorigin />
+
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Ensure og:url and canonical reflect the deployed URL -->
+    <script>
+      (function () {
+        var url = window.location.href.split('#')[0];
+        var canonical = document.getElementById('canonical-link');
+        if (canonical) canonical.setAttribute('href', url);
+        var og = document.querySelector('meta[property="og:url"]');
+        if (!og) {
+          og = document.createElement('meta');
+          og.setAttribute('property', 'og:url');
+          document.head.appendChild(og);
+        }
+        og.setAttribute('content', url);
+      })();
+    </script>
+
+    <!-- FAQPage structured data for richer snippets -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Are widgets free, or do I need to upgrade?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Left is free for most of the features and widgets. Only special dates and a custom lifespan are not free. Unlock everything with a one‑time, pay‑what‑you‑want purchase, choose from three prices and get the full app regardless of what you pay."}
+        },
+        {
+          "@type": "Question",
+          "name": "How do I add a widget to my iPhone’s Home Screen?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Touch and hold the Home Screen, tap +, search for Left, pick a style and size, tap Add Widget, then long‑press to Edit Widget and configure it."}
+        },
+        {
+          "@type": "Question",
+          "name": "How do I add a widget to the Lock Screen?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Touch and hold the Lock Screen, tap Customize, tap the widget area, choose Left, and select a widget type. StandBy widgets are added from the same flow."}
+        },
+        {
+          "@type": "Question",
+          "name": "What is a Year Progress widget?",
+          "acceptedAnswer": {"@type": "Answer", "text": "A Year Progress widget shows how much of the current year has passed or is left. It’s ideal for planning and reviews."}
+        },
+        {
+          "@type": "Question",
+          "name": "Is Left a time left app?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Yes. Left visualizes time left for days, weeks, months, years, and your lifetime, plus event countdowns."}
+        },
+        {
+          "@type": "Question",
+          "name": "How do I add a countdown widget on iPhone?",
+          "acceptedAnswer": {"@type": "Answer", "text": "On the Home Screen, touch and hold to jiggle, tap +, search for Left, choose Countdown, tap Add Widget, then long‑press the widget to Edit Widget and set your event."}
+        },
+        {
+          "@type": "Question",
+          "name": "Is Left a Pretty Progress alternative?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Left offers elegant countdown, time left, and year progress widgets with a one‑time pay‑what‑you‑want unlock, no subscriptions."}
+        },
+        {
+          "@type": "Question",
+          "name": "How many widget types are available?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Over 15 styles across multiple sizes, with six color themes and a range of symbols. Every widget is fully customizable."}
+        },
+        {
+          "@type": "Question",
+          "name": "What devices are compatible?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Left is compatible with iOS 18 or newver versions. Left is ready for iOS 26 and works on all compatible iPhones. Widgets are also available on iPad and Mac."}
+        },
+        {
+          "@type": "Question",
+          "name": "Is Left ready for iOS 26?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Yes, Left is fully compatible and ready for iOS 26, including Home Screen, Lock Screen, and StandBy widgets."}
+        },
+        {
+          "@type": "Question",
+          "name": "Do you support widgets with a glass effect?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Absolutely. Left includes widget styles with a refined glass effect that blends with your wallpaper, perfect for iOS 26 setups."}
+        },
+        {
+          "@type": "Question",
+          "name": "How is life expectancy calculated?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Estimated using Apple Intelligence and multiple factors including age, gender, activity, sleep, country of birth, and more."}
+        },
+        {
+          "@type": "Question",
+          "name": "Does Left have a habit tracker?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Yes. Left includes a habit tracker with daily, weekly, and custom schedules. Track habits with streak widgets on your Home Screen and see your progress at a glance."}
+        },
+        {
+          "@type": "Question",
+          "name": "What is a days since counter?",
+          "acceptedAnswer": {"@type": "Answer", "text": "A days since counter tracks how many days have passed since a specific date. Left's days since feature includes automatic streak tracking and Home Screen widgets."}
+        },
+        {
+          "@type": "Question",
+          "name": "Can I track streaks with Left?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Yes. Left tracks streaks automatically — habits complete based on your schedule and reset only if you choose. Streak and habit widgets are available for your Home Screen."}
+        }
+      ]
+    }
+    </script>
+
+    <!-- Schema.org: App + FAQ structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Left",
+      "url": "https://left-time.app",
+      "about": {
+        "@type": "MobileApplication",
+        "name": "Left — Habit Tracker, Countdown & Life Widgets for iPhone",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "iOS",
+        "downloadUrl": "https://apps.apple.com/app/id6740155884",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        "description": "Track your habits, countdowns, and life with beautiful iPhone widgets. Habit tracker, countdown timer, year progress, days since counter, and life in weeks.",
+        "aggregateRating": {"@type": "AggregateRating", "ratingValue": "4.5", "ratingCount": "226"}
+      }
+    }
+    </script>
+    
+    <!-- SoftwareApplication structured data to highlight iOS 26 readiness -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Left — Habit Tracker, Countdown & Life Widgets for iPhone",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "iOS 26",
+      "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+      "downloadUrl": "https://apps.apple.com/app/id6740155884",
+      "description": "Habit tracker, countdown widgets, year progress, days since counter, and life in weeks — all in beautiful iPhone widgets with an optional glass effect for iOS 26.",
+      "aggregateRating": {"@type": "AggregateRating", "ratingValue": "4.5", "ratingCount": "226"}
+    }
+    </script>
+  </head>
+  <body>
+    <nav class="top-nav" aria-label="Primary">
+      <div class="container nav-inner">
+        <a href="#" class="brand" aria-label="Left home">Left</a>
+        <div class="nav-cta">
+          <a class="btn nav-web-btn" href="web.html">Try on web</a>
+          <a class="btn download-btn" href="https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884?itscg=30200&itsct=apps_box_badge&mttnsubad=6740155884" target="_blank" rel="noopener">Get Left</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Floating App Store badge (shows at bottom until scroll) -->
+    <div class="appstore-floater" aria-label="Download Left on the App Store">
+      <a href="https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884?itscg=30200&itsct=apps_box_badge&mttnsubad=6740155884" target="_blank" rel="noopener" aria-label="Download on the App Store">
+        <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1736726400" alt="Download on the App Store" width="245" height="82" decoding="async" fetchpriority="low" />
+      </a>
+    </div>
+    <header class="hero">
+      <div class="container">
+        <div class="hero-head">
+          <div class="hero-titles">
+            <p class="ios-badge" aria-label="Ready for iOS 26"><span class="ios-badge-text">Ready for iOS 26</span></p>
+            <h1 class="app-title">Left</h1>
+            <p class="app-subtitle">Habit, Countdown &amp; Life Widgets</p>
+          </div>
+          <div class="cta cta-desktop">
+            <!-- App Store badge (provided) -->
+            <a href="https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884?itscg=30200&itsct=apps_box_badge&mttnsubad=6740155884" style="display: inline-block;">
+              <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1736726400" alt="Download on the App Store" width="245" height="82" decoding="async" fetchpriority="low" style="width: 245px; height: 82px; vertical-align: middle; object-fit: contain;" />
+            </a>
+          </div>
+        </div>
+
+        <img src="images/left-hero.webp" alt="Left app showing habit tracker, countdown, year progress, and life in weeks widgets on iPhone Home Screen" class="hero-image" fetchpriority="high" decoding="async" width="2000" height="3000" />
+
+        <div class="cta cta-mobile">
+          <!-- App Store badge (provided) -->
+          <a href="https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884?itscg=30200&itsct=apps_box_badge&mttnsubad=6740155884" style="display: inline-block;">
+            <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1736726400" alt="Download on the App Store" width="245" height="82" decoding="async" fetchpriority="low" style="width: 245px; height: 82px; vertical-align: middle; object-fit: contain;" />
+          </a>
+        </div>
+
+        <p class="hero-blurb">
+          Track your habits, countdowns, and time left — right from your Home Screen. Left is a habit tracker, countdown widget, year progress, days since counter, and life-in-weeks app for iPhone. Beautiful widgets for everything that matters.
+        </p>
+      </div>
+    </header>
+
+    <main>
+      <section class="stats container" aria-label="Highlights">
+        <div class="badges">
+          <img src="images/app-day.png" alt="App of the Day" loading="lazy" decoding="async" />
+          <img src="images/rating.png" alt="Average rating" loading="lazy" decoding="async" />
+        </div>
+        <div class="stats-grid">
+          <div class="stat">
+            <div class="stat-value">3000+</div>
+            <div class="stat-label">different widget combinations</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">100k+</div>
+            <div class="stat-label">users around the world</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">240k+</div>
+            <div class="stat-label">special dates tracked</div>
+          </div>
+        </div>
+      </section>
+      
+      
+
+      
+      <section id="features" class="features container" aria-label="App features">
+        <div class="features-grid">
+          <!-- Feature 1 -->
+          <article class="feature-card">
+            <img src="images/left-features-1.webp" alt="Year progress widget showing time left in the year on iPhone Home Screen" loading="lazy" decoding="async" width="2000" height="2000" />
+            <h3>Year Progress Widget</h3>
+            <p>See how far through the year, month, week, or day you are. The year progress widget makes time tangible with beautiful, glanceable layouts on your Home Screen.</p>
+          </article>
+
+          <!-- Feature 2 -->
+          <article class="feature-card">
+            <img src="images/left-features-2.webp" alt="Countdown widget styles with dots, stars, hearts, and hexagons for iPhone" loading="lazy" decoding="async" width="2000" height="2000" />
+            <h3>Countdown Widgets</h3>
+            <p>Choose from dots, stars, hearts, hexagons and more. Every countdown widget is fully customizable — change the background or use a glass effect to match your wallpaper.</p>
+          </article>
+
+          <!-- Feature 3 -->
+          <article class="feature-card">
+            <img src="images/left-features-3.webp" alt="Birthday countdown widget for vacations, weddings, and holidays on iPhone" loading="lazy" decoding="async" width="2000" height="2000" />
+            <h3>Birthday &amp; Event Countdowns</h3>
+            <p>Birthday countdown, vacations, holidays, weddings, and more. Set up to ten different special dates and visualise the time left with multiple countdown widget options at a glance.</p>
+          </article>
+
+          <!-- Feature 4 -->
+          <article class="feature-card">
+            <img src="images/left-features-4.webp" alt="Habit tracker widget on Home Screen, Lock Screen, and StandBy" loading="lazy" decoding="async" width="2000" height="2000" />
+            <h3>Habit Tracker Widgets</h3>
+            <p>Track your habits with daily, weekly, and custom schedules. Habit tracker widgets on your Home Screen, Lock Screen, and StandBy — also on iPad and Mac.</p>
+          </article>
+
+          <!-- Feature 5 -->
+          <article class="feature-card">
+            <img src="images/left-features-5.webp" alt="Days since counter widget showing streak progress on iPhone" loading="lazy" decoding="async" width="2000" height="2000" />
+            <h3>Days Since Counter</h3>
+            <p>Track how many days have passed since any date. The days since counter includes automatic streak tracking and a minimal, beautiful Home Screen widget.</p>
+          </article>
+
+          <!-- Feature 6 -->
+          <article class="feature-card">
+            <img src="images/left-features-6.webp" alt="Life in weeks widget showing lifetime as dots with memento mori view" loading="lazy" decoding="async" width="2000" height="2000" />
+            <h3>Life in Weeks</h3>
+            <p>Visualise your lifetime in weeks, months, or years. A calm, stoic-inspired life in weeks view that makes time visible — calculate your life expectancy and see your time left.</p>
+          </article>
+        </div>
+      </section>
+
+      <!--
+      Trusted by (fun) section — temporarily commented out
+      <section class="trusted container" aria-label="Trusted by engineers (fun)">
+        <p class="trusted-eyebrow">TRUSTED BY ENGINEERS WHO WORK AT</p>
+        <div class="trusted-logos">
+          <img src="images/companies/google.png" alt="Google" loading="lazy" decoding="async" />
+          <img src="images/companies/openai.png" alt="OpenAI" loading="lazy" decoding="async" />
+          <img src="images/companies/apple.png" alt="Apple" loading="lazy" decoding="async" />
+          <img src="images/companies/meta.png" alt="Meta" loading="lazy" decoding="async" />
+          <img src="images/companies/microsoft.png" alt="Microsoft" loading="lazy" decoding="async" />
+          <img src="images/companies/nvidia.png" alt="Nvidia" loading="lazy" decoding="async" />
+        </div>
+        <p class="trusted-jk">(just kidding — but wouldn’t that be nice?)</p>
+      </section>
+      -->
+
+      
+
+      <section id="why" class="why container">
+        <h2>Why Left?</h2>
+        <p>
+          Left is a habit tracker, countdown timer, and time awareness app — all in one. Widget-first with a one-time purchase, no subscriptions. With over 3000 widget combinations and full customization, it’s the most elegant way to track your habits, countdowns, and life.
+        </p>
+        <div class="aso-grid">
+          <div class="aso-col">
+            <h3>Time &amp; Countdown Widgets</h3>
+            <ul class="checklist">
+              <li>Year progress, month, week, and day widgets on your Home Screen</li>
+              <li>Countdown widgets for birthdays, holidays, vacations, weddings</li>
+              <li>Choose from dots, stars, hearts, hexagons, words and more</li>
+              <li>Home Screen, Lock Screen, and StandBy — also iPad and Mac</li>
+              <li>Minimal, beautiful design with optional glass effect</li>
+            </ul>
+          </div>
+          <div class="aso-col">
+            <h3>Habit Tracker &amp; Streak Widgets</h3>
+            <ul class="checklist">
+              <li>Habit tracker with daily, weekly, and custom schedules</li>
+              <li>Streak tracking with automatic completion</li>
+              <li>Days since counter for anything you want to track</li>
+              <li>Life in weeks — see your lifetime as dots on a grid</li>
+              <li>Habit and streak widgets right on your Home Screen</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      
+
+      <!-- iOS 26 compatibility + glass effect section for SEO and clarity -->
+      <section id="ios-26" class="seo-intro container" aria-label="Ready for iOS 26">
+        <h2>Ready for iOS 26</h2>
+        <p>
+          Left is fully compatible with <strong>iOS 26</strong>. Keep your <strong>countdowns</strong>, <strong>time left</strong>, and <strong>year progress</strong> front and center with interactive widgets on the Home Screen, Lock Screen, and StandBy.
+        </p>
+        <h3 id="glass-effect-widgets">Widgets with Glass Effect</h3>
+        <p>
+          Prefer a translucent look? Left includes the option for all the <strong>widgets to be with a glass effect</strong> that subtly blur and tint to match your wallpaper, creating a calm, premium feel that fits perfectly with <strong>iOS 26</strong>.
+        </p>
+      </section>
+
+      <section class="use-cases container" aria-label="Use cases for habit tracker, countdown, and time left widgets">
+        <h2>Popular ways people use Left</h2>
+        <div class="use-cases-grid">
+          <article>
+            <h3>Year Progress Widget</h3>
+            <p>See how far through the year you are with a clean <strong>year progress widget</strong> — great for planning, reporting, or simply staying mindful.</p>
+          </article>
+          <article>
+            <h3>Time Left Widgets</h3>
+            <p>Glanceable <strong>time left widgets</strong> for the current day, week, or month help you pace work and avoid last-minute rushes.</p>
+          </article>
+          <article>
+            <h3>Countdown Timer &amp; Event Countdown</h3>
+            <p>Trips, weddings, product launches, exams, or personal goals — <strong>countdown widgets</strong> and <strong>birthday countdowns</strong> keep motivation high.</p>
+          </article>
+          <article>
+            <h3>Life in Weeks</h3>
+            <p>Visualise your lifetime in weeks, months, or years to focus on what matters. A calm, stoic <strong>life in weeks</strong> view that many users check daily.</p>
+          </article>
+          <article>
+            <h3>Habit Tracker &amp; Days Since Counter</h3>
+            <p>Track daily habits with a <strong>habit tracker widget</strong> on your Home Screen. Use the <strong>days since counter</strong> to see how long you’ve kept a streak going.</p>
+          </article>
+          <article>
+            <h3>Streak Tracker</h3>
+            <p>Automatic <strong>streak tracking</strong> for habits — complete daily, weekly, or on custom schedules. See your streaks grow right on your Home Screen.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="seo-intro container" aria-label="Habit tracker, countdown, and year progress widgets">
+        <h2>Habit Tracker, Countdown, and Year Progress Widgets for iPhone</h2>
+        <p>
+          Left is a widget-first app for people who want a <strong>habit tracker</strong>, <strong>countdown widgets</strong>, <strong>year progress</strong>, and <strong>time left</strong> views at a glance. Track daily habits with streaks, count down to birthdays and events, and visualise your entire life in weeks. Fully customizable and built for the Home Screen, Lock Screen, and StandBy.
+        </p>
+        <p>
+          If you’ve looked at apps like Pretty Progress or HabitKit, Left combines the best of both — beautiful countdown widgets with a built-in habit tracker and days since counter. One-time purchase, no subscriptions. Choose symbols, colors, and layouts to match your style and keep your goals front and center.
+        </p>
+      </section>
+
+      <section id="alternatives" class="alternatives container" aria-label="Alternatives to countdown apps">
+        <h2>Left as a Pretty Progress alternative</h2>
+        <p>
+          Looking for a <strong>Pretty Progress alternative</strong> or a <strong>countdown widget for iPhone</strong>? Left focuses on elegant <strong>time left</strong> and <strong>year progress</strong> widgets with full customization and a simple, one‑time pay‑what‑you‑want unlock. No subscriptions.
+        </p>
+        <p>
+          If you want minimal design, fast widgets, and complete control over styles, symbols, and colors, Left is a great choice for Home Screen, Lock Screen, and StandBy setups.
+        </p>
+      </section>
+
+      <section id="reviews" class="reviews container" aria-label="User reviews">
+        <h2>What People Say About Left</h2>
+
+        <div class="reviews-grid">
+
+          <article class="review-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <h3 class="review-title">One of the best apps I bought</h3>
+            <p>100% worth it! Bonus for probably the fairest pricing model out there! It's rare nowadays to find a great app that only requires one time payment. Kudos to the developers! It has helped me keep track of important dates and time in my life in a creative way.            </p>
+            <p class="reviewer"><em>– Mark S.</em></p>
+          </article>
+
+
+          
+
+          <article class="review-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <h3 class="review-title">The most beautiful app</h3>
+            <p>I was looking for an app like this for a long time, but I was never able to find something this good. And when I came across this app, it turned out to be a hundred times better than what I was even looking for. The design is fabulous. The UI is terrific honestly, it’s beautiful as hell.</p>
+            <p class="reviewer"><em>– Anna C.</em></p>
+          </article>
+
+          <article class="review-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <h3 class="review-title">Helps you be grateful of the time you have!</h3>
+            <p>To be aware of the time that is left it such a gift, and this app does that so, so well! Days left in a year, weeks left in a life, time left until you've spent 90% of the time with your kids. This app let you be grateful for the time we have.</p>
+            <p class="reviewer"><em>– Joe K.</em></p>
+          </article>
+
+          <article class="review-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <h3 class="review-title">One time payment for premium</h3>
+            <p>I just got the app less than a few hours ago but I’m giving it 5 stars because I don’t have to pay for a stupid subscription. One time payment for premium and that’s it!</p>
+            <p class="reviewer"><em>– Avery M</em></p>
+          </article>
+
+          <article class="review-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <h3 class="review-title">Neat!</h3>
+            <p>The layout is just so simple, it’s like right to the point, it’s exactly what you expect from the app description.</p>
+            <p class="reviewer"><em>– Timothy F.</em></p>
+          </article>
+
+          <article class="review-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <h3 class="review-title">Lovely aesthetics</h3>
+            <p>Different but helpful way of showing your countdown. Also, the developer had an amazing taste while designing. Intuitive UI.</p>
+            <p class="reviewer"><em>– Bogdan P.</em></p>
+          </article>
+
+          <article class="review-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <h3 class="review-title">Really amazing</h3>
+            <p>I think this is a really amazing app. I’ve recommend Left to all my 3,000 followers and 600 Substack subscribers. Hope keep adding more and more features!</p>
+            <p class="reviewer"><em>– Justine C.</em></p>
+          </article>
+
+          <article class="review-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <h3 class="review-title">Beautifully simple and customizable</h3>
+            <p>I use Left to see the days left in the year and for a few event countdowns. The widgets are clean, flexible, and look great on my Home Screen.</p>
+            <p class="reviewer"><em>– Ava R.</em></p>
+          </article>
+
+          <article class="review-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <h3 class="review-title">The widget I check every day</h3>
+            <p>The life-in-weeks view is brilliant. It’s motivating without being noisy, and the styles are tasteful. Exactly what I wanted.</p>
+            <p class="reviewer"><em>– Ollie B.</em></p>
+          </article>
+
+          <article class="review-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <h3 class="review-title">Makes deadlines less stressful</h3>
+            <p>I track project milestones and personal goals with Left. Seeing time at a glance helps me plan better and stay calm.</p>
+            <p class="reviewer"><em>– Edgar K.</em></p>
+          </article>
+
+          <article class="review-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <h3 class="review-title">Simply the one countdown I need</h3>
+            <p>After trying a few apps, I kept this one. Widget-first, no clutter, and updates keep making it better.</p>
+            <p class="reviewer"><em>– Swadea D.</em></p>
+          </article>
+
+          <article class="review-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <h3 class="review-title">Perfect for birthdays and trips</h3>
+            <p>I track family birthdays and vacation countdowns. The different styles let me match each widget to the event.</p>
+            <p class="reviewer"><em>– Nora R.</em></p>
+          </article>
+
+          <article class="review-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <h3 class="review-title">Elegant design, zero fuss</h3>
+            <p>Minimal, fast, and thoughtfully designed. I love that I can keep it simple but still customize when I want.</p>
+            <p class="reviewer"><em>– Aella F.</em></p>
+          </article>
+
+          
+          <article class="review-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <h3 class="review-title">Thoughtful, polished, reliable</h3>
+            <p>Everything feels considered, from the typography to the animations. It’s rare to find a small app this well made.</p>
+            <p class="reviewer"><em>– Darren J.</em></p>
+          </article>
+
+          <article class="review-card">
+            <div class="stars" aria-hidden="true">★★★★★</div>
+            <h3 class="review-title">Exactly what I hoped for</h3>
+            <p>Left makes time visible in a way that finally clicks for me. It’s become part of how I plan my week.</p>
+            <p class="reviewer"><em>– Lisa S.</em></p>
+          </article>
+        </div>
+      </section>
+
+      <section id="faq" class="faq container" aria-label="Frequently asked questions">
+        <h2>How Left Works</h2>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>Are widgets free, or do I need to upgrade?</summary>
+            <div class="faq-body">
+              <p>Left is free for most of the features and widgets. Only special dates and a custom lifespan are not free. Unlock everything with a one‑time, pay‑what‑you‑want purchase, choose from three prices and get the full app regardless of what you pay.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>How do I add a widget to my iPhone’s Home Screen?</summary>
+            <div class="faq-body">
+              <ol>
+                <li>Touch and hold the Home Screen until apps jiggle.</li>
+                <li>Tap <strong>+</strong> (top‑left) and search for <strong>Left</strong>.</li>
+                <li>Pick a style and size (small, medium, large).</li>
+                <li>Tap <strong>Add Widget</strong>, then long‑press the widget and choose <strong>Edit Widget</strong> to configure it.</li>
+              </ol>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>How do I add a widget to the Lock Screen?</summary>
+            <div class="faq-body">
+              <ol>
+                <li>Touch and hold the Lock Screen and tap <strong>Customize</strong>.</li>
+                <li>Tap the widget area and choose <strong>Left</strong>.</li>
+                <li>Select the widget type you want and finish customization.</li>
+              </ol>
+              <p>StandBy widgets can be added from the same customization flow.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>How can I change the widget size?</summary>
+            <div class="faq-body">
+              <p>Size is chosen when adding a widget. In the system picker, swipe to select <em>Small</em>, <em>Medium</em>, or <em>Large</em>, then tap <strong>Add Widget</strong>. You can long‑press the widget later to edit its settings and style.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>How do I add widgets on iPad or Mac?</summary>
+            <div class="faq-body">
+              <p><strong>iPad</strong>: touch and hold the Home Screen → tap <strong>+</strong> → search for <strong>Left</strong> → choose size → <strong>Add Widget</strong>.</p>
+              <p><strong>Mac</strong>: right‑click the desktop and choose <strong>Edit Widgets</strong> (or open Notification Center and click <strong>Edit Widgets</strong>) → search for <strong>Left</strong> → drag a widget into place.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>Left doesn’t appear in my widget list</summary>
+            <div class="faq-body">
+              <ol>
+                <li>Open the <strong>Left</strong> app at least once after installing.</li>
+                <li>Update to the latest iOS/iPadOS/macOS and the latest app version.</li>
+                <li>Restart your device and try adding the widget again.</li>
+              </ol>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>Why don’t widgets refresh more often?</summary>
+            <div class="faq-body">
+              <p>iOS manages widget refreshes to save battery. Apps request updates, but the system decides when they occur. Opening Left updates widgets immediately; otherwise, refreshes happen on a schedule within the system’s budget.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>What devices are compatible?</summary>
+            <div class="faq-body">
+              <p>Left is ready for <strong>iOS 26</strong> and works on all compatible iPhones. You can also add widgets on iPad and Mac.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>How many widget types are available?</summary>
+            <div class="faq-body">
+              <p>Over 15 widget styles in multiple sizes, six color themes, and a range of symbols, each widget is fully customizable.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>How is life expectancy calculated?</summary>
+            <div class="faq-body">
+              <p>Life expectancy is estimated using Apple Intelligence and multiple factors such as age, gender, activity, sleep, country of birth, and more.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>Does it work offline and is my data private?</summary>
+            <div class="faq-body">
+              <p>Yes. Widgets work offline and data stays on your device. See our <a href="http://cristianrus.me/apps/left" target="_blank" rel="noopener">Privacy</a> page for details.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>What is a Year Progress widget?</summary>
+            <div class="faq-body">
+              <p>A <strong>Year Progress</strong> widget shows how much of the current year has passed (or is left). It’s perfect for planning, reviews, and staying motivated across long‑term goals.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>Is Left a time left app?</summary>
+            <div class="faq-body">
+              <p>Yes. Left is a <strong>time left app</strong> that visualizes the remaining time for days, weeks, months, years, and your lifetime, plus countdowns for events and habits.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>How do I add a countdown widget on iPhone?</summary>
+            <div class="faq-body">
+              <ol>
+                <li>Touch and hold the Home Screen → tap <strong>+</strong>.</li>
+                <li>Search for <strong>Left</strong> → choose the <strong>Countdown</strong> style and size.</li>
+                <li>Tap <strong>Add Widget</strong> → long‑press the widget → <strong>Edit Widget</strong> to set your event and options.</li>
+              </ol>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>Is Left a Pretty Progress alternative?</summary>
+            <div class="faq-body">
+              <p>Left offers similar functionality with a widget‑first approach, minimal design, and a one‑time pay‑what‑you‑want unlock. If you want <strong>countdown</strong>, <strong>time left</strong>, and <strong>year progress</strong> widgets with full customization, Left is a great alternative.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>Does Left have a habit tracker?</summary>
+            <div class="faq-body">
+              <p>Yes. Left includes a <strong>habit tracker</strong> with daily, weekly, and custom schedules. Track habits with streak widgets on your Home Screen and see your progress at a glance.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>What is a days since counter?</summary>
+            <div class="faq-body">
+              <p>A <strong>days since counter</strong> tracks how many days have passed since a specific date. Left's days since feature includes automatic streak tracking and a Home Screen widget to see your progress without opening the app.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>Can I track streaks with Left?</summary>
+            <div class="faq-body">
+              <p>Yes. Left tracks <strong>streaks</strong> automatically — habits complete based on your schedule and reset only if you choose. Streak and habit widgets are available for your Home Screen, Lock Screen, and StandBy.</p>
+            </div>
+          </details>
+        </div>
+      </section>
+    </main>
+    
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p>Left — Habit, Countdown &amp; Life Widgets · cntxt · Coded in NZ · © 2026</p>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="#ios-26">iOS 26</a>
+          <a href="#features">Features</a>
+          <a href="#why">Why Left?</a>
+          <a href="#reviews">Reviews</a>
+          <a href="#faq">FAQ</a>
+          <a href="/blog/">Blog</a>
+          <a href="https://apps.apple.com/app/id6740155884" target="_blank" rel="noopener">Download</a>
+          <a href="http://cristianrus.me/apps/left" target="_blank" rel="noopener">Privacy</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script>
+      // Toggle 'scrolled' class and drive hero effects (fade/blur + parallax)
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const titleEl = document.querySelector('.app-title');
+      const subtitleEl = document.querySelector('.app-subtitle');
+      const iosBadgeEl = document.querySelector('.ios-badge');
+      const iosBadgeText = document.querySelector('.ios-badge-text');
+      const heroImg = document.querySelector('.hero-image');
+      const ctaDesktop = document.querySelector('.cta-desktop');
+      const mqDesktop = window.matchMedia('(min-width: 1024px)');
+
+      const setScrolled = () => {
+        document.body.classList.toggle('scrolled', window.scrollY > 4);
+      };
+
+      const clamp01 = (n) => Math.max(0, Math.min(1, n));
+      const updateHeroEffects = () => {
+        if (prefersReduced) return; // respect reduced motion
+        const y = window.scrollY || 0;
+        // Earlier threshold so fade starts sooner
+        const titleStart = 20,  titleRange = 180; // px – starts sooner
+        const subStart = 10,   subRange = 160; // px – starts even sooner
+        const t = clamp01((y - titleStart) / titleRange);
+        const blurMax = 8; // px
+        // Fade + blur titles
+        const parallaxFactor = 0.45; // same slower speed for title & subtitle
+        if (titleEl) {
+          titleEl.style.opacity = (1 - t).toFixed(3);
+          titleEl.style.filter = `blur(${(t * blurMax).toFixed(2)}px)`;
+          // Parallax: same factor as subtitle
+          const slow = y * parallaxFactor;
+          titleEl.style.transform = `translateY(${slow.toFixed(1)}px)`;
+        }
+        // Apply same fade/parallax to the iOS badge container,
+        // but blur only the inner text to keep Safari backdrop-filter working
+        if (iosBadgeEl) {
+          iosBadgeEl.style.opacity = (1 - t).toFixed(3);
+          const slowB = y * parallaxFactor;
+          iosBadgeEl.style.transform = `translateY(${slowB.toFixed(1)}px)`;
+        }
+        if (iosBadgeText) {
+          iosBadgeText.style.filter = `blur(${(t * blurMax).toFixed(2)}px)`;
+        }
+        if (subtitleEl) {
+          const ts = clamp01((y - subStart) / subRange);
+          subtitleEl.style.opacity = (1 - ts).toFixed(3);
+          subtitleEl.style.filter = `blur(${(ts * blurMax).toFixed(2)}px)`;
+          const slowS = y * parallaxFactor;
+          subtitleEl.style.transform = `translateY(${slowS.toFixed(1)}px)`;
+        }
+        // Disable image parallax: keep natural scroll
+        if (heroImg) {
+          heroImg.style.transform = 'none';
+        }
+
+        // Desktop-only: apply same fade/blur/slow scroll to the App Store badge
+        if (ctaDesktop && mqDesktop.matches) {
+          ctaDesktop.style.opacity = (1 - t).toFixed(3);
+          ctaDesktop.style.filter = `blur(${(t * blurMax).toFixed(2)}px)`;
+          const slowCta = y * parallaxFactor;
+          ctaDesktop.style.transform = `translateY(${slowCta.toFixed(1)}px)`;
+        } else if (ctaDesktop) {
+          // Reset when not on desktop
+          ctaDesktop.style.opacity = '';
+          ctaDesktop.style.filter = '';
+          ctaDesktop.style.transform = '';
+        }
+      };
+
+      let ticking = false;
+      const onScroll = () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            setScrolled();
+            updateHeroEffects();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      };
+
+      // Initial paint
+      setScrolled();
+      updateHeroEffects();
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      // Navbar buttons: default to Try on web + Get Left.
+      // If Android, show Left for Android (-> web.html) + Left for iOS (App Store)
+      (function() {
+        const webBtn = document.querySelector('.nav-web-btn');
+        const dlBtn = document.querySelector('.download-btn');
+        if (!webBtn || !dlBtn) return;
+        const ua = navigator.userAgent || '';
+        const isAndroid = /android/i.test(ua);
+        if (isAndroid) {
+          webBtn.textContent = 'Left for Android';
+          webBtn.setAttribute('href', 'web.html');
+          dlBtn.textContent = 'Left for iOS';
+        } else {
+          webBtn.textContent = 'Try on web';
+          webBtn.setAttribute('href', 'web.html');
+          dlBtn.textContent = 'Get Left';
+        }
+      })();
+    </script>
+  </body>
+  </html>
